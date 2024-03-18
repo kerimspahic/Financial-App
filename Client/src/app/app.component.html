@@ -1,9 +1,10 @@
-<app-navbar id="navbar" class="mat-toolbar mat-primary mat-toolbar-single-row fixed"></app-navbar>
-<div class="container-fluid">
-  <div class="row" id="mainContent">
-    <app-sidebar id="sidebar" class="col-sm-3 col-md-2 d-none d-sm-block sidebar mat-background-primary"></app-sidebar>
-    <div class="col-sm-9 ml-sm-auto col-md-10 pt-3" id="dashboard">
-        <router-outlet></router-outlet>
-    </div>
-  </div>
-</div>
+<app-navbar id="navbar" class="header"></app-navbar>
+<mat-sidenav-container class="app-container">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav" [fixedInViewport]="false">
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<mat-toolbar class="footer">Footer</mat-toolbar>

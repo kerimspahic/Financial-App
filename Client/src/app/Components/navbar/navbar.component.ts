@@ -8,10 +8,10 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class NavbarComponent implements OnInit {
   public user: string | null = null;
-  
+
   constructor(
     public authService: AuthenticationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
   }

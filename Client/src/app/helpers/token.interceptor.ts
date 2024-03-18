@@ -6,10 +6,10 @@ import { Observable } from 'rxjs';
 @Injectable()
 
 export class tokenInterceptor implements HttpInterceptor {
-  constructor(public authService: AuthenticationService) {}
+  constructor(public authService: AuthenticationService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if(this.authService.isLoggedIn()) {
+    if (this.authService.isLoggedIn()) {
       let newRequest = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.authService.getToken()}`,

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from './models/user';
 import { AuthenticationService } from './services/authentication.service';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -8,20 +9,26 @@ import { AuthenticationService } from './services/authentication.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  options = this._formBuilder.group({
+    bottom: 0,
+    fixed: false,
+    top: 0,
+  });
   title = 'Client';
 
-  constructor (public authService: AuthenticationService) {
+  constructor(public authService: AuthenticationService, private _formBuilder: FormBuilder) {
 
   }
 
-ngOnInit(): void {
+  ngOnInit(): void {
     this.setCurrentUser();
- }
+  }
 
- setCurrentUser(){
-  const userString = localStorage.getItem('user');
-  if (!userString) return;
-  const user: User = { userName: userString };
-  this.authService.setCurrentUser(user);
- }
+  setCurrentUser() {
+    if (typeof localStorage === 'undefined') return;
+    const userString = localStorage.getItem('user');
+    if (!userString) return;
+    const user: User = { userName: userString };
+    this.authService.setCurrentUser(user);
+  }
 }

@@ -1,9 +1,10 @@
 .app-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  .spacer {
-    flex: 1; /* This pushes the content to the right */
-  }
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.spacer {
+  flex: 1;
+  /* This pushes the content to the right */
+}

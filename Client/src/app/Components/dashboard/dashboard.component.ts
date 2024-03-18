@@ -11,12 +11,8 @@ import { WeatherClient } from '../../client/weather.client';
 export class DashboardComponent implements OnInit {
   public user: string | null = null;
   public weather: Observable<any> = this.weatherClient.getWeatherData();
-  constructor( public authService: AuthenticationService, private weatherClient: WeatherClient ) {}
+  constructor(public authService: AuthenticationService, private weatherClient: WeatherClient) { }
 
-  
-  ngOnInit(): void {}
 
-  logout(): void {
-    this.authService.logout();
-  }
+  ngOnInit(): void { }
 }

@@ -10,7 +10,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class RegisterComponent implements OnInit {
   public registerForm!: FormGroup;
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.registerForm = new FormGroup({
@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  public onSubmit(){
+  public onSubmit() {
     this.authService.register(
       this.registerForm.get('username')!.value,
       this.registerForm.get('email')!.value,

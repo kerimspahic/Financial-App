@@ -13,11 +13,11 @@ export class AuthenticationService {
   private userKey = 'user';
   private currentUserSource = new BehaviorSubject<User | null>(null);
   curentUser$ = this.currentUserSource.asObservable();
-  
+
   constructor(private authClient: AuthenticationClient, private router: Router, @Inject(PLATFORM_ID) private platformId: object) { }
 
 
-  public login(username: string, password: string): void{
+  public login(username: string, password: string): void {
     this.authClient.login(username, password).subscribe(x => {
       if (isPlatformBrowser(this.platformId)) {
         localStorage.setItem(this.tokenKey, x);
@@ -28,7 +28,7 @@ export class AuthenticationService {
       this.router.navigate(['/']);
     });
   }
-  
+
   public register(username: string, email: string, password: string): void {
     this.authClient.register(username, email, password).subscribe(x => {
       if (isPlatformBrowser(this.platformId)) {
@@ -69,7 +69,7 @@ export class AuthenticationService {
     return this.authClient.getUser();
   }
 
-  public setCurrentUser(user: User){
+  public setCurrentUser(user: User) {
     this.currentUserSource.next(user);
   }
 }

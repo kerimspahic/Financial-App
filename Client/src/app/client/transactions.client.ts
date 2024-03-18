@@ -6,11 +6,11 @@ import { environment } from "../../environments/environment";
 @Injectable({
     providedIn: 'root'
 })
-export class WeatherClient {
+export class TransactionsClient {
     baseUrl = 'https://localhost:5001';
     constructor(private http: HttpClient) { }
 
-    getWeatherData(): Observable<any> {
-        return this.http.get(this.baseUrl + '/WeatherForecast');
+    getTransactionsData(): Observable<any> {
+        return this.http.get(this.baseUrl + '/Transactions/extract');
     }
 }

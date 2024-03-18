@@ -1,6 +1,37 @@
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <h5>Total Amount</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <h5>Monthly Profit</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <h5>Monthly Expenses</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<p *ngFor="let item of weather | async">
-    {{ item.date }}: {{ item.temperatureC }}
-  </p>
-  <button mat-raised-button color="primary" (click)="logout()">Logout</button>
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="chart">
+        <h5>This is new</h5>
+        <canvas id="vertical-chart" width="400" height="400"></canvas>
+      </div>
+    </div>
+  </div>
 
+  <p *ngFor="let item of weather | async">{{ item.date }}: {{ item.temperatureC }}</p>

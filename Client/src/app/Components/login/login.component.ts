@@ -9,8 +9,8 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
-  
-  constructor(private authService: AuthenticationService) {}
+
+  constructor(private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
