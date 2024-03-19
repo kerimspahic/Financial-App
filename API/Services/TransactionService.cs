@@ -26,6 +26,7 @@ namespace API.Services
             
             var newTransaction = new Transactions
             {
+                Id = transaction.Id,
                 Amount = transaction.Amount,
                 Type = transaction.Type,
                 Date = transaction.Date,
