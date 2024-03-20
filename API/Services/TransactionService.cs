@@ -26,7 +26,6 @@ namespace API.Services
             
             var newTransaction = new Transactions
             {
-                Id = transaction.Id,
                 Amount = transaction.Amount,
                 Type = transaction.Type,
                 Date = transaction.Date,
@@ -43,7 +42,6 @@ namespace API.Services
         public async Task<IEnumerable<Transactions>> Extract(string userName)
         {
             return await _context.Transactions.Where(x => x.UserName == userName).ToListAsync();
-        
         }
     }
 }

@@ -7,20 +7,12 @@ import { AuthenticationService } from '../../services/authentication.service';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit {
-  public user: string | null = null;
 
-  constructor(
-    public authService: AuthenticationService
-  ) { }
+  constructor(public authService: AuthenticationService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   logout(): void {
     this.authService.logout();
-  }
-
-  getUser() {
-
   }
 }

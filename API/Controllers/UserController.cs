@@ -43,7 +43,7 @@ namespace API.Controllers
         public ActionResult<object> CurrentUser()
         {
             string userName = User.Identity.Name;
-            return new { userName };
+            return new  {userName} ;
         }
     }
 }

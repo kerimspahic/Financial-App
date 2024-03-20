@@ -40,7 +40,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DatePipe } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
-import { DataTableComponent } from './data-table/data-table.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +53,6 @@ import { DataTableComponent } from './data-table/data-table.component';
     BudgetingComponent,
     SummaryComponent,
     SettingsComponent,
-    DataTableComponent,
   ],
   imports: [
     BrowserModule,

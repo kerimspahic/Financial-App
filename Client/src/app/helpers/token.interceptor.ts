@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class tokenInterceptor implements HttpInterceptor {
   constructor(public authService: AuthenticationService) { }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (this.authService.isLoggedIn()) {
       let newRequest = request.clone({
         setHeaders: {

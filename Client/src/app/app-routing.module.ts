@@ -8,7 +8,6 @@ import { TransactionsComponent } from './Components/transactions/transactions.co
 import { BudgetingComponent } from './Components/budgeting/budgeting.component';
 import { SummaryComponent } from './Components/summary/summary.component';
 import { SettingsComponent } from './Components/settings/settings.component';
-import { DataTableComponent } from './data-table/data-table.component';
 
 const routes: Routes = [
   {
@@ -36,11 +35,7 @@ const routes: Routes = [
       {
         path: 'settings',
         component: SettingsComponent
-      },
-      {
-        path: 'table',
-        component: DataTableComponent
-      },
+      }
     ]
   },
   {

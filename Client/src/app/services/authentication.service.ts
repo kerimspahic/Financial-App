@@ -65,9 +65,11 @@ export class AuthenticationService {
     return null;
   }
 
-  public getUser() {
-    return this.authClient.getUser();
-  }
+  public getUser(): any {
+    this.curentUser$.subscribe({
+      next: response => response,
+    })
+  }   
 
   public setCurrentUser(user: User) {
     this.currentUserSource.next(user);
