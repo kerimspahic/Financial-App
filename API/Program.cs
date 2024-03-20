@@ -16,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(configu
 
 // Add Identity with User and Role entities
 builder.Services.AddIdentity<User, IdentityRole>()
+    .AddRoles<IdentityRole>()
+    .AddRoleManager<RoleManager<IdentityRole>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
@@ -40,6 +42,14 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddAuthorization(options => 
+{
+    options.AddPolicy("ElevatedRights", policy =>
+        policy.RequireRole(Role.Admin)); 
+    options.AddPolicy("StandardRights", policy =>
+        policy.RequireRole(Role.Admin, Role.User));
+});
+
 // Add scoped services for authentication and transaction
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
@@ -51,7 +61,7 @@ builder.Services.AddEndpointsApiExplorer();
 // Add Swagger documentation
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Wedding Planner API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Financial App API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
@@ -109,4 +119,11 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+using (var Scope = app.Services.CreateScope())
+{
+    var services = Scope.ServiceProvider;
+    await SeedManeger.Seed(services);
+}
+
 app.Run();

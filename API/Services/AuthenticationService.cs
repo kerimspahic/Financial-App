@@ -38,6 +38,8 @@ namespace API.Services
 
             var result = await _userMenager.CreateAsync(user, register.Password);
 
+            await _userMenager.AddToRoleAsync(user, Role.User);
+
             if(!result.Succeeded)
                 throw new ArgumentException($"Unable to register user {register.Username} errors: {GetErrorsText(result.Errors)}");
 
@@ -62,6 +64,10 @@ namespace API.Services
                 new(ClaimTypes.Email, user.Email),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+
+            var userRoles = await _userMenager.GetRolesAsync(user);
+
+            authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
 
             var token = GetToken(authClaims);
 
