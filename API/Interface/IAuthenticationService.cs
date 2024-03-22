@@ -1,10 +1,11 @@
 using API.DTOs;
+using FluentResults;
 
 namespace API.Services
 {
     public interface IAuthenticationService
     {
-        Task<string> Register(RegisterDto request);
-        Task<string> Login(LoginDto request);
+        Task<Result<string>> Register(RegisterDto request);
+        Task<Result<string>> Login(LoginDto request);
     }
 }

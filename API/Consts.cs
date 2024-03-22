@@ -2,7 +2,7 @@ namespace API
 {
     public class Consts
     {
-        public const int UserNameMinLength = 5;
+        public const int UserNameMinLength = 3;
         public const string PasswordReqex = @"^(?=.*\d{1})(?=.*[a-z]{1})(?=.*[A-Z]{1})(?=.*[!@#$%^&*{|}?~_=+.-]{1})(?=.*[^a-zA-Z0-9])(?!.*\s).{6,24}$";
         public const string UsernameLengthValidationError = "Username must have more than 5 characters.";
         public const string EmailValidationError = "Email must have valid format.";

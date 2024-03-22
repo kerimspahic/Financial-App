@@ -4,9 +4,9 @@ namespace API.DTOs
 {
     public class LoginDto
     {
-        [Required]
+        [MinLength(Consts.UserNameMinLength, ErrorMessage =Consts.UsernameLengthValidationError)]
         public string Username { get; set; }
-        [Required]
+        [RegularExpression(Consts.PasswordReqex, ErrorMessage = Consts.PasswordValidationError)]
         public string Password { get; set; }
     }
 }
