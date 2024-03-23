@@ -1,3 +1,3 @@
-export interface User {
-    userName: string;
+export interface UserTemp {
+  userName: string;
 }

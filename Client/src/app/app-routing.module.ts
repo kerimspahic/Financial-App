@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: '',
     component: DashboardComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: '',
@@ -22,34 +22,34 @@ const routes: Routes = [
     children: [
       {
         path: 'transactions',
-        component: TransactionsComponent
+        component: TransactionsComponent,
       },
       {
         path: 'budgeting',
-        component: BudgetingComponent
+        component: BudgetingComponent,
       },
       {
         path: 'summary',
-        component: SummaryComponent
+        component: SummaryComponent,
       },
       {
         path: 'settings',
-        component: SettingsComponent
-      }
-    ]
+        component: SettingsComponent,
+      },
+    ],
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'register',
-    component: RegisterComponent
-  }
+    component: RegisterComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
