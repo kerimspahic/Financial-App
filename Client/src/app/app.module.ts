@@ -21,11 +21,7 @@ import { SharedModule } from './modules/shared.module';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import {
-  MatCommonModule,
-  MatNativeDateModule,
-  provideNativeDateAdapter,
-} from '@angular/material/core';
+import { MatCommonModule, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -42,7 +38,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 
@@ -91,14 +86,13 @@ import { ToastrModule } from 'ngx-toastr';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    MatSnackBarModule,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot(),
+
   ],
-  providers: [
-    provideNativeDateAdapter(),
-    { provide: HTTP_INTERCEPTORS, useClass: tokenInterceptor, multi: true },
+  providers: [provideNativeDateAdapter(),
+  { provide: HTTP_INTERCEPTORS, useClass: tokenInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
