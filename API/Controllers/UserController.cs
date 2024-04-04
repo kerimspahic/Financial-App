@@ -1,6 +1,6 @@
-using API.DTOs;
-using API.Extensions;
-using API.Services;
+using API.DTOs.Account;
+using API.Interface;
+using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,57 +8,73 @@ namespace API.Controllers
 {
     public class UserController : BaseApiController
     {
-        private readonly IAuthenticationService _auth;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(IAuthenticationService auth)
+        public UserController(IUserRepository userRepository)
         {
-            _auth = auth;
+            _userRepository = userRepository;
         }
 
-        [AllowAnonymous]
-        [HttpPost("login")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
-
-        public async Task<IActionResult> Login([FromBody] LoginDto login)
+        [Authorize]
+        [HttpGet("GetAppUser/{id}")]
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetAppUser([FromRoute] string id)
         {
-            var response = await _auth.Login(login);
-            var responseDto = response.ToResultDto();
-
-            if (!responseDto.IsSucces)
-            {
-                return BadRequest(responseDto);
-            }
-
-            return Ok(response);
-        }
-
-        [AllowAnonymous]
-        [HttpPost("register")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ResultDto<string>))]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ResultDto<string>))]
-        public async Task<IActionResult> Register([FromBody] RegisterDto register)
-        {
-            var response = await _auth.Register(register);
-            var responseDto = response.ToResultDto();
-
-            if (!responseDto.IsSucces)
-            {
-                return BadRequest(responseDto);
-            }
+            var response = await _userRepository.GetAppUserById(id);
             return Ok(response);
         }
 
         [Authorize]
-        [HttpGet("user")]
-        public ActionResult<object> CurrentUser()
+        [HttpGet("GetAppUsers")]
+        public async Task<ActionResult<IEnumerable<AppUser>>> GetAppUsers()
         {
-            string userName = User.Identity.Name;
-            return new { userName };
+            var response = await _userRepository.GetAppUsers();
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpPut("UpdateFirstName/{id}")]
+        public async Task<IActionResult> UpdateFirstName([FromRoute] string id, [FromBody] string firstName)
+        {
+            if (firstName == null)
+                return BadRequest();
+
+            var currentUser = await _userRepository.UpdateAppUserFirstName(id, firstName);
+            return Ok(currentUser);
+        }
+
+        [Authorize]
+        [HttpPut("UpdateLastName/{id}")]
+        public async Task<IActionResult> UpdateLastName([FromRoute] string id, [FromBody] string lastName)
+        {
+            if (lastName == null)
+                return BadRequest();
+
+            var currentUser = await _userRepository.UpdateAppUserLastName(id, lastName);
+            return Ok(currentUser);
+        }
+
+        [Authorize]
+        [HttpPut("UpdatePassword/{id}")]
+        public async Task<IActionResult> UpdatePassword([FromRoute] string id, [FromBody] UpdatePasswordDto passwordDto)
+        {
+            var result = await _userRepository.UpdateAppUserPassword(id, passwordDto);
+
+            if (!result.Succeeded)
+                return BadRequest();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteAccount([FromRoute] string id)
+        {
+            var currentUser = await _userRepository.DeleteAppUser(id);
+
+            if (currentUser == null)
+                return NotFound();
+
+            return Ok(currentUser);
         }
     }
 }

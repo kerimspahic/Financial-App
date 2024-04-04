@@ -1,129 +1,145 @@
-using System.Text;
 using API.Data;
-using API.Entities;
-using API.Services;
+using API.Interface;
+using API.Models;
+using API.Repository;
+using API.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+// Create a new WebApplication instance
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-// Add DbContext with SQLite connection
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
-
-// Add Identity with User and Role entities
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddRoles<IdentityRole>()
-    .AddRoleManager<RoleManager<IdentityRole>>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
-
-// Add authentication with JWT bearer
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-    .AddJwtBearer(options =>
-    {
-        options.SaveToken = true;
-        options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = new TokenValidationParameters()
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidAudience = configuration["JWT:ValidAudience"],
-            ValidIssuer = configuration["JWT:ValidIssuer"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
-        };
-    });
-
-builder.Services.AddAuthorization(options => 
-{
-    options.AddPolicy("ElevatedRights", policy =>
-        policy.RequireRole(Role.Admin)); 
-    options.AddPolicy("StandardRights", policy =>
-        policy.RequireRole(Role.Admin, Role.User));
-});
-
-// Add scoped services for authentication and transaction
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<ITransactionService, TransactionService>();
-
-// Add controllers and API explorer
+// Add services to the container
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 
-// Add Swagger documentation
-builder.Services.AddSwaggerGen(c =>
+// Add support for Swagger/OpenAPI documentation
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(option =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Financial App API", Version = "v1" });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    // Add Swagger documentation for API
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Financial App API", Version = "v1" });
+
+    // Add security definitions for Swagger
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      \r\n\r\nExample: 'Bearer 12345abcdef'",
-        Name = "Authorization",
         In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
         Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+
+    // Add security requirements for Swagger
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                },
-                Scheme = "oauth2",
-                Name = "Bearer",
-                In = ParameterLocation.Header,
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
             },
-            new List<string>()
+            new string[]{}
         }
     });
 });
 
-// Add CORS policy for Angular dev client
-builder.Services.AddCors(options =>
+// Add support for JSON serialization and handling reference loops
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
-    options.AddPolicy("AllowAngularDevClient",
-        b =>
-        {
-            b
-                .WithOrigins("http://localhost:4200")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
+// Add DbContext for Entity Framework
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+});
+
+// Add Identity services
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+{
+    // Configure password requirements
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequiredLength = 6;
+    options.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<AppDbContext>();
+
+// Add JWT authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme =
+    options.DefaultChallengeScheme =
+    options.DefaultForbidScheme =
+    options.DefaultScheme =
+    options.DefaultSignInScheme =
+    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = configuration["Jwt:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = configuration["Jwt:Audience"],
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]))
+    };
+});
+
+// Add authorization policies
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ElevatedRights", policy =>
+        policy.RequireRole(Roles.Admin));
+    options.AddPolicy("StandardRights", policy =>
+        policy.RequireRole(Roles.Admin, Roles.User));
+});
+
+// Add scoped services for repositories and services
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IExchangeRepository, ExchangeRepository>();
+
+// Build the application
 var app = builder.Build();
 
-// Enable Swagger and CORS in development environment
+// Create a scope for service provider
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+
+// Initialize seed data
+API.SeedData.InitializeAsync(services).Wait();
+
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Enable CORS, HTTPS redirection, authentication, authorization, and map controllers
-app.UseCors("AllowAngularDevClient");
+// Enable HTTPS redirection
 app.UseHttpsRedirection();
+
+// Enable authentication
 app.UseAuthentication();
+
+// Enable authorization
 app.UseAuthorization();
+
+// Map controllers
 app.MapControllers();
 
-using (var Scope = app.Services.CreateScope())
-{
-    var services = Scope.ServiceProvider;
-    await SeedManeger.Seed(services);
-}
-
+// Run the application
 app.Run();
