@@ -1,12 +1,9 @@
 using API.Data;
+using API.Extensions;
 using API.Interface;
-using API.Models;
 using API.Repository;
 using API.Service;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 // Create a new WebApplication instance
@@ -15,7 +12,7 @@ var configuration = builder.Configuration;
 
 // Add services to the container
 builder.Services.AddControllers();
-
+builder.Services.RegisterAuthentication(configuration);
 // Add support for Swagger/OpenAPI documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
@@ -63,54 +60,23 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
 });
 
-// Add Identity services
-builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
-{
-    // Configure password requirements
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequiredLength = 6;
-    options.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<AppDbContext>();
-
-// Add JWT authentication
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme =
-    options.DefaultChallengeScheme =
-    options.DefaultForbidScheme =
-    options.DefaultScheme =
-    options.DefaultSignInScheme =
-    options.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidIssuer = configuration["Jwt:Issuer"],
-        ValidateAudience = true,
-        ValidAudience = configuration["Jwt:Audience"],
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]))
-    };
-});
-
-// Add authorization policies
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("ElevatedRights", policy =>
-        policy.RequireRole(Roles.Admin));
-    options.AddPolicy("StandardRights", policy =>
-        policy.RequireRole(Roles.Admin, Roles.User));
-});
-
 // Add scoped services for repositories and services
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IExchangeRepository, ExchangeRepository>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDevClient",
+        b =>
+        {
+            b
+                .WithOrigins("http://localhost:4200", "https://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 // Build the application
 var app = builder.Build();
@@ -128,6 +94,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAngularDevClient");
 
 // Enable HTTPS redirection
 app.UseHttpsRedirection();

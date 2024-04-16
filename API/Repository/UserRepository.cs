@@ -74,5 +74,7 @@ namespace API.Repository
 
             return await _userManager.ChangePasswordAsync(currentUser, passwordDto.OldPassword, passwordDto.NewPassword);
         }
+
+        
     }
 }

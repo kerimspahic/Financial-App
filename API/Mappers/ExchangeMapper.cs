@@ -13,8 +13,8 @@ namespace API.Mappers
                 Id = exchangeModel.Id,
                 ExchangeAmount = exchangeModel.ExchangeAmount,
                 ExchangeType = exchangeModel.ExchangeType,
-                ExchangeDescription = exchangeModel.ExchangeDescription,
                 ExchangeDate = exchangeModel.ExchangeDate,
+                ExchangeDescription = exchangeModel.ExchangeDescription,
                 AppUserId = exchangeModel.AppUserId
             };
         }
@@ -25,8 +25,8 @@ namespace API.Mappers
             {
                 ExchangeAmount = setExchange.ExchangeAmount,
                 ExchangeType = setExchange.ExchangeType,
-                ExchangeDescription = setExchange.ExchangeDescription,
                 ExchangeDate = setExchange.ExchangeDate,
+                ExchangeDescription = setExchange.ExchangeDescription,
                 AppUserId = id
             };
         }

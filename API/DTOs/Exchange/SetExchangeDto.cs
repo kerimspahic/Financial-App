@@ -9,8 +9,8 @@ namespace API.DTOs.Exchange
         [Required]
         public string ExchangeType { get; set; } = string.Empty;
         [Required]
-        public string ExchangeDescription { get; set; } = string.Empty;
+        public string ExchangeDate { get; set; }
         [Required]
-        public DateOnly ExchangeDate { get; set; }
+        public string ExchangeDescription { get; set; } = string.Empty;
     }
 }

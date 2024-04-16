@@ -24,14 +24,14 @@ namespace API.Repository
             _tokenService = tokenService;
         }
 
-        public async Task<CurrentUserDto> Register(RegisterDto registerDto)
+        public async Task<string> Register(RegisterDto registerDto)
         {
             try
             {
                 var existingUserByUsername = await _userManager.FindByNameAsync(registerDto.Username);
                 if (existingUserByUsername is not null)
                     throw new ArgumentException($"Username {registerDto.Username} is taken");
-                
+
                 var existingUserByEmail = await _userManager.FindByEmailAsync(registerDto.Email);
                 if (existingUserByEmail is not null)
                     throw new ArgumentException($"Email {registerDto.Email} is taken");
@@ -52,7 +52,7 @@ namespace API.Repository
                 if (!roleResult.Succeeded)
                     throw new ArgumentException("Unable to assign role to user");
 
-                return GenerateCurrentUserDto(appUser);
+                return _tokenService.CreateToken(appUser);
             }
             catch (Exception e)
             {
@@ -60,7 +60,7 @@ namespace API.Repository
             }
         }
 
-        public async Task<CurrentUserDto> Login(LoginDto loginDto)
+        public async Task<string> Login(LoginDto loginDto)
         {
             var appUser = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
             if (appUser == null)
@@ -70,33 +70,12 @@ namespace API.Repository
             if (!result.Succeeded)
                 return null;
 
-            var currentUser = new CurrentUserDto
-            {
-                UserName = appUser.UserName,
-                FirstName = appUser.FirstName,
-                LastName = appUser.LastName,
-                Email = appUser.Email,
-                Token = _tokenService.CreateToken(appUser)
-            };
+            return _tokenService.CreateToken(appUser);
 
-            return currentUser;
         }
-
         private string GetErrorsText(IEnumerable<IdentityError> errors)
         {
             return string.Join(", ", errors.Select(error => error.Description).ToArray());
-        }
-
-        private CurrentUserDto GenerateCurrentUserDto(AppUser appUser)
-        {
-            return new CurrentUserDto
-            {
-                UserName = appUser.UserName,
-                FirstName = appUser.FirstName,
-                LastName = appUser.LastName,
-                Email = appUser.Email,
-                Token = _tokenService.CreateToken(appUser)
-            };
         }
     }
 }

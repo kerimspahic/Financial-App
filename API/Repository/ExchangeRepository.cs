@@ -2,7 +2,7 @@ using API.Data;
 using API.Interface;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity;
 namespace API.Repository
 {
     public class ExchangeRepository : IExchangeRepository
@@ -13,6 +13,10 @@ namespace API.Repository
             _context = context;
         }
 
+        public async Task<List<Exchange>> GetUserExchanges(string id)
+        {
+            return await _context.Exchanges.Where(x => x.AppUserId == id).ToListAsync();
+        }
 
         public async Task<List<Exchange>> GetAllExchanges()
         {
@@ -52,5 +56,6 @@ namespace API.Repository
         {
             return await _context.Users.AnyAsync(s => s.Id == id);
         }
+
     }
 }

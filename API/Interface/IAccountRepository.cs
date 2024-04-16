@@ -5,7 +5,7 @@ namespace API.Interface
 {
     public interface IAccountRepository
     {
-        Task<CurrentUserDto> Register(RegisterDto registerDto);
-        Task<CurrentUserDto> Login(LoginDto loginDto);
+        Task<string> Register(RegisterDto registerDto);
+        Task<string> Login(LoginDto loginDto);
     }
 }

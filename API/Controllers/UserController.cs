@@ -2,6 +2,7 @@ using API.DTOs.Account;
 using API.Interface;
 using API.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -9,10 +10,11 @@ namespace API.Controllers
     public class UserController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
-
-        public UserController(IUserRepository userRepository)
+    private readonly UserManager<AppUser> _userManager;
+        public UserController(IUserRepository userRepository, UserManager<AppUser> userManager)
         {
             _userRepository = userRepository;
+            _userManager = userManager;
         }
 
         [Authorize]
@@ -31,6 +33,15 @@ namespace API.Controllers
             return Ok(response);
         }
 
+        [Authorize]
+        [HttpGet("GetUserId")]
+        public async Task<string> GetCurrentUserId()
+        {
+            AppUser userId = await GetCurrentUserAsync();
+		    return userId.Id;
+        }
+        private Task<AppUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+        
         [Authorize]
         [HttpPut("UpdateFirstName/{id}")]
         public async Task<IActionResult> UpdateFirstName([FromRoute] string id, [FromBody] string firstName)
@@ -76,5 +87,6 @@ namespace API.Controllers
 
             return Ok(currentUser);
         }
+
     }
 }

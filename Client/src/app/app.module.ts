@@ -2,22 +2,19 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './Components/navbar/navbar.component';
-import { DashboardComponent } from './Components/dashboard/dashboard.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { tokenInterceptor } from './helpers/token.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { LoginComponent } from './Components/login/login.component';
-import { RegisterComponent } from './Components/register/register.component';
-import { SidebarComponent } from './Components/sidebar/sidebar.component';
 import { FlexLayoutServerModule } from '@angular/flex-layout/server';
-import { TransactionsComponent } from './Components/transactions/transactions.component';
-import { BudgetingComponent } from './Components/budgeting/budgeting.component';
-import { SummaryComponent } from './Components/summary/summary.component';
-import { SettingsComponent } from './Components/settings/settings.component';
-import { SharedModule } from './modules/shared.module';
+import { LoginComponent } from './components/authentification/login/login.component';
+import { RegisterComponent } from './components/authentification/register/register.component';
+import { SidebarComponent } from './components/navigation/sidebar/sidebar.component';
+import { NavbarComponent } from './components/navigation/navbar/navbar.component';
+import { BudgetingComponent } from './components/pages/budgeting/budgeting.component';
+import { DashboardComponent } from './components/pages/dashboard/dashboard.component';
+import { SummaryComponent } from './components/pages/summary/summary.component';
+import { TransactionsComponent } from './components/pages/transactions/transactions.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -40,25 +37,26 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DatePipe } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
-    DashboardComponent,
     LoginComponent,
     RegisterComponent,
     SidebarComponent,
-    TransactionsComponent,
+    NavbarComponent,
     BudgetingComponent,
+    DashboardComponent,
     SummaryComponent,
-    SettingsComponent,
+    TransactionsComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    SharedModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -88,10 +86,9 @@ import { ToastrModule } from 'ngx-toastr';
     MatPaginatorModule,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot(),
-
   ],
-  providers: [provideNativeDateAdapter(),
-  { provide: HTTP_INTERCEPTORS, useClass: tokenInterceptor, multi: true },
+  providers: [
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })
