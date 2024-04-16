@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ExchangeClient } from '../client/exchange.client';
+import { Exchange } from '../models/exchange';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ExchangeService {
+  constructor(private exchangeClient: ExchangeClient) {}
 
-  constructor(private exchangeClient: ExchangeClient) { }
-  
-    public setExchangeData(exchangeAmount: number,exchangeType: string,exchangeDate: string,exchangeDescription: string): void {
-      this.exchangeClient.setExchangeData(exchangeAmount,exchangeType,exchangeDate,exchangeDescription).subscribe();
-    }
-  
+  public sendExchangeData(newUserTransaction: Exchange): void {
+    this.exchangeClient.sendExchangeData(newUserTransaction).subscribe();
+  }
 }

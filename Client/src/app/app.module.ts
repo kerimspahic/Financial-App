@@ -40,6 +40,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HomeComponent } from './components/home/home.component';
 import { TokenInterceptor } from './helpers/token.interceptor';
+import { AdminComponent } from './components/pages/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { TokenInterceptor } from './helpers/token.interceptor';
     DashboardComponent,
     SummaryComponent,
     TransactionsComponent,
-    HomeComponent
+    HomeComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

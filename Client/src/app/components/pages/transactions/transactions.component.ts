@@ -13,18 +13,23 @@ import { ExchangeService } from '../../../services/exchange.service';
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css',
 })
-export class TransactionsComponent implements OnInit  {
-
+export class TransactionsComponent implements OnInit {
   public exchngeForm!: FormGroup;
 
   displayedColumns = ['amount', 'type', 'date', 'description'];
   dataSource = new MatTableDataSource<Exchange>();
 
+  filterDates = (d: Date | null) => {
+    const today = new Date();
+    if (d == null) 
+      return false;
+    return d <= today;
+  }
+
   constructor(
     public authService: AuthenticationService,
     public exchngeClient: ExchangeClient,
-    public exchngeService: ExchangeService
-  ) {}
+    public exchngeService: ExchangeService) {}
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -34,24 +39,25 @@ export class TransactionsComponent implements OnInit  {
       exchangeAmount: new FormControl('', [Validators.required]),
       exchangeType: new FormControl('', [Validators.required]),
       exchangeDate: new FormControl('', [Validators.required]),
-      exchangeDescription: new FormControl('', [Validators.required])
+      exchangeDescription: new FormControl('', [Validators.required]),
     });
 
     this.loadExchangeData();
   }
 
   public onSubmit() {
-    
     if (this.exchngeForm.invalid) {
       return;
     }
 
-    this.exchngeService.setExchangeData(
-      this.exchngeForm.get('exchangeAmount')!.value,
-      this.exchngeForm.get('exchangeType')!.value,
-      this.exchngeForm.get('exchangeDate')!.value,
-      this.exchngeForm.get('exchangeDescription')!.value
-    );
+    const newUserTransaction: Exchange = {
+      exchangeAmount: this.exchngeForm.get('exchangeAmount')!.value,
+      exchangeType: this.exchngeForm.get('exchangeType')!.value,
+      exchangeDate: this.exchngeForm.get('exchangeDate')!.value,
+      exchangeDescription: this.exchngeForm.get('exchangeDescription')!.value,
+    };
+
+    this.exchngeService.sendExchangeData(newUserTransaction);
 
     this.loadExchangeData();
     this.exchngeForm.reset();
@@ -61,8 +67,7 @@ export class TransactionsComponent implements OnInit  {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) 
-      this.dataSource.paginator.firstPage();
+    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
   }
 
   sortData(sortState: Sort) {
@@ -82,14 +87,22 @@ export class TransactionsComponent implements OnInit  {
         case 'date':
           return this.compare(a.exchangeDate, b.exchangeDate, isAsc);
         case 'description':
-          return this.compare(a.exchangeDescription, b.exchangeDescription, isAsc);
+          return this.compare(
+            a.exchangeDescription,
+            b.exchangeDescription,
+            isAsc
+          );
         default:
           return 0;
       }
     });
   }
 
-  private compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
+  private compare(
+    a: number | string | Date,
+    b: number | string | Date,
+    isAsc: boolean
+  ) {
     if (a === b) {
       return 0;
     }
@@ -104,13 +117,3 @@ export class TransactionsComponent implements OnInit  {
     });
   }
 }
-
-
-/* 
-    this.authService.currentUser$.subscribe((user) => {
-      if (user) {
-        this.userId = user.nameid;
-        this.exchngeForm.get('userName')!.setValue(this.userId);
-      }
-    });
-*/
