@@ -4,8 +4,8 @@ using API.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using API.Data;
 using API.Models;
+using API.Helpers;
 namespace API.Controllers
 {
     public class ExchangeController : BaseApiController
@@ -19,11 +19,12 @@ namespace API.Controllers
             _exchange = exchange;
             _userManager = userManager;
         }
+
         [Authorize(Policy = "StandardRights")]
         [HttpGet("Get")]
-        public async Task<IActionResult> GetAllExchanges()
+        public async Task<IActionResult> GetAllExchanges([FromQuery] QueryObject query)
         {
-            var exchanges = await _exchange.GetAllExchanges();
+            var exchanges = await _exchange.GetAllExchanges(query);
             var exchangeDto = exchanges.Select(s => s.ToExchangeDto());
 
             return Ok(exchangeDto);
@@ -31,13 +32,15 @@ namespace API.Controllers
 
         [Authorize(Policy = "StandardRights")]
         [HttpGet("GetUserExchanges")]
-        public async Task<IActionResult> GetUserExchanges()
+        public async Task<IActionResult> GetUserExchanges([FromQuery] QueryObject query)
         {
-            string userId = await GetCurrentUserId();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = user.Id;
+
             if (!await _exchange.UserExists(userId))
                 return BadRequest(userId);
 
-            var exchanges = await _exchange.GetUserExchanges(userId);
+            var exchanges = await _exchange.GetUserExchanges(query, userId);
             var exchangeDto = exchanges.Select(s => s.ToExchangeDto());
 
             return Ok(exchangeDto);
@@ -45,9 +48,10 @@ namespace API.Controllers
 
         [Authorize(Policy = "StandardRights")]
         [HttpGet("Get/{id:int}")]
-        public async Task<IActionResult> GetExchangeById([FromRoute] int id)
+        public async Task<IActionResult> GetExchangeById([FromRoute] int exchangeId)
         {
-            var exchanges = await _exchange.GetExchangeById(id);
+
+            var exchanges = await _exchange.GetExchangeById(exchangeId);
 
             if (exchanges == null)
                 return NotFound();
@@ -59,7 +63,9 @@ namespace API.Controllers
         [HttpPost("Set")]
         public async Task<IActionResult> SetExchange(SetExchangeDto setExchangeDto)
         {
-            string userId = await GetCurrentUserId();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = user.Id;
+
             if (!await _exchange.UserExists(userId))
                 return BadRequest(userId);
 
@@ -81,12 +87,5 @@ namespace API.Controllers
             return Ok(exchangeModel);
         }
 
-        private async Task<string> GetCurrentUserId()
-        {
-            AppUser userId = await GetCurrentUserAsync();
-            return userId.Id;
-        }
-
-        private Task<AppUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }

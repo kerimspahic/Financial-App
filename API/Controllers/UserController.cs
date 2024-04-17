@@ -37,10 +37,9 @@ namespace API.Controllers
         [HttpGet("GetUserId")]
         public async Task<string> GetCurrentUserId()
         {
-            AppUser userId = await GetCurrentUserAsync();
-		    return userId.Id;
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+		    return user.Id;
         }
-        private Task<AppUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
         
         [Authorize]
         [HttpPut("UpdateFirstName/{id}")]
