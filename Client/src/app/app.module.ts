@@ -41,6 +41,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HomeComponent } from './components/home/home.component';
 import { TokenInterceptor } from './helpers/token.interceptor';
 import { AdminComponent } from './components/pages/admin/admin.component';
+import { LoaderComponent } from './components/extras/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { AdminComponent } from './components/pages/admin/admin.component';
     SummaryComponent,
     TransactionsComponent,
     HomeComponent,
-    AdminComponent
+    AdminComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
