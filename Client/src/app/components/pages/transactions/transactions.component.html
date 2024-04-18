@@ -12,8 +12,8 @@
         <mat-form-field>
           <mat-label>Transaction Type</mat-label>
           <mat-select formControlName="exchangeType">
-            <mat-option value="Deposit">Deposit</mat-option>
-            <mat-option value="Withdrawl">Withdrawal</mat-option>
+            <mat-option [value]="true">Deposit</mat-option>
+            <mat-option [value]="false">Withdrawal</mat-option>
           </mat-select>
         </mat-form-field>
         
@@ -27,13 +27,7 @@
         <mat-form-field>
           <mat-label>Transaction Description</mat-label>
           <mat-select formControlName="exchangeDescription">
-            <mat-option value="Job">Job</mat-option>
-            <mat-option value="Sidejob">Sidejob</mat-option>
-            <mat-option value="Business">Business</mat-option>
-            <mat-option value="Food">Food</mat-option>
-            <mat-option value="Clothes">Clothes</mat-option>
-            <mat-option value="Recreation">Recreation</mat-option>
-            <mat-option value="Other">Other</mat-option>
+            <mat-option *ngFor="let item of transactionDescriptiuonNames" [value]="item.id">{{ item.descriptionName }}</mat-option>
           </mat-select>
         </mat-form-field>
       </form>
@@ -62,8 +56,8 @@
         </ng-container>
   
         <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by type">Type</th>
-          <td mat-cell *matCellDef="let element">{{element.exchangeType}}</td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+          <td mat-cell *matCellDef="let element">{{element.type ? 'Deposit' : 'Withdrawal'}}</td><!--not good-->
         </ng-container>
   
         <ng-container matColumnDef="date">
@@ -73,7 +67,9 @@
   
         <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by description">Description</th>
-          <td mat-cell *matCellDef="let element">{{element.exchangeDescription}}</td>
+          <td mat-cell *matCellDef="let element">
+            {{ getDescriptionName(element.exchangeDescription) }}
+          </td>
         </ng-container>
   
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

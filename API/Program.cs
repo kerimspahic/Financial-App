@@ -65,6 +65,7 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IExchangeRepository, ExchangeRepository>();
+builder.Services.AddScoped<IAdminTransactionRepository, AdminTransactionRepository>();
 
 builder.Services.AddCors(options =>
 {

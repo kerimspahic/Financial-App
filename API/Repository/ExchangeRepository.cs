@@ -28,14 +28,14 @@ namespace API.Repository
 
         private IQueryable<Exchange> FilterExchangesByQuery(IQueryable<Exchange> exchanges, QueryObject query)
         {
-            if (!string.IsNullOrWhiteSpace(query.TransactionDescription))
+           /* if (!string.IsNullOrWhiteSpace(query.TransactionDescription))
                 exchanges = exchanges.Where(x => x.ExchangeDescription.Contains(query.TransactionDescription));
 
             if (!string.IsNullOrWhiteSpace(query.TransactionType))
                 exchanges = exchanges.Where(x => x.ExchangeType.Contains(query.TransactionType));
 
             if (query.TransactionAmount != 0)
-                exchanges = exchanges.Where(x => x.ExchangeAmount.Equals(query.TransactionAmount));
+                exchanges = exchanges.Where(x => x.ExchangeAmount.Equals(query.TransactionAmount));*/
 
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {

@@ -5,8 +5,8 @@ namespace API.Interface
 {
     public interface IExchangeRepository
     {
-        Task<List<Exchange>> GetUserExchanges(QueryObject query, string id);
         Task<List<Exchange>> GetAllExchanges(QueryObject query);
+        Task<List<Exchange>> GetUserExchanges(QueryObject query, string id);
         Task<Exchange> GetExchangeById(int id);
         Task<Exchange> SetExchange(Exchange exchangeModel);
         Task<Exchange> UpdateExchange(Exchange exchangeModel);

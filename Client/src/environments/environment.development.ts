@@ -5,4 +5,5 @@ export const environment = {
   exchangeUrl: 'https://localhost:5001/Exchange/',
   userUrl: 'https://localhost:5001/User/',
   weatherUrl: 'https://localhost:5001/WeatherForecast/',
+  adminTransactionUrl: 'https://localhost:5001/AdminTransaction/'
 };

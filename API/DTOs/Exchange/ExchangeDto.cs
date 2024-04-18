@@ -9,11 +9,11 @@ namespace API.DTOs
         [Required]
         public decimal ExchangeAmount { get; set; }
         [Required]
-        public string ExchangeType { get; set; } = string.Empty;
+        public bool ExchangeType { get; set; }
         [Required]
         public string ExchangeDate { get; set; }
         [Required]
-        public string ExchangeDescription { get; set; } = string.Empty;
+        public int ExchangeDescription { get; set; } 
         [Required]
         public string AppUserId { get; set; }
     }

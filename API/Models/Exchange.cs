@@ -8,8 +8,8 @@ namespace API.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal ExchangeAmount { get; set; }
-        public string ExchangeType { get; set; } = string.Empty;
-        public string ExchangeDescription { get; set; } = string.Empty;
+        public bool ExchangeType { get; set; }
+        public int ExchangeDescription { get; set; }
         public string ExchangeDate { get; set; }
         public DateTime InsertedDate { get; set; } = DateTime.UtcNow;
         public string AppUserId { get; set; }

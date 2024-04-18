@@ -1,6 +1,6 @@
 export interface Exchange {
   exchangeAmount: number;
-  exchangeType: string;
+  exchangeType: boolean;
   exchangeDate: Date;
   exchangeDescription: string;
 }

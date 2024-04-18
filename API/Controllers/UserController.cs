@@ -47,9 +47,8 @@ namespace API.Controllers
         {
             if (firstName == null)
                 return BadRequest();
-
-            var currentUser = await _userRepository.UpdateAppUserFirstName(id, firstName);
-            return Ok(currentUser);
+                
+            return Ok(await _userRepository.UpdateAppUserFirstName(id, firstName));
         }
 
         [Authorize]
@@ -59,8 +58,7 @@ namespace API.Controllers
             if (lastName == null)
                 return BadRequest();
 
-            var currentUser = await _userRepository.UpdateAppUserLastName(id, lastName);
-            return Ok(currentUser);
+            return Ok(await _userRepository.UpdateAppUserLastName(id, lastName));
         }
 
         [Authorize]

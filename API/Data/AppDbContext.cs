@@ -13,7 +13,7 @@ namespace API.Data
         }
 
         public DbSet<Exchange> Exchanges { get; set; }
-
+        public DbSet<ExchangeDescriptions> ExchangeDescriptions { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             

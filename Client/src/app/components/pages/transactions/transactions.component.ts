@@ -7,6 +7,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { ExchangeClient } from '../../../client/exchange.client';
 import { ExchangeService } from '../../../services/exchange.service';
+import { Observable } from 'rxjs';
+import { TransactionDescriptions } from '../../../models/transactionDescriptions';
 
 @Component({
   selector: 'app-transactions',
@@ -15,10 +17,10 @@ import { ExchangeService } from '../../../services/exchange.service';
 })
 export class TransactionsComponent implements OnInit {
   public exchngeForm!: FormGroup;
-
+  public transactionDescriptiuonNames!: any; //fix this
   displayedColumns = ['amount', 'type', 'date', 'description'];
   dataSource = new MatTableDataSource<Exchange>();
-
+  
   filterDates = (d: Date | null) => {
     const today = new Date();
     if (d == null) 
@@ -42,13 +44,13 @@ export class TransactionsComponent implements OnInit {
       exchangeDescription: new FormControl('', [Validators.required]),
     });
 
+    this.loadTransactionDescriptionNames() ;
+
     this.loadExchangeData();
   }
 
   public onSubmit() {
-    if (this.exchngeForm.invalid) {
-      return;
-    }
+
 
     const newUserTransaction: Exchange = {
       exchangeAmount: this.exchngeForm.get('exchangeAmount')!.value,
@@ -99,8 +101,8 @@ export class TransactionsComponent implements OnInit {
   }
 
   private compare(
-    a: number | string | Date,
-    b: number | string | Date,
+    a: number | string | Date | boolean,
+    b: number | string | Date | boolean,
     isAsc: boolean
   ) {
     if (a === b) {
@@ -115,5 +117,19 @@ export class TransactionsComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
+  }
+  loadTransactionDescriptionNames() {
+    this.exchngeClient.getTransactionDesciptionNames().subscribe(
+      (descriptions: TransactionDescriptions) => {
+        this.transactionDescriptiuonNames = descriptions;
+      },
+      (error) => {
+        console.error('Error fetching transaction descriptions:', error);
+      }
+    );
+  }
+  getDescriptionName(id: number): string {
+    const description = this.transactionDescriptiuonNames.find((x: { id: number; }) => x.id === id);
+    return description ? description.descriptionName : 'N/A';
   }
 }
