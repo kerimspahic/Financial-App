@@ -8,6 +8,8 @@ import { BudgetingComponent } from './components/pages/budgeting/budgeting.compo
 import { SummaryComponent } from './components/pages/summary/summary.component';
 import { authGuard } from './helpers/auth.guard';
 import { HomeComponent } from './components/home/home.component';
+import { AdminComponent } from './components/pages/admin/admin.component';
+import { adminGuard } from './helpers/admin.guard';
 
 const routes: Routes = [
   {
@@ -35,6 +37,11 @@ const routes: Routes = [
       {
         path: 'summary',
         component: SummaryComponent,
+      },
+      {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [adminGuard],
       },
     ],
   },

@@ -26,7 +26,7 @@
         
         <mat-form-field>
           <mat-label>Transaction Description</mat-label>
-          <mat-select formControlName="exchangeDescription">
+          <mat-select formControlName="exchangeDescription"><!--fix this-->
             <mat-option *ngFor="let item of transactionDescriptiuonNames" [value]="item.id">{{ item.descriptionName }}</mat-option>
           </mat-select>
         </mat-form-field>

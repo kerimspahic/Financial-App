@@ -32,9 +32,9 @@ export class ExchangeClient {
     );
   }
 
-  public getTransactionDesciptionNames(): Observable<TransactionDescriptions> {
+  public getTransactionDesciptionNames(): Observable<any> {
     this.loaderService.show();
-    return this.http.get<TransactionDescriptions>(environment.adminTransactionUrl + 'GetTransactionDescriptions').pipe(
+    return this.http.get<any>(environment.adminTransactionUrl + 'GetTransactionDescriptions').pipe(
       finalize(() => {
         this.loaderService.hide();
       })

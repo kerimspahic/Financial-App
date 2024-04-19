@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize(Policy = "ElevatedRights")]
+
     public class AdminTransactionController : BaseApiController
     {
         private readonly IAdminTransactionRepository _adminTransaction;
@@ -16,7 +16,7 @@ namespace API.Controllers
             _adminTransaction = adminTransaction;
 
         }
-
+        [Authorize(Policy = "ElevatedRights")]
         [HttpPost("SetTransactionDescription")]
         public async Task<IActionResult> SetTransactionDescription(SetDescriptionNameDto transactionDescription)
         {
@@ -26,23 +26,23 @@ namespace API.Controllers
             return Ok(response);
         }
 
-
+        [Authorize(Policy = "StandardRights")]
         [HttpGet("GetTransactionDescriptions")]
         public async Task<IActionResult> GetTransactionDescription()
         {
             return Ok(await _adminTransaction.GetTransactionDescriptions());
         }
-
+        [Authorize(Policy = "ElevatedRights")]
         [HttpPut("UpdateTransactionDescription")]
-        public async Task<IActionResult> UpdateTransactionDescription(int id, string  descriptionName)
+        public async Task<IActionResult> UpdateTransactionDescription(int id, string descriptionName)
         {
-            
 
-            return Ok(await _adminTransaction.UpdateTransactionDescription(id,descriptionName));
+
+            return Ok(await _adminTransaction.UpdateTransactionDescription(id, descriptionName));
 
 
         }
-
+        [Authorize(Policy = "ElevatedRights")]
         [HttpDelete("DeleteTransactionDescription")]
         public async Task<IActionResult> DeleteTransactionDescription(int id)
         {
