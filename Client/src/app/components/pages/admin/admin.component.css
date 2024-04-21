@@ -1,0 +1,14 @@
+.button {
+    color: #007bff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    color: #0056b3;
+  }
+
+  .add-button {
+    width: 100; /* Set the width to auto */
+    margin-right: 8px; /* Add some right margin to create space */
+  }

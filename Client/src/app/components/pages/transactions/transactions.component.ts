@@ -7,7 +7,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { ExchangeClient } from '../../../client/exchange.client';
 import { ExchangeService } from '../../../services/exchange.service';
-import { Observable } from 'rxjs';
 import { TransactionDescriptions } from '../../../models/transactionDescriptions';
 
 @Component({

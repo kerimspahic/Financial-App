@@ -2,7 +2,11 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule,
+  provideHttpClient,
+} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -18,7 +22,7 @@ import { TransactionsComponent } from './components/pages/transactions/transacti
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCommonModule, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { MatCommonModule, MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -42,6 +46,10 @@ import { HomeComponent } from './components/home/home.component';
 import { TokenInterceptor } from './helpers/token.interceptor';
 import { AdminComponent } from './components/pages/admin/admin.component';
 import { LoaderComponent } from './components/extras/loader/loader.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DeleteTransactionDescriptionDialogComponent } from './components/extras/delete-transaction-description-dialog/delete-transaction-description-dialog.component';
+import { EditTransactionDescriptionDialogComponent } from './components/extras/edit-transaction-description-dialog/edit-transaction-description-dialog.component';
+import { EditUserInfoDialogComponent } from './components/extras/edit-user-info-dialog/edit-user-info-dialog.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +64,10 @@ import { LoaderComponent } from './components/extras/loader/loader.component';
     TransactionsComponent,
     HomeComponent,
     AdminComponent,
-    LoaderComponent
+    LoaderComponent,
+    DeleteTransactionDescriptionDialogComponent,
+    EditTransactionDescriptionDialogComponent,
+    EditUserInfoDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,13 +100,15 @@ import { LoaderComponent } from './components/extras/loader/loader.component';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatDialogModule,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot(),
   ],
   providers: [
+    provideHttpClient(),
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

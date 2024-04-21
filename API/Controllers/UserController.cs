@@ -62,10 +62,13 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpPut("UpdatePassword/{id}")]
-        public async Task<IActionResult> UpdatePassword([FromRoute] string id, [FromBody] UpdatePasswordDto passwordDto)
+        [HttpPut("UpdatePassword")]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordDto passwordDto)
         {
-            var result = await _userRepository.UpdateAppUserPassword(id, passwordDto);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = user.Id;
+
+            var result = await _userRepository.UpdateAppUserPassword(userId, passwordDto);
 
             if (!result.Succeeded)
                 return BadRequest();

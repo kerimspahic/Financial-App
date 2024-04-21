@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Edit Description</h2>
+<div mat-dialog-content>
+  <mat-form-field>
+    <textarea matInput [(ngModel)]="data.description" placeholder="Enter new description"></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-button color="primary" (click)="onSaveClick(data.description)">Save</button>
+</div>

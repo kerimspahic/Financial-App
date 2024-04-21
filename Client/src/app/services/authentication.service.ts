@@ -13,7 +13,7 @@ export class AuthenticationService {
   baseUrl = environment.baseUrl;
 
   private tokenKey = 'token';
-  public decodedToken: any = null;
+  public decodedToken: string | null = null;
   private currentUserSource = new BehaviorSubject<any>(null);
   currentUser$ = this.currentUserSource.asObservable();
 

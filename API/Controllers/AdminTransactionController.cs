@@ -32,16 +32,14 @@ namespace API.Controllers
         {
             return Ok(await _adminTransaction.GetTransactionDescriptions());
         }
+
         [Authorize(Policy = "ElevatedRights")]
         [HttpPut("UpdateTransactionDescription")]
         public async Task<IActionResult> UpdateTransactionDescription(int id, string descriptionName)
         {
-
-
             return Ok(await _adminTransaction.UpdateTransactionDescription(id, descriptionName));
-
-
         }
+        
         [Authorize(Policy = "ElevatedRights")]
         [HttpDelete("DeleteTransactionDescription")]
         public async Task<IActionResult> DeleteTransactionDescription(int id)

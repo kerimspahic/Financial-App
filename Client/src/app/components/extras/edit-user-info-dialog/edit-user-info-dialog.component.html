@@ -1,0 +1,16 @@
+<h1>Update Password</h1>
+<form (ngSubmit)="updatePassword()" #updatePasswordForm="ngForm">
+  <mat-form-field>
+    <input matInput type="password" placeholder="Current Password" name="oldPassword" [(ngModel)]="oldPassword" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="password" placeholder="New Password" name="newPassword" [(ngModel)]="newPassword" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="password" placeholder="Confirm New Password" name="confirmPassword" [(ngModel)]="confirmPassword" required>
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" [disabled]="updatePasswordForm.invalid">Update Password</button>
+</form>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+</div>
