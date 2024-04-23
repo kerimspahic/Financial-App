@@ -51,6 +51,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DeleteTransactionDescriptionDialogComponent } from './components/extras/delete-transaction-description-dialog/delete-transaction-description-dialog.component';
 import { EditTransactionDescriptionDialogComponent } from './components/extras/edit-transaction-description-dialog/edit-transaction-description-dialog.component';
 import { EditUserInfoDialogComponent } from './components/extras/edit-user-info-dialog/edit-user-info-dialog.component';
+import {
+  BaseChartDirective,
+  provideCharts,
+  withDefaultRegisterables,
+} from 'ng2-charts';
+import { LineChartComponent } from './components/extras/line-chart/line-chart.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +75,7 @@ import { EditUserInfoDialogComponent } from './components/extras/edit-user-info-
     DeleteTransactionDescriptionDialogComponent,
     EditTransactionDescriptionDialogComponent,
     EditUserInfoDialogComponent,
+    LineChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -103,6 +110,7 @@ import { EditUserInfoDialogComponent } from './components/extras/edit-user-info-
     MatPaginatorModule,
     MatDialogModule,
     MatTabsModule,
+    BaseChartDirective,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot(),
   ],
@@ -110,6 +118,7 @@ import { EditUserInfoDialogComponent } from './components/extras/edit-user-info-
     provideHttpClient(),
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     provideAnimationsAsync(),
+    provideCharts(withDefaultRegisterables()),
   ],
   bootstrap: [AppComponent],
 })

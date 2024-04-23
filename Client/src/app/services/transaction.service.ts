@@ -3,6 +3,7 @@ import { TransactionClient } from '../client/transaction.client';
 import { Transaction } from '../models/transaction';
 import { Observable } from 'rxjs';
 import { TransactionDescriptions } from '../models/transactionDescriptions';
+import { DashboardCharts } from '../models/dashboardCharts';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +29,13 @@ export class TransactionService {
 
   public editTransactionDescriptionData(newTransactionDescription: TransactionDescriptions){
     this.transactionClient.updateTransactionDescription(newTransactionDescription).subscribe();
+  }
+
+  public getDashboardValues(): Observable<any>{
+    return this.transactionClient.getDashboardValues();
+  }
+
+  public getDashboardCharts(): Observable<DashboardCharts> {
+    return this.transactionClient.getDashboardCharts();
   }
 }

@@ -28,14 +28,14 @@ namespace API.Repository
 
         private IQueryable<Transaction> FilterTransactionsByQuery(IQueryable<Transaction> transactions, QueryObject query)
         {
-            /* if (!string.IsNullOrWhiteSpace(query.TransactionDescription))
-                 transactions = transactions.Where(x => x.TransactionDescription.Contains(query.TransactionDescription));
+            if (query.TransactionDescription != null)
+                transactions = transactions.Where(x => x.TransactionDescription == query.TransactionDescription);
 
-             if (!string.IsNullOrWhiteSpace(query.TransactionType))
-                 transactions = transactions.Where(x => x.TransactionType.Contains(query.TransactionType));
+            if (query.TransactionType != null)
+                transactions = transactions.Where(x => x.TransactionType == query.TransactionType);
 
-             if (query.TransactionAmount != 0)
-                 transactions = transactions.Where(x => x.TransactionAmount.Equals(query.TransactionAmount));*/
+            if (query.TransactionAmount != 0)
+                transactions = transactions.Where(x => x.TransactionAmount.Equals(query.TransactionAmount));
 
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {
@@ -99,15 +99,15 @@ namespace API.Repository
 
 
             var monthlyProfit = await _context.Transactions
-                .Where(e =>e.AppUserId == id && e.TransactionType  == true && e.TransactionDate >= firstDayOfMonth && e.TransactionDate <= lastDayOfMonth).Select(e => (double)e.TransactionAmount).SumAsync();
+                .Where(e => e.AppUserId == id && e.TransactionType == true && e.TransactionDate >= firstDayOfMonth && e.TransactionDate <= lastDayOfMonth).Select(e => (double)e.TransactionAmount).SumAsync();
             var monthlyExpenses = await _context.Transactions
-                .Where(e =>e.AppUserId == id && e.TransactionType  == false && e.TransactionDate >= firstDayOfMonth && e.TransactionDate <= lastDayOfMonth).Select(e => (double)e.TransactionAmount).SumAsync();
+                .Where(e => e.AppUserId == id && e.TransactionType == false && e.TransactionDate >= firstDayOfMonth && e.TransactionDate <= lastDayOfMonth).Select(e => (double)e.TransactionAmount).SumAsync();
             var monthlySummary = monthlyProfit - monthlyExpenses;
-            
+
             var totalProfit = await _context.Transactions
-                .Where(e =>e.AppUserId == id && e.TransactionType  == true).Select(e => (double)e.TransactionAmount).SumAsync();
+                .Where(e => e.AppUserId == id && e.TransactionType == true).Select(e => (double)e.TransactionAmount).SumAsync();
             var totalExpenses = await _context.Transactions
-                .Where(e =>e.AppUserId == id && e.TransactionType  == false).Select(e => (double)e.TransactionAmount).SumAsync();
+                .Where(e => e.AppUserId == id && e.TransactionType == false).Select(e => (double)e.TransactionAmount).SumAsync();
 
             var totalMoneyAmount = totalProfit - totalExpenses;
 
@@ -122,6 +122,34 @@ namespace API.Repository
             };
 
             return dasboardDto;
+        }
+
+        public async Task<DashboardChartsDto> GetDashboardChartValues(string id)
+        {
+
+            var transactionDeposits = await _context.Transactions
+                .Where(e => e.AppUserId == id && e.TransactionType == true)
+                .Select(e => (double)e.TransactionAmount)
+                .ToArrayAsync();
+
+            var transactionWithdrawals = await _context.Transactions
+                .Where(e => e.AppUserId == id && !e.TransactionType)
+                .Select(e => (double)e.TransactionAmount)
+                .ToArrayAsync();
+
+            var allTransactions = await _context.Transactions
+                .Where(e => e.AppUserId == id)
+                .Select(e => (double)(e.TransactionType ? e.TransactionAmount : -e.TransactionAmount))
+                .ToArrayAsync();
+
+            var dashboardChartsDto = new DashboardChartsDto
+            {
+                TransactionDeposits = transactionDeposits,
+                TransactionWithdrawals = transactionWithdrawals,
+                AllTransactions = allTransactions
+            };
+
+            return dashboardChartsDto;
         }
     }
 }

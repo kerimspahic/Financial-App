@@ -1,29 +1,38 @@
 <div class="container mt-3">
-    <div class="row">
-      <div class="col-4" >
-        <mat-card class="p-3">
-          <mat-card-title>Total Amount</mat-card-title>
-        </mat-card>
-      </div>
-      <div class="col-4">
-        <mat-card class="p-3">
-          <mat-card-title>Monthly Profit</mat-card-title>
-        </mat-card>
-      </div>
-      <div class="col-4">
-        <mat-card class="p-3">
-          <mat-card-title>Monthly Expenses</mat-card-title>
-        </mat-card>
-      </div>
+  <div class="row" *ngIf="(dashboardValues$ | async) as dashboardValues">
+    <div class="col-2">
+      <mat-card class="p-3">
+        <mat-card-title>Total Profit: {{ dashboardValues.totalProfit }}</mat-card-title>
+      </mat-card>
+    </div>
+    <div class="col-2">
+      <mat-card class="p-3">
+        <mat-card-title>Total Expenses: {{ dashboardValues.totalExpenses }}</mat-card-title>
+      </mat-card>
+    </div>
+    <div class="col-2">
+      <mat-card class="p-3">
+        <mat-card-title>Monthly Summary: {{ dashboardValues.monthlySummary }}</mat-card-title>
+      </mat-card>
+    </div>
+    <div class="col-2">
+      <mat-card class="p-3">
+        <mat-card-title>Monthly Profit: {{ dashboardValues.monthlyProfit }}</mat-card-title>
+      </mat-card>
+    </div>
+    <div class="col-2">
+      <mat-card class="p-3">
+        <mat-card-title>Monthly Expenses: {{ dashboardValues.monthlyExpenses }}</mat-card-title>
+      </mat-card>
     </div>
   </div>
+</div>
   
   <div class="container mt-3">
     <div class="card">
       <div class="card-body">
         <div class="chart">
-          <h5>This is new</h5>
-          <canvas id="vertical-chart" width="400" height="400"></canvas>
+          <app-line-chart></app-line-chart>
         </div>
       </div>
     </div>

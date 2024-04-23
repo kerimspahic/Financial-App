@@ -14,5 +14,6 @@ namespace API.Interface
         Task<Transaction> DeleteTransaction(int id);
         Task<bool> UserExists(string id);
         Task<DasboardDto> GetDashboardValues(string id);
+        Task<DashboardChartsDto> GetDashboardChartValues(string id);
     }
 }

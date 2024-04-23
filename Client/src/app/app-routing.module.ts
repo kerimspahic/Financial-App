@@ -7,7 +7,6 @@ import { TransactionsComponent } from './components/pages/transactions/transacti
 import { BudgetingComponent } from './components/pages/budgeting/budgeting.component';
 import { SummaryComponent } from './components/pages/summary/summary.component';
 import { authGuard } from './helpers/auth.guard';
-import { HomeComponent } from './components/home/home.component';
 import { AdminComponent } from './components/pages/admin/admin.component';
 import { adminGuard } from './helpers/admin.guard';
 
