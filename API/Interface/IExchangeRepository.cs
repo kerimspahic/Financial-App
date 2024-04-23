@@ -1,3 +1,4 @@
+using API.DTOs.Exchange;
 using API.Helpers;
 using API.Models;
 
@@ -12,6 +13,6 @@ namespace API.Interface
         Task<Exchange> UpdateExchange(Exchange exchangeModel);
         Task<Exchange> DeleteExchange(int id);
         Task<bool> UserExists(string id);
-        
+        Task<DasboardDto> GetDashboardValues(string id);
     }
 }

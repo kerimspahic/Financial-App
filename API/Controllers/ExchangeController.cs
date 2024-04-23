@@ -92,5 +92,17 @@ namespace API.Controllers
 
             return Ok(exchangeModel);
         }
+
+        [HttpGet("GetDashboardValues")]
+        [Authorize(Policy = "StandardRights")]
+        public async Task<IActionResult> GetDashboardValues()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = user.Id;
+
+            var transactionModel = await _exchange.GetDashboardValues(userId);
+
+            return Ok(transactionModel);
+        }
     }
 }

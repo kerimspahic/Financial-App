@@ -47,6 +47,7 @@ import { TokenInterceptor } from './helpers/token.interceptor';
 import { AdminComponent } from './components/pages/admin/admin.component';
 import { LoaderComponent } from './components/extras/loader/loader.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
 import { DeleteTransactionDescriptionDialogComponent } from './components/extras/delete-transaction-description-dialog/delete-transaction-description-dialog.component';
 import { EditTransactionDescriptionDialogComponent } from './components/extras/edit-transaction-description-dialog/edit-transaction-description-dialog.component';
 import { EditUserInfoDialogComponent } from './components/extras/edit-user-info-dialog/edit-user-info-dialog.component';
@@ -101,6 +102,7 @@ import { EditUserInfoDialogComponent } from './components/extras/edit-user-info-
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatDialogModule,
+    MatTabsModule,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot(),
   ],

@@ -2,8 +2,8 @@ using API.Data;
 using API.Interface;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using API.Helpers;
+using API.DTOs.Exchange;
 namespace API.Repository
 {
     public class ExchangeRepository : IExchangeRepository
@@ -28,14 +28,14 @@ namespace API.Repository
 
         private IQueryable<Exchange> FilterExchangesByQuery(IQueryable<Exchange> exchanges, QueryObject query)
         {
-           /* if (!string.IsNullOrWhiteSpace(query.TransactionDescription))
-                exchanges = exchanges.Where(x => x.ExchangeDescription.Contains(query.TransactionDescription));
+            /* if (!string.IsNullOrWhiteSpace(query.TransactionDescription))
+                 exchanges = exchanges.Where(x => x.ExchangeDescription.Contains(query.TransactionDescription));
 
-            if (!string.IsNullOrWhiteSpace(query.TransactionType))
-                exchanges = exchanges.Where(x => x.ExchangeType.Contains(query.TransactionType));
+             if (!string.IsNullOrWhiteSpace(query.TransactionType))
+                 exchanges = exchanges.Where(x => x.ExchangeType.Contains(query.TransactionType));
 
-            if (query.TransactionAmount != 0)
-                exchanges = exchanges.Where(x => x.ExchangeAmount.Equals(query.TransactionAmount));*/
+             if (query.TransactionAmount != 0)
+                 exchanges = exchanges.Where(x => x.ExchangeAmount.Equals(query.TransactionAmount));*/
 
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {
@@ -92,5 +92,36 @@ namespace API.Repository
             return await _context.Users.AnyAsync(s => s.Id == id);
         }
 
+        public async Task<DasboardDto> GetDashboardValues(string id)
+        {
+            var firstDayOfMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+
+            var monthlyProfit = await _context.Exchanges
+                .Where(e =>e.AppUserId == id && e.ExchangeType  == true && e.ExchangeDate >= firstDayOfMonth && e.ExchangeDate <= lastDayOfMonth).Select(e => (double)e.ExchangeAmount).SumAsync();
+            var monthlyExpenses = await _context.Exchanges
+                .Where(e =>e.AppUserId == id && e.ExchangeType  == false && e.ExchangeDate >= firstDayOfMonth && e.ExchangeDate <= lastDayOfMonth).Select(e => (double)e.ExchangeAmount).SumAsync();
+            var monthlySummary = monthlyProfit - monthlyExpenses;
+            
+            var totalProfit = await _context.Exchanges
+                .Where(e =>e.AppUserId == id && e.ExchangeType  == true).Select(e => (double)e.ExchangeAmount).SumAsync();
+            var totalExpenses = await _context.Exchanges
+                .Where(e =>e.AppUserId == id && e.ExchangeType  == false).Select(e => (double)e.ExchangeAmount).SumAsync();
+
+            var totalMoneyAmount = totalProfit - totalExpenses;
+
+            var dasboardDto = new DasboardDto
+            {
+                TotalMoneyAmount = totalMoneyAmount,
+                TotalProfit = totalProfit,
+                TotalExpenses = totalExpenses,
+                MonthlySummary = monthlySummary,
+                MonthlyProfit = monthlyProfit,
+                MonthlyExpenses = monthlyExpenses
+            };
+
+            return dasboardDto;
+        }
     }
 }
