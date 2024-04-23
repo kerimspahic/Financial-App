@@ -2,29 +2,29 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, finalize } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-import { Exchange } from '../models/exchange';
+import { Transaction } from '../models/transaction';
 import { LoaderService } from '../services/loader.service';
 import { TransactionDescriptions } from '../models/transactionDescriptions';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ExchangeClient {
+export class TransactionClient {
   constructor(private http: HttpClient, private loaderService: LoaderService) {}
 
-  public getExchangeData(): Observable<any> {
+  public getTransactionData(): Observable<any> {
     this.loaderService.show();
-    return this.http.get(environment.exchangeUrl + 'GetUserExchanges').pipe(
+    return this.http.get(environment.transactionUrl + 'GetUserTransactions').pipe(
       finalize(() => {
         this.loaderService.hide();
       })
     );
   }
 
-  public sendExchangeData(newUserTransaction: Exchange): Observable<Object> {
+  public sendTransactionData(newUserTransaction: Transaction): Observable<Object> {
     this.loaderService.show();
     return this.http
-      .post(environment.exchangeUrl + 'Set', newUserTransaction)
+      .post(environment.transactionUrl + 'Set', newUserTransaction)
       .pipe(
         finalize(() => {
           this.loaderService.hide();

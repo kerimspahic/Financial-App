@@ -1,32 +1,32 @@
 using API.DTOs;
-using API.DTOs.Exchange;
+using API.DTOs.Transaction;
 using API.Models;
 
 namespace API.Mappers
 {
-    public static class ExchangeMapper
+    public static class TransactionMapper
     {
-        public static ExchangeDto ToExchangeDto (this Exchange exchangeModel)
+        public static TransactionDto ToTransactionDto (this Transaction transactionModel)
         {
-            return new ExchangeDto
+            return new TransactionDto
             {
-                Id = exchangeModel.Id,
-                ExchangeAmount = exchangeModel.ExchangeAmount,
-                ExchangeType = exchangeModel.ExchangeType,
-                ExchangeDate = exchangeModel.ExchangeDate,
-                ExchangeDescription = exchangeModel.ExchangeDescription,
-                AppUserId = exchangeModel.AppUserId
+                Id = transactionModel.Id,
+                TransactionAmount = transactionModel.TransactionAmount,
+                TransactionType = transactionModel.TransactionType,
+                TransactionDate = transactionModel.TransactionDate,
+                TransactionDescription = transactionModel.TransactionDescription,
+                AppUserId = transactionModel.AppUserId
             };
         }
 
-        public static Exchange ToExchangeFromSet (this SetExchangeDto setExchange, string id)
+        public static Transaction ToTransactionFromSet (this SetTransactionDto setTransaction, string id)
         {
-            return new Exchange
+            return new Transaction
             {
-                ExchangeAmount = setExchange.ExchangeAmount,
-                ExchangeType = setExchange.ExchangeType,
-                ExchangeDate = setExchange.ExchangeDate,
-                ExchangeDescription = setExchange.ExchangeDescription,
+                TransactionAmount = setTransaction.TransactionAmount,
+                TransactionType = setTransaction.TransactionType,
+                TransactionDate = setTransaction.TransactionDate,
+                TransactionDescription = setTransaction.TransactionDescription,
                 AppUserId = id
             };
         }

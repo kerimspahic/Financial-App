@@ -1,6 +1,6 @@
 namespace API.Models
 {
-    public class ExchangeDescriptions
+    public class TransactionDescriptions
     {
         public int Id { get; set; }
         public string DescriptionName { get; set; }

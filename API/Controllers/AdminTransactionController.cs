@@ -20,7 +20,7 @@ namespace API.Controllers
         [HttpPost("SetTransactionDescription")]
         public async Task<IActionResult> SetTransactionDescription(SetDescriptionNameDto transactionDescription)
         {
-            var response = transactionDescription.ToExchangeDescriptionsFromSet();
+            var response = transactionDescription.ToTransactionDescriptionsFromSet();
             await _adminTransaction.SetTransactionDescription(response);
 
             return Ok(response);

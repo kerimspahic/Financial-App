@@ -1,17 +1,17 @@
 <mat-card class="container mt-4">
     <mat-card-title>New Transaction</mat-card-title>
     <mat-card-content>
-      <form [formGroup]="exchngeForm" class="pt-3">
+      <form [formGroup]="transactionForm" class="pt-3">
   
   
         <mat-form-field>
           <mat-label>Amount</mat-label>
-          <input type="number" matInput formControlName="exchangeAmount">
+          <input type="number" matInput formControlName="transactionAmount">
         </mat-form-field>
         
         <mat-form-field>
           <mat-label>Transaction Type</mat-label>
-          <mat-select formControlName="exchangeType">
+          <mat-select formControlName="transactionType">
             <mat-option [value]="true">Deposit</mat-option>
             <mat-option [value]="false">Withdrawal</mat-option>
           </mat-select>
@@ -19,14 +19,14 @@
         
         <mat-form-field>
           <mat-label>Transaction Date</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="exchangeDate" [matDatepickerFilter]="filterDates">
+          <input matInput [matDatepicker]="picker" formControlName="transactionDate" [matDatepickerFilter]="filterDates">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         
         <mat-form-field>
           <mat-label>Transaction Description</mat-label>
-          <mat-select formControlName="exchangeDescription"><!--fix this-->
+          <mat-select formControlName="transactionDescription"><!--fix this-->
             <mat-option *ngFor="let item of transactionDescriptiuonNames" [value]="item.id">{{ item.descriptionName }}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -52,7 +52,7 @@
 
         <ng-container matColumnDef="amount">
           <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by amount">Amount</th>
-          <td mat-cell *matCellDef="let element">{{element.exchangeAmount | currency}}</td>
+          <td mat-cell *matCellDef="let element">{{element.transactionAmount | currency}}</td>
         </ng-container>
   
         <ng-container matColumnDef="type">
@@ -62,13 +62,13 @@
   
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">Date</th>
-          <td mat-cell *matCellDef="let element">{{element.exchangeDate | date}}</td>
+          <td mat-cell *matCellDef="let element">{{element.transactionDate | date}}</td>
         </ng-container>
   
         <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by description">Description</th>
           <td mat-cell *matCellDef="let element">
-            {{ getDescriptionName(element.exchangeDescription) }}
+            {{ getDescriptionName(element.transactionDescription) }}
           </td>
         </ng-container>
   

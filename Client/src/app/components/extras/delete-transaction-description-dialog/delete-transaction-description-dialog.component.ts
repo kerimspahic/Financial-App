@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ExchangeService } from '../../../services/exchange.service';
+import { TransactionService } from '../../../services/transaction.service';
 
 @Component({
   selector: 'app-transaction-description-dialog',
@@ -9,7 +9,7 @@ import { ExchangeService } from '../../../services/exchange.service';
 })
 export class DeleteTransactionDescriptionDialogComponent {
   descriptionName: string = '';
-  constructor(private dialogRef: MatDialogRef<DeleteTransactionDescriptionDialogComponent>, private exchangeService: ExchangeService) { }
+  constructor(private dialogRef: MatDialogRef<DeleteTransactionDescriptionDialogComponent>, private transactionService: TransactionService) { }
 
   closeDialog() {
     this.dialogRef.close();
@@ -17,7 +17,7 @@ export class DeleteTransactionDescriptionDialogComponent {
 
   submitTransactionDescription() {
 
-    this.exchangeService.sendExchangeDescriptionData(this.descriptionName);
+    this.transactionService.sendTransactionDescriptionData(this.descriptionName);
 
     this.dialogRef.close('submitted');
   }

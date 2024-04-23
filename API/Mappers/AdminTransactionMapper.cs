@@ -5,7 +5,7 @@ namespace API.Mappers
 {
     public static class AdminTransactionMapper
     {
-        public static SetDescriptionNameDto ToDescriptionNameDto (this ExchangeDescriptions dto)
+        public static SetDescriptionNameDto ToDescriptionNameDto (this TransactionDescriptions dto)
         {
             return new SetDescriptionNameDto
             {
@@ -13,9 +13,9 @@ namespace API.Mappers
             };
         }
 
-        public static ExchangeDescriptions ToExchangeDescriptionsFromSet(this SetDescriptionNameDto dto)
+        public static TransactionDescriptions ToTransactionDescriptionsFromSet(this SetDescriptionNameDto dto)
         {
-            return new ExchangeDescriptions
+            return new TransactionDescriptions
             {
                 DescriptionName = dto.DescriptionName
             };

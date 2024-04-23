@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { Exchange } from '../../../models/exchange';
+import { Transaction } from '../../../models/transaction';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { ExchangeClient } from '../../../client/exchange.client';
-import { ExchangeService } from '../../../services/exchange.service';
+import { TransactionClient } from '../../../client/transaction.client';
+import { TransactionService } from '../../../services/transaction.service';
 import { TransactionDescriptions } from '../../../models/transactionDescriptions';
 
 @Component({
@@ -15,10 +15,10 @@ import { TransactionDescriptions } from '../../../models/transactionDescriptions
   styleUrl: './transactions.component.css',
 })
 export class TransactionsComponent implements OnInit {
-  public exchngeForm!: FormGroup;
+  public transactionForm!: FormGroup;
   public transactionDescriptiuonNames!: any; //fix this
   displayedColumns = ['amount', 'type', 'date', 'description'];
-  dataSource = new MatTableDataSource<Exchange>();
+  dataSource = new MatTableDataSource<Transaction>();
   
   filterDates = (d: Date | null) => {
     const today = new Date();
@@ -29,39 +29,39 @@ export class TransactionsComponent implements OnInit {
 
   constructor(
     public authService: AuthenticationService,
-    public exchngeClient: ExchangeClient,
-    public exchngeService: ExchangeService) {}
+    public transactionClient: TransactionClient,
+    public transactionService: TransactionService) {}
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
-    this.exchngeForm = new FormGroup({
-      exchangeAmount: new FormControl('', [Validators.required]),
-      exchangeType: new FormControl('', [Validators.required]),
-      exchangeDate: new FormControl('', [Validators.required]),
-      exchangeDescription: new FormControl('', [Validators.required]),
+    this.transactionForm = new FormGroup({
+      transactionAmount: new FormControl('', [Validators.required]),
+      transactionType: new FormControl('', [Validators.required]),
+      transactionDate: new FormControl('', [Validators.required]),
+      transactionDescription: new FormControl('', [Validators.required]),
     });
 
     this.loadTransactionDescriptionNames() ;
 
-    this.loadExchangeData();
+    this.loadTransactionData();
   }
 
   public onSubmit() {
 
 
-    const newUserTransaction: Exchange = {
-      exchangeAmount: this.exchngeForm.get('exchangeAmount')!.value,
-      exchangeType: this.exchngeForm.get('exchangeType')!.value,
-      exchangeDate: this.exchngeForm.get('exchangeDate')!.value,
-      exchangeDescription: this.exchngeForm.get('exchangeDescription')!.value,
+    const newUserTransaction: Transaction = {
+      transactionAmount: this.transactionForm.get('transactionAmount')!.value,
+      transactionType: this.transactionForm.get('transactionType')!.value,
+      transactionDate: this.transactionForm.get('transactionDate')!.value,
+      transactionDescription: this.transactionForm.get('transactionDescription')!.value,
     };
 
-    this.exchngeService.sendExchangeData(newUserTransaction);
+    this.transactionService.sendTransactionData(newUserTransaction);
 
-    this.loadExchangeData();
-    this.exchngeForm.reset();
+    this.loadTransactionData();
+    this.transactionForm.reset();
   }
 
   applyFilter(event: Event) {
@@ -82,15 +82,15 @@ export class TransactionsComponent implements OnInit {
       const isAsc = sortState.direction === 'asc';
       switch (sortState.active) {
         case 'amount':
-          return this.compare(a.exchangeAmount, b.exchangeAmount, isAsc);
+          return this.compare(a.transactionAmount, b.transactionAmount, isAsc);
         case 'type':
-          return this.compare(a.exchangeType, b.exchangeType, isAsc);
+          return this.compare(a.transactionType, b.transactionType, isAsc);
         case 'date':
-          return this.compare(a.exchangeDate, b.exchangeDate, isAsc);
+          return this.compare(a.transactionDate, b.transactionDate, isAsc);
         case 'description':
           return this.compare(
-            a.exchangeDescription,
-            b.exchangeDescription,
+            a.transactionDescription,
+            b.transactionDescription,
             isAsc
           );
         default:
@@ -110,15 +110,15 @@ export class TransactionsComponent implements OnInit {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-  loadExchangeData() {
-    this.exchngeClient.getExchangeData().subscribe((data) => {
+  loadTransactionData() {
+    this.transactionClient.getTransactionData().subscribe((data) => {
       this.dataSource.data = data;
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
     });
   }
   loadTransactionDescriptionNames() {
-    this.exchngeClient.getTransactionDesciptionNames().subscribe(
+    this.transactionClient.getTransactionDesciptionNames().subscribe(
       (descriptions: TransactionDescriptions) => {
         this.transactionDescriptiuonNames = descriptions;
       },

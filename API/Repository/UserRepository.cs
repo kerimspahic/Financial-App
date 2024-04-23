@@ -34,12 +34,12 @@ namespace API.Repository
 
         public async Task<AppUser> GetAppUserById(string id)
         {
-            return await _context.Users.Include(x => x.Exchanges).FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Users.Include(x => x.Transactions).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<AppUser>> GetAppUsers()
         {
-            return await _context.Users.Include(x => x.Exchanges).ToListAsync();
+            return await _context.Users.Include(x => x.Transactions).ToListAsync();
         }
 
         public async Task<AppUser> UpdateAppUserFirstName(string id, string firstName)

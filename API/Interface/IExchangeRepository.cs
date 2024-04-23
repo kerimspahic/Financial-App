@@ -1,17 +1,18 @@
+using API.DTOs.Transaction;
 using API.Helpers;
 using API.Models;
 
 namespace API.Interface
 {
-    public interface IExchangeRepository
+    public interface ITransactionRepository
     {
-        Task<List<Exchange>> GetAllExchanges(QueryObject query);
-        Task<List<Exchange>> GetUserExchanges(QueryObject query, string id);
-        Task<Exchange> GetExchangeById(int id);
-        Task<Exchange> SetExchange(Exchange exchangeModel);
-        Task<Exchange> UpdateExchange(Exchange exchangeModel);
-        Task<Exchange> DeleteExchange(int id);
+        Task<List<Transaction>> GetAllTransactions(QueryObject query);
+        Task<List<Transaction>> GetUserTransactions(QueryObject query, string id);
+        Task<Transaction> GetTransactionById(int id);
+        Task<Transaction> SetTransaction(Transaction transactionModel);
+        Task<Transaction> UpdateTransaction(Transaction transactionModel);
+        Task<Transaction> DeleteTransaction(int id);
         Task<bool> UserExists(string id);
-        
+        Task<DasboardDto> GetDashboardValues(string id);
     }
 }

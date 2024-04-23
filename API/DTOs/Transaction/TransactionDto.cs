@@ -2,18 +2,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace API.DTOs
 {
-    public class ExchangeDto
+    public class TransactionDto
     {
         [Required]
         public int Id { get; set; }
         [Required]
-        public decimal ExchangeAmount { get; set; }
+        public double TransactionAmount { get; set; }
         [Required]
-        public bool ExchangeType { get; set; }
+        public bool TransactionType { get; set; }
         [Required]
-        public string ExchangeDate { get; set; }
+        public DateTime TransactionDate { get; set; }
         [Required]
-        public int ExchangeDescription { get; set; } 
+        public int TransactionDescription { get; set; } 
         [Required]
         public string AppUserId { get; set; }
     }

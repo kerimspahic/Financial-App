@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.DTOs.Account;
 using API.Models;
 
@@ -18,7 +14,7 @@ namespace API.Mappers
                 FirstName = appUser.FirstName,
                 LastName = appUser.LastName,
                 Email = appUser.Email,
-                Exchanges = appUser.Exchanges.Select(s => s.ToExchangeDto()).ToList()
+                Transactions = appUser.Transactions.Select(s => s.ToTransactionDto()).ToList()
             };
         }
     }

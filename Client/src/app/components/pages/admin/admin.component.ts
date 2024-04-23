@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TransactionDescriptions } from '../../../models/transactionDescriptions';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteTransactionDescriptionDialogComponent } from '../../extras/delete-transaction-description-dialog/delete-transaction-description-dialog.component';
-import { ExchangeService } from '../../../services/exchange.service';
+import { TransactionService } from '../../../services/transaction.service';
 import { EditTransactionDescriptionDialogComponent } from '../../extras/edit-transaction-description-dialog/edit-transaction-description-dialog.component';
 
 @Component({
@@ -16,28 +16,28 @@ export class AdminComponent implements OnInit {
   dataSource = new MatTableDataSource<TransactionDescriptions>();
   displayedColumns = ['id', 'descriptionName', 'actions'];
 
-  constructor(private dialog: MatDialog, public exchangeService: ExchangeService ) {}
+  constructor(private dialog: MatDialog, public transactionService: TransactionService ) {}
 
   ngOnInit(): void {
-    this.loadExchangeData();
+    this.loadTransactionData();
   }
 
-  loadExchangeData() {
-    this.exchangeService.getExchangeDescriptionData().subscribe((data) => {
+  loadTransactionData() {
+    this.transactionService.getTransactionDescriptionData().subscribe((data) => {
       this.dataSource.data = data;
     });
   }
 
   deleteDescription(id: number) {
-    this.exchangeService.deleteExchangeDescriptionData(id)
-      this.loadExchangeData();
+    this.transactionService.deleteTransactionDescriptionData(id)
+      this.loadTransactionData();
   }
 
   openAddTransactionDialog() {
     const dialogRef = this.dialog.open(DeleteTransactionDescriptionDialogComponent, {
       width: '300px',
     });
-    this.loadExchangeData();
+    this.loadTransactionData();
   }
 
   editDescription(id: number, currentDescription: string) {
@@ -52,7 +52,7 @@ export class AdminComponent implements OnInit {
           id: id,
           descriptionName: newDescription
         }
-        this.exchangeService.editExchangeDescriptionData(transactionDescription);
+        this.transactionService.editTransactionDescriptionData(transactionDescription);
       }
     });
   }

@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Data;
-using API.DTOs.Admin;
 using API.Interface;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -18,35 +13,35 @@ namespace API.Repository
             _context = context;
         }
 
-        public async Task<ExchangeDescriptions> DeleteTransactionDescription(int id)
+        public async Task<TransactionDescriptions> DeleteTransactionDescription(int id)
         {
-            var transactionDescription = await _context.ExchangeDescriptions.FirstOrDefaultAsync(x => x.Id == id);
+            var transactionDescription = await _context.TransactionDescriptions.FirstOrDefaultAsync(x => x.Id == id);
 
             if (transactionDescription == null)
                 return null;
 
-            _context.ExchangeDescriptions.Remove(transactionDescription);
+            _context.TransactionDescriptions.Remove(transactionDescription);
             await _context.SaveChangesAsync();
 
             return transactionDescription;
         }
 
-        public async Task<List<ExchangeDescriptions>> GetTransactionDescriptions()
+        public async Task<List<TransactionDescriptions>> GetTransactionDescriptions()
         {
-            return await _context.ExchangeDescriptions.ToListAsync();
+            return await _context.TransactionDescriptions.ToListAsync();
         }
 
-        public async Task<ExchangeDescriptions> SetTransactionDescription(ExchangeDescriptions descriptionName)
+        public async Task<TransactionDescriptions> SetTransactionDescription(TransactionDescriptions descriptionName)
         {
 
-            await _context.ExchangeDescriptions.AddAsync(descriptionName);
+            await _context.TransactionDescriptions.AddAsync(descriptionName);
             await _context.SaveChangesAsync();
             return descriptionName;
         }
 
-        public async Task<ExchangeDescriptions> UpdateTransactionDescription(int id, string descriptionName)
+        public async Task<TransactionDescriptions> UpdateTransactionDescription(int id, string descriptionName)
         {
-            var transactionName = await _context.ExchangeDescriptions.FirstOrDefaultAsync(x => x.Id == id);
+            var transactionName = await _context.TransactionDescriptions.FirstOrDefaultAsync(x => x.Id == id);
 
             if (transactionName == null)
                 return null;

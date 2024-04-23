@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   baseUrl: 'https://localhost:5001/',
   accountUrl: 'https://localhost:5001/Account/',
-  exchangeUrl: 'https://localhost:5001/Exchange/',
+  transactionUrl: 'https://localhost:5001/Transaction/',
   userUrl: 'https://localhost:5001/User/',
   weatherUrl: 'https://localhost:5001/WeatherForecast/',
   adminTransactionUrl: 'https://localhost:5001/AdminTransaction/'

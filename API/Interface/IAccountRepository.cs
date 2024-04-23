@@ -1,5 +1,4 @@
 using API.DTOs;
-using API.DTOs.Account;
 
 namespace API.Interface
 {
