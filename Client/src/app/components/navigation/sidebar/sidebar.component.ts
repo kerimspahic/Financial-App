@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,5 +6,11 @@ import { AuthenticationService } from '../../../services/authentication.service'
   styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
-  constructor(public authService: AuthenticationService) { }
+  navLinks = [
+    { title: 'Dashboard', url: '/dashboard' },
+    { title: 'Transactions', url: '/transactions' },
+    { title: 'Budgeting', url: '/budgeting' },
+    { title: 'Summary', url: '/summary' },
+    { title: 'Admin', url: '/admin' }
+  ];
 }

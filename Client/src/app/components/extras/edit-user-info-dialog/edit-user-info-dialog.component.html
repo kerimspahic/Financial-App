@@ -1,46 +1,53 @@
-
-
 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" >
-
-  <mat-tab label="Profile" class="mb-2">
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <h1 class="mt-2">Update User Info</h1>
+  <mat-tab label="Profile" class="mb-2" *ngIf="authService.currentUser$ | async as user">
+    <form [formGroup]="userInfoForm" (ngSubmit)="updateInfo()">
       <mat-form-field appearance="fill">
         <mat-label>Username</mat-label>
-        <input matInput formControlName="username">
+        <input matInput [(ngModel)]="user.name" formControlName="username">
       </mat-form-field>
     
       <mat-form-field appearance="fill">
         <mat-label>First Name</mat-label>
-        <input matInput formControlName="firstName">
+        <input matInput [(ngModel)]="user.given_name" formControlName="firstName">
       </mat-form-field>
     
       <mat-form-field appearance="fill">
         <mat-label>Last Name</mat-label>
-        <input matInput formControlName="lastName">
+        <input matInput [(ngModel)]="user.family_name" formControlName="lastName">
       </mat-form-field>
     
-      <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">Submit</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="userInfoForm.invalid">Submit</button>
     </form>
   </mat-tab>
 
-  <mat-tab label="Security" >
+  <mat-tab label="Password" >
     <h1 class="mt-2">Update Password</h1>
-    <form (ngSubmit)="updatePassword()" #updatePasswordForm="ngForm">
+    <form [formGroup]="userPasswordForm" (ngSubmit)="updatePassword()">
       <mat-form-field>
-        <input matInput type="password" placeholder="Current Password" name="oldPassword" [(ngModel)]="oldPassword" required>
+        <input matInput type="password" placeholder="Current Password" formControlName="oldPassword"  required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="password" placeholder="New Password" name="newPassword" [(ngModel)]="newPassword" required>
+        <input matInput type="password" placeholder="New Password" formControlName="newPassword"  required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="password" placeholder="Confirm New Password" name="confirmPassword" [(ngModel)]="confirmPassword" required>
+        <input matInput type="password" placeholder="Confirm New Password" formControlName="confirmPassword" required>
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit" [disabled]="updatePasswordForm.invalid">Update Password</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="userPasswordForm.invalid">Update Password</button>
     </form>
   </mat-tab>
 
-  <mat-tab label="Notfications">
+  <mat-tab label="Email & Notfications">
+<form>
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput [formControl]="emailFormControl" placeholder="Enter your email">
+    <mat-error *ngIf="emailFormControl.hasError('required')">Email is required</mat-error>
+    <mat-error *ngIf="emailFormControl.hasError('email')">Please enter a valid email address</mat-error>
+  </mat-form-field>
 
+  <button mat-raised-button color="primary" (click)="updateEmail()">Update Email</button>
+</form>
   </mat-tab>
   
 </mat-tab-group>

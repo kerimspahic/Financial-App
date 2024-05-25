@@ -2,11 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-  provideHttpClient,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -48,15 +44,16 @@ import { AdminComponent } from './components/pages/admin/admin.component';
 import { LoaderComponent } from './components/extras/loader/loader.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
-import { DeleteTransactionDescriptionDialogComponent } from './components/extras/delete-transaction-description-dialog/delete-transaction-description-dialog.component';
+import { AddTransactionDescriptionDialogComponent } from './components/extras/add-transaction-description-dialog/add-transaction-description-dialog.component';
 import { EditTransactionDescriptionDialogComponent } from './components/extras/edit-transaction-description-dialog/edit-transaction-description-dialog.component';
 import { EditUserInfoDialogComponent } from './components/extras/edit-user-info-dialog/edit-user-info-dialog.component';
-import {
-  BaseChartDirective,
-  provideCharts,
-  withDefaultRegisterables,
-} from 'ng2-charts';
+import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { LineChartComponent } from './components/extras/line-chart/line-chart.component';
+import { AddTransactionDialogComponent } from './components/extras/add-transaction-dialog/add-transaction-dialog.component';
+import { PaginationComponent } from './components/extras/pagination/pagination.component';
+import { ConfirmEmailComponent } from './components/authentification/confirm-email/confirm-email.component';
+import { RegistrationSuccessComponent } from './components/authentification/registration-success/registration-success.component';
+import { AddGoalsDialogComponent } from './components/extras/add-goals-dialog/add-goals-dialog.component';
 
 @NgModule({
   declarations: [
@@ -72,10 +69,15 @@ import { LineChartComponent } from './components/extras/line-chart/line-chart.co
     HomeComponent,
     AdminComponent,
     LoaderComponent,
-    DeleteTransactionDescriptionDialogComponent,
+    AddTransactionDescriptionDialogComponent,
     EditTransactionDescriptionDialogComponent,
     EditUserInfoDialogComponent,
     LineChartComponent,
+    AddTransactionDialogComponent,
+    PaginationComponent,
+    ConfirmEmailComponent,
+    RegistrationSuccessComponent,
+    AddGoalsDialogComponent,
   ],
   imports: [
     BrowserModule,

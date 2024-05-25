@@ -1,40 +1,42 @@
 <div class="container mt-3">
-  <div class="row" *ngIf="(dashboardValues$ | async) as dashboardValues">
+  <div class="row">
     <div class="col-2">
       <mat-card class="p-3">
-        <mat-card-title>Total Profit: {{ dashboardValues.totalProfit }}</mat-card-title>
+        <mat-card-title>Total Profit: {{ totalProfit | currency}}</mat-card-title>
       </mat-card>
     </div>
     <div class="col-2">
-      <mat-card class="p-3">
-        <mat-card-title>Total Expenses: {{ dashboardValues.totalExpenses }}</mat-card-title>
+      <mat-card class="p-3" [ngClass]="{'green-hue': profit > profitGoal, 'red-hue': profit < 0}">
+        <mat-card-title>{{ selectedChartView | titlecase }} Profit: {{ profit | currency}}</mat-card-title>
+        <mat-card-subtitle>Goal: {{ profitGoal | currency}}</mat-card-subtitle>
       </mat-card>
     </div>
     <div class="col-2">
-      <mat-card class="p-3">
-        <mat-card-title>Monthly Summary: {{ dashboardValues.monthlySummary }}</mat-card-title>
+      <mat-card class="p-3" [ngClass]="{'green-hue': gain > gainGoal, 'red-hue': gain < 0}">
+        <mat-card-title>{{ selectedChartView | titlecase }} Gain: {{ gain | currency}}</mat-card-title>
+        <mat-card-subtitle>Goal: {{ gainGoal | currency}}</mat-card-subtitle>
       </mat-card>
     </div>
     <div class="col-2">
-      <mat-card class="p-3">
-        <mat-card-title>Monthly Profit: {{ dashboardValues.monthlyProfit }}</mat-card-title>
-      </mat-card>
-    </div>
-    <div class="col-2">
-      <mat-card class="p-3">
-        <mat-card-title>Monthly Expenses: {{ dashboardValues.monthlyExpenses }}</mat-card-title>
+      <mat-card class="p-3" [ngClass]="{'red-hue': spent > spentLimit, 'green-hue': spent < spentLimit}">
+        <mat-card-title>{{ selectedChartView | titlecase }} Spent: {{ spent | currency}}</mat-card-title>
+        <mat-card-subtitle>Limit: {{ spentLimit | currency}}</mat-card-subtitle>
       </mat-card>
     </div>
   </div>
 </div>
-  
-  <div class="container mt-3">
-    <div class="card">
-      <div class="card-body">
-        <div class="chart">
-          <app-line-chart></app-line-chart>
-        </div>
+
+<div class="container mt-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="chart">
+        <mat-radio-group [(ngModel)]="selectedChartView" (change)="onChartViewChange($event.value)">
+          <mat-radio-button value="monthly">Monthly</mat-radio-button>
+          <mat-radio-button value="yearly">Yearly</mat-radio-button>
+          <!--<mat-radio-button value="total">Total</mat-radio-button>-->
+        </mat-radio-group>
+        <app-line-chart [view]="selectedChartView"></app-line-chart>
       </div>
     </div>
-  
-  
+  </div>
+</div>

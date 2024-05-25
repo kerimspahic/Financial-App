@@ -57,7 +57,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 // Add DbContext for Entity Framework
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 });
 
 // Add scoped services for repositories and services
@@ -66,6 +66,9 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IAdminTransactionRepository, AdminTransactionRepository>();
+builder.Services.AddScoped<IFinancialGoalRepository, FinancialGoalRepository>();
+builder.Services.AddScoped<IEmailService,EmailService>();
+builder.Services.AddScoped<ITransactionCalculationsRepository,TransactionCalculationsRepository>();
 
 builder.Services.AddCors(options =>
 {
@@ -81,6 +84,8 @@ builder.Services.AddCors(options =>
 
 // Build the application
 var app = builder.Build();
+
+Environment.SetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_INVARIANT", "false");
 
 // Create a scope for service provider
 using var scope = app.Services.CreateScope();

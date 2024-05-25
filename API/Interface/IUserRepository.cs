@@ -6,12 +6,12 @@ namespace API.Interface
 {
     public interface IUserRepository
     {
-        
         Task<IEnumerable<AppUser>> GetAppUsers();
         Task<AppUser> GetAppUserById(string id);
-        Task<AppUser> UpdateAppUserFirstName(string id, string firstName);
-        Task<AppUser> UpdateAppUserLastName(string id, string lastName);
+        Task<AppUser> UpdateAppUserInfo(string userId, UpdateAccountDto updateAccountDto);
         Task<IdentityResult> UpdateAppUserPassword(string id, UpdatePasswordDto passwordDto);
+        Task<IdentityResult> UpdateAppUserEmail(string userId, string newEmail);
         Task<AppUser> DeleteAppUser(string id);
+
     }
 }

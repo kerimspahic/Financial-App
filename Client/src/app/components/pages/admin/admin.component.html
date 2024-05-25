@@ -17,7 +17,7 @@
       class=""
       matSort
       aria-label="Elements"
-      [dataSource]="dataSource"
+      [dataSource]="transactionDescriptionDataSource"
     >
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
@@ -53,8 +53,9 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="transactionDescriptionDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: transactionDescriptionDisplayedColumns"></tr>
     </table>
   </div>
 </mat-card>
+

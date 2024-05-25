@@ -14,9 +14,10 @@ namespace API.Data
 
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionDescriptions> TransactionDescriptions { get; set; }
+        public DbSet<FinancialGoal> FinancialGoals { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            
+
             base.OnModelCreating(builder);
 
             List<IdentityRole> roles = new List<IdentityRole>()
@@ -34,7 +35,7 @@ namespace API.Data
             };
             builder.Entity<IdentityRole>().HasData(roles);
 
-            
+
         }
     }
 }

@@ -35,7 +35,15 @@ export class TransactionService {
     return this.transactionClient.getDashboardValues();
   }
 
-  public getDashboardCharts(): Observable<DashboardCharts> {
-    return this.transactionClient.getDashboardCharts();
+  public getCardValues(mode: string): Observable<any> {
+    return this.transactionClient.getCardValues(mode);
+  }
+
+  public getChartData(type: string): Observable<any> {
+    return this.transactionClient.getChartData(type);
+  }
+
+  public getFinancialGoals(mode: string): Observable<any> {
+    return this.transactionClient.getFinancialGoals(mode);
   }
 }

@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserPassword } from '../../../models/userPassword';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../../services/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthenticationService } from '../../../services/authentication.service';
+
 
 @Component({
   selector: 'app-edit-user-info-dialog',
@@ -11,47 +11,74 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './edit-user-info-dialog.component.css',
 })
 export class EditUserInfoDialogComponent implements OnInit {
-  oldPassword!: string;
-  newPassword!: string;
-  confirmPassword!: string;
-  userForm!: FormGroup;
+  userInfoForm!: FormGroup;
+  userPasswordForm!: FormGroup;
+  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+  
 
-  constructor(private dialogRef: MatDialogRef<EditUserInfoDialogComponent>, private http: HttpClient,private userService: UserService,private formBuilder: FormBuilder) { }
+  constructor(
+    public authService: AuthenticationService,
+    private userService: UserService,
+    private dialogRef: MatDialogRef<EditUserInfoDialogComponent>,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this.userForm = this.formBuilder.group({
+    this.userInfoForm = this.formBuilder.group({
       username: ['', Validators.required],
       firstName: ['', Validators.required],
-      lastName: ['', Validators.required]
+      lastName: ['', Validators.required],
     });
+
+    this.userPasswordForm = this.formBuilder.group({
+      oldPassword: ['', Validators.required],
+      newPassword: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+    }, { validator: this.passwordMatchValidator });
   }
 
-  onSubmit() {
-    if (this.userForm.valid) {
-      // Process the form data, e.g., send it to an API
-      console.log(this.userForm.value);
+  updateInfo() {
+    if (this.userInfoForm.valid) {
+      this.userService.editUserInfo(this.userInfoForm.value);
+      this.dialogRef.close();
+      this.authService.logout();
     } else {
-      // Handle form validation errors
-      console.log("Form is invalid.");
+      console.log('Form is invalid.');
     }
   }
 
   updatePassword() {
-    if (this.newPassword !== this.confirmPassword) {
-      // Handle password mismatch error
-      return;
+    if (this.userPasswordForm.valid){
+      this.userService.editUserPassword(this.userPasswordForm.value);
+      this.dialogRef.close();
+    } else {
+      console.log('Form is invalid.');
     }
-    
-    const passwordDto: UserPassword = {
-      oldPassword: this.oldPassword,
-      newPassword: this.newPassword,
-      confirmPassword: this.confirmPassword
-    };
-
-    this.userService.editUserPassword(passwordDto);
-    this.dialogRef.close();
   }
+
+  updateEmail() {
+    if (this.emailFormControl.valid) {
+      this.userService.editUserEmail(this.emailFormControl.value)
+      this.dialogRef.close();
+      console.log(this.emailFormControl.value);
+    } else {
+      console.log('Please enter a valid email address.');
+    }
+  }
+
   onCancelClick(): void {
     this.dialogRef.close();
+  }
+
+  passwordMatchValidator(control: AbstractControl) {
+    const newPassword = control.get('newPassword')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+
+    if (newPassword !== confirmPassword) {
+      control.get('confirmPassword')?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    } else {
+      return null;
+    }
   }
 }

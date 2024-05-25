@@ -1,7 +1,58 @@
-.sidenav-container {
+/* sidebar.component.css */
+
+.sidebar {
+  height: 100%;
+  width: 200px;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  padding-top: 20px;
+}
+
+.sidebar h1 {
+  color: white;
+  text-align: center;
+}
+
+.sidebar a .icon{
+  text-align: left;
+}
+
+.sidebar p {
+  margin-left: 15px;
+  margin-bottom: 0px;
+  color: rgba(199, 194, 194, 0.199);
+}
+
+
+.sidenav-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 16px 10px 1px; 
+  transition: background-color 0.3s ease;
+  margin: 10px 15px;
+  width: 165px; 
+  font-size: 110%; 
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.sidenav-icon {
+  margin-right: 16px;
+  padding: 15px; 
+  width: 30px; 
+  height: 30px; 
+  border-radius: 50%;
+  color: rgb(255, 255, 255);
+  background-color: rgba(0, 0, 0, 0.055);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidenav-button:hover {
+  background-color: #00000010;
 }

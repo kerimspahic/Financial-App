@@ -1,13 +1,9 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
 import { Transaction } from '../../../models/transaction';
-import { AuthenticationService } from '../../../services/authentication.service';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
 import { TransactionClient } from '../../../client/transaction.client';
-import { TransactionService } from '../../../services/transaction.service';
 import { TransactionDescriptions } from '../../../models/transactionDescriptions';
+import { AddTransactionDialogComponent } from '../../extras/add-transaction-dialog/add-transaction-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-transactions',
@@ -15,108 +11,34 @@ import { TransactionDescriptions } from '../../../models/transactionDescriptions
   styleUrl: './transactions.component.css',
 })
 export class TransactionsComponent implements OnInit {
-  public transactionForm!: FormGroup;
-  public transactionDescriptiuonNames!: any; //fix this
-  displayedColumns = ['amount', 'type', 'date', 'description'];
-  dataSource = new MatTableDataSource<Transaction>();
-  
-  filterDates = (d: Date | null) => {
-    const today = new Date();
-    if (d == null) 
-      return false;
-    return d <= today;
-  }
+  public transactionDescriptiuonNames!: any;
 
   constructor(
-    public authService: AuthenticationService,
     public transactionClient: TransactionClient,
-    public transactionService: TransactionService) {}
+    public dialog: MatDialog
+  ) {}
 
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  transactions!: Transaction[];
+  total = 0;
+  pageNumber = 1;
+  pageSize = 5;
 
   ngOnInit(): void {
-    this.transactionForm = new FormGroup({
-      transactionAmount: new FormControl('', [Validators.required]),
-      transactionType: new FormControl('', [Validators.required]),
-      transactionDate: new FormControl('', [Validators.required]),
-      transactionDescription: new FormControl('', [Validators.required]),
+    this.loadTransactionDescriptionNames();
+    this.getTransactions();
+  }
+
+  openNewTransactionDialog(): void {
+    const dialogRef = this.dialog.open(AddTransactionDialogComponent, {
+      width: '400px',
     });
 
-    this.loadTransactionDescriptionNames() ;
-
-    this.loadTransactionData();
-  }
-
-  public onSubmit() {
-
-
-    const newUserTransaction: Transaction = {
-      transactionAmount: this.transactionForm.get('transactionAmount')!.value,
-      transactionType: this.transactionForm.get('transactionType')!.value,
-      transactionDate: this.transactionForm.get('transactionDate')!.value,
-      transactionDescription: this.transactionForm.get('transactionDescription')!.value,
-    };
-
-    this.transactionService.sendTransactionData(newUserTransaction);
-
-    this.loadTransactionData();
-    this.transactionForm.reset();
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) this.dataSource.paginator.firstPage();
-  }
-
-  sortData(sortState: Sort) {
-    const data = this.dataSource.data.slice();
-    if (!sortState.active || sortState.direction === '') {
-      this.dataSource.data = data;
-      return;
-    }
-
-    this.dataSource.data = data.sort((a, b) => {
-      const isAsc = sortState.direction === 'asc';
-      switch (sortState.active) {
-        case 'amount':
-          return this.compare(a.transactionAmount, b.transactionAmount, isAsc);
-        case 'type':
-          return this.compare(a.transactionType, b.transactionType, isAsc);
-        case 'date':
-          return this.compare(a.transactionDate, b.transactionDate, isAsc);
-        case 'description':
-          return this.compare(
-            a.transactionDescription,
-            b.transactionDescription,
-            isAsc
-          );
-        default:
-          return 0;
-      }
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      this.getTransactions();
     });
   }
 
-  private compare(
-    a: number | string | Date | boolean,
-    b: number | string | Date | boolean,
-    isAsc: boolean
-  ) {
-    if (a === b) {
-      return 0;
-    }
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-  }
-
-  loadTransactionData() {
-    this.transactionClient.getTransactionData().subscribe((data) => {
-      this.dataSource.data = data;
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    });
-  }
   loadTransactionDescriptionNames() {
     this.transactionClient.getTransactionDesciptionNames().subscribe(
       (descriptions: TransactionDescriptions) => {
@@ -127,8 +49,37 @@ export class TransactionsComponent implements OnInit {
       }
     );
   }
+  //new ones
+
+  getTransactions(): void {
+    this.transactionClient
+      .getTransactionData(this.pageNumber, this.pageSize)
+      .subscribe((res) => {
+        this.transactions = res['page']['data'];
+        this.total = res['page'].total;
+      });
+  }
+
   getDescriptionName(id: number): string {
-    const description = this.transactionDescriptiuonNames.find((x: { id: number; }) => x.id === id);
+    const description = this.transactionDescriptiuonNames.find(
+      (x: { id: number }) => x.id === id
+    );
     return description ? description.descriptionName : 'N/A';
   }
+
+  goToPrevious(): void {
+    this.pageNumber--;
+    this.getTransactions();
+  }
+
+  goToNext(): void {
+    this.pageNumber++;
+    this.getTransactions();
+  }
+
+  goToPage(n: number): void {
+    this.pageNumber = n;
+    this.getTransactions();
+  }
+  
 }

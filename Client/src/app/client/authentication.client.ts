@@ -20,7 +20,7 @@ export class AuthenticationClient {
     );
   }
 
-  public register(username: string, email: string, firstName: string, lastName: string, password: string): Observable<string> {
+  public register(username: string, email: string, firstName: string, lastName: string, password: string, confirmPassword: string): Observable<string> {
     return this.http.post(
       environment.accountUrl + 'Register',
       {
@@ -29,6 +29,7 @@ export class AuthenticationClient {
         firstName: firstName,
         lastName: lastName,
         password: password,
+        confirmPassword: confirmPassword
       },
       { responseType: 'text' }
     );

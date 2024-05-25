@@ -6,7 +6,7 @@ namespace API.Helpers
         public bool? TransactionType { get; set; }
         public int? TransactionDescription { get; set; }
         public string SortBy { get; set; }
-        public bool IsDecsending { get; set; } = false;
+        public bool IsDescending { get; set; } = false;
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 5;
 

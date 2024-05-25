@@ -4,12 +4,12 @@ import { TransactionService } from '../../../services/transaction.service';
 
 @Component({
   selector: 'app-transaction-description-dialog',
-  templateUrl: './delete-transaction-description-dialog.component.html',
-  styleUrl: './delete-transaction-description-dialog.component.css'
+  templateUrl: './add-transaction-description-dialog.component.html',
+  styleUrl: './add-transaction-description-dialog.component.css'
 })
-export class DeleteTransactionDescriptionDialogComponent {
+export class AddTransactionDescriptionDialogComponent {
   descriptionName: string = '';
-  constructor(private dialogRef: MatDialogRef<DeleteTransactionDescriptionDialogComponent>, private transactionService: TransactionService) { }
+  constructor(private dialogRef: MatDialogRef<AddTransactionDescriptionDialogComponent>, private transactionService: TransactionService) { }
 
   closeDialog() {
     this.dialogRef.close();
