@@ -20,6 +20,7 @@ namespace API.Extensions
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequiredLength = 6;
                 options.User.RequireUniqueEmail = true;
+                //options.SignIn.RequireConfirmedAccount = true; //change to signin
             }).AddRoles<IdentityRole>()
             .AddRoleManager<RoleManager<IdentityRole>>()
             .AddEntityFrameworkStores<AppDbContext>()

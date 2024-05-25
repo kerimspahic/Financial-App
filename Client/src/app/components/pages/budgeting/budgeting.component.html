@@ -1,1 +1,27 @@
-<p>budgeting works!</p>
+<div class="container">
+  <div class="row">
+    <div *ngFor="let goal of goals" class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ goal.title }}</h5>
+          <p class="card-text">{{ goal.value }}</p>
+          <button *ngIf="editingGoalId !== goal.id" mat-icon-button (click)="startEditing(goal.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <div *ngIf="editingGoalId === goal.id">
+            <input type="text" [(ngModel)]="newValue" class="form-control" />
+            <button class="btn btn-success" (click)="submitEdit(goal.value)">Submit</button>
+            <button class="btn btn-secondary" (click)="stopEditing()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="openDialog()">Add Financial Goals</button>
+    <button mat-button color="warn" (click)="confirmDelete()">Delete</button>
+  </mat-card-actions>
+</div>

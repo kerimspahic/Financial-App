@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../../services/authentication.service'
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
+  public hidePassword: boolean = true;
 
   constructor(private authService: AuthenticationService) {}
 

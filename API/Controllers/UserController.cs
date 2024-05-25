@@ -10,7 +10,7 @@ namespace API.Controllers
     public class UserController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
-    private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         public UserController(IUserRepository userRepository, UserManager<AppUser> userManager)
         {
             _userRepository = userRepository;
@@ -37,43 +37,47 @@ namespace API.Controllers
         [HttpGet("GetUserId")]
         public async Task<string> GetCurrentUserId()
         {
-            AppUser userId = await GetCurrentUserAsync();
-		    return userId.Id;
-        }
-        private Task<AppUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
-        
-        [Authorize]
-        [HttpPut("UpdateFirstName/{id}")]
-        public async Task<IActionResult> UpdateFirstName([FromRoute] string id, [FromBody] string firstName)
-        {
-            if (firstName == null)
-                return BadRequest();
-
-            var currentUser = await _userRepository.UpdateAppUserFirstName(id, firstName);
-            return Ok(currentUser);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            return user.Id;//move to reposetory
         }
 
         [Authorize]
-        [HttpPut("UpdateLastName/{id}")]
-        public async Task<IActionResult> UpdateLastName([FromRoute] string id, [FromBody] string lastName)
+        [HttpPut("UpdateUserInfo")]
+        public async Task<IActionResult> UpdateUserInfo(UpdateAccountDto updateAccountDto)
         {
-            if (lastName == null)
-                return BadRequest();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = user.Id;
 
-            var currentUser = await _userRepository.UpdateAppUserLastName(id, lastName);
-            return Ok(currentUser);
+            var result = await _userRepository.UpdateAppUserInfo(userId, updateAccountDto);
+
+            return Ok(result);
         }
 
         [Authorize]
-        [HttpPut("UpdatePassword/{id}")]
-        public async Task<IActionResult> UpdatePassword([FromRoute] string id, [FromBody] UpdatePasswordDto passwordDto)
+        [HttpPut("UpdateUserPassword")]
+        public async Task<IActionResult> UpdateUserPassword([FromBody] UpdatePasswordDto passwordDto)
         {
-            var result = await _userRepository.UpdateAppUserPassword(id, passwordDto);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = user.Id;
+
+            var result = await _userRepository.UpdateAppUserPassword(userId, passwordDto);
 
             if (!result.Succeeded)
                 return BadRequest();
 
-            return Ok();
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPut("UpdateUserEmail")]
+        public async Task<IActionResult> UpdateUserEmail(string newEmail)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            string userId = user.Id;
+
+            var result = await _userRepository.UpdateAppUserEmail(userId, newEmail);
+
+            return Ok(result);
         }
 
         [Authorize]

@@ -7,12 +7,15 @@ import { TransactionsComponent } from './components/pages/transactions/transacti
 import { BudgetingComponent } from './components/pages/budgeting/budgeting.component';
 import { SummaryComponent } from './components/pages/summary/summary.component';
 import { authGuard } from './helpers/auth.guard';
-import { HomeComponent } from './components/home/home.component';
+import { AdminComponent } from './components/pages/admin/admin.component';
+import { adminGuard } from './helpers/admin.guard';
+import { RegistrationSuccessComponent } from './components/authentification/registration-success/registration-success.component';
+import { ConfirmEmailComponent } from './components/authentification/confirm-email/confirm-email.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: DashboardComponent,
     canActivate: [authGuard],
   },
   {
@@ -36,6 +39,11 @@ const routes: Routes = [
         path: 'summary',
         component: SummaryComponent,
       },
+      {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [adminGuard],
+      },
     ],
   },
   {
@@ -45,6 +53,14 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  { 
+    path: 'registration-success', 
+    component: RegistrationSuccessComponent 
+  },
+  { 
+    path: 'confirm-email', 
+    component: ConfirmEmailComponent 
   },
 ];
 

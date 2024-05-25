@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -18,7 +18,7 @@ import { TransactionsComponent } from './components/pages/transactions/transacti
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCommonModule, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { MatCommonModule, MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -39,6 +39,21 @@ import { DatePipe } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HomeComponent } from './components/home/home.component';
+import { TokenInterceptor } from './helpers/token.interceptor';
+import { AdminComponent } from './components/pages/admin/admin.component';
+import { LoaderComponent } from './components/extras/loader/loader.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
+import { AddTransactionDescriptionDialogComponent } from './components/extras/add-transaction-description-dialog/add-transaction-description-dialog.component';
+import { EditTransactionDescriptionDialogComponent } from './components/extras/edit-transaction-description-dialog/edit-transaction-description-dialog.component';
+import { EditUserInfoDialogComponent } from './components/extras/edit-user-info-dialog/edit-user-info-dialog.component';
+import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { LineChartComponent } from './components/extras/line-chart/line-chart.component';
+import { AddTransactionDialogComponent } from './components/extras/add-transaction-dialog/add-transaction-dialog.component';
+import { PaginationComponent } from './components/extras/pagination/pagination.component';
+import { ConfirmEmailComponent } from './components/authentification/confirm-email/confirm-email.component';
+import { RegistrationSuccessComponent } from './components/authentification/registration-success/registration-success.component';
+import { AddGoalsDialogComponent } from './components/extras/add-goals-dialog/add-goals-dialog.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +66,18 @@ import { HomeComponent } from './components/home/home.component';
     DashboardComponent,
     SummaryComponent,
     TransactionsComponent,
-    HomeComponent
+    HomeComponent,
+    AdminComponent,
+    LoaderComponent,
+    AddTransactionDescriptionDialogComponent,
+    EditTransactionDescriptionDialogComponent,
+    EditUserInfoDialogComponent,
+    LineChartComponent,
+    AddTransactionDialogComponent,
+    PaginationComponent,
+    ConfirmEmailComponent,
+    RegistrationSuccessComponent,
+    AddGoalsDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,12 +110,18 @@ import { HomeComponent } from './components/home/home.component';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatDialogModule,
+    MatTabsModule,
+    BaseChartDirective,
     BsDropdownModule.forRoot(),
     ToastrModule.forRoot(),
   ],
   providers: [
-    provideAnimationsAsync()
+    provideHttpClient(),
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    provideAnimationsAsync(),
+    provideCharts(withDefaultRegisterables()),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

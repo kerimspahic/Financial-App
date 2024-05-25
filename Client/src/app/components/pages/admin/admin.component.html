@@ -1,0 +1,61 @@
+<mat-card class="container mt-4">
+  <mat-card-title class="pb-3">Transactions Descriptions</mat-card-title>
+
+  <!-- Button to toggle form display -->
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="openAddTransactionDialog()"
+    class="mb-3"
+  >
+    Add Transaction Description
+  </button>
+
+  <div class="mat-elevation-z8">
+    <table
+      mat-table
+      class=""
+      matSort
+      aria-label="Elements"
+      [dataSource]="transactionDescriptionDataSource"
+    >
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="descriptionName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          descriptionName
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.descriptionName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            class="button"
+            (click)="editDescription(element.id, element.descriptionName)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            class="button"
+            (click)="deleteDescription(element.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="transactionDescriptionDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: transactionDescriptionDisplayedColumns"></tr>
+    </table>
+  </div>
+</mat-card>
+

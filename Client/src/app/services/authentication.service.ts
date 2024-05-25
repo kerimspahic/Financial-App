@@ -13,7 +13,7 @@ export class AuthenticationService {
   baseUrl = environment.baseUrl;
 
   private tokenKey = 'token';
-  public decodedToken: any = null;
+  public decodedToken: string | null = null;
   private currentUserSource = new BehaviorSubject<any>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
@@ -34,14 +34,10 @@ export class AuthenticationService {
     });
   }
 
-  public register(username: string, email: string, firstName: string, lastName: string, password: string): void {
-    this.authClient.register(username, email, firstName, lastName, password).subscribe((x) => {
-        if (isPlatformBrowser(this.platformId)) {
-          localStorage.setItem(this.tokenKey, x);
-          this.decodedToken = jwtDecode(x);
-          this.currentUserSource.next(this.decodedToken);
-        }
-        this.router.navigate(['/dashboard']);
+  public register(username: string, email: string, firstName: string, lastName: string, password: string, confirmPassword: string): void {
+    this.authClient.register(username, email, firstName, lastName, password,confirmPassword).subscribe((x) => {
+
+        this.router.navigate(['/registration-success']);
       });
   }
 

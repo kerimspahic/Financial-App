@@ -1,10 +1,14 @@
-<mat-toolbar color="primary" class="app-toolbar">
-    <span class="sidebar-brand-text mx-3">Financial App</span>
-    <span class="spacer"></span> <!-- Add a spacer to push content to the right -->
-    <button *ngIf="(authService.currentUser$| async) as user" mat-button [matMenuTriggerFor]="menu">Welcome
-        {{user.given_name | titlecase}} {{user.family_name | titlecase}}</button>
-    <mat-menu #menu="matMenu">
-        <button mat-menu-item>Edit Profile</button>
-        <button mat-menu-item (click)="logout()">Logout</button>
-    </mat-menu>
-</mat-toolbar>
+<div class="app-toolbar">
+  <h1>{{ pageTitle | titlecase}}</h1><!--Change to dispay the current site-->
+
+  <button class="google-button" *ngIf="authService.currentUser$ | async as user" [matMenuTriggerFor]="menu">Welcome {{ user.given_name | titlecase }} {{ user.family_name | titlecase }}</button>
+  <mat-menu #menu="matMenu">
+    <button
+      *ngIf="authService.currentUser$ | async as user"
+      mat-menu-item
+      (click)="editUserInformation()">
+      Edit Profile
+    </button>
+    <button mat-menu-item (click)="logout()">Logout</button>
+  </mat-menu>
+</div>

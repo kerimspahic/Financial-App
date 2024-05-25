@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using API.DTOs;
 using API.Interface;
 using Microsoft.AspNetCore.Authorization;
@@ -7,10 +8,11 @@ namespace API.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly IAccountRepository _account;
-        public AccountController(IAccountRepository account)
+        private readonly IAccountRepository _accountRepository;
+
+        public AccountController(IAccountRepository accountRepository)
         {
-            _account = account;
+            _accountRepository = accountRepository;
         }
 
         [AllowAnonymous]
@@ -18,14 +20,26 @@ namespace API.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(ModelState);
 
-            var currentUser = await _account.Register(registerDto);
+            try
+            {
+                var userId = await _accountRepository.Register(registerDto);
+                var token = await _accountRepository.GenerateEmailConfirmationTokenAsync(registerDto.Email);
 
-            if (currentUser == null)
-                return NotFound();
+                if (!new EmailAddressAttribute().IsValid(registerDto.Email))
+                {
+                    return BadRequest(new { Error = "Invalid email format" });
+                }
 
-            return Ok(currentUser);
+                // Assume SendConfirmationEmail is a method to send email
+                await _accountRepository.SendConfirmationEmail(registerDto.Email, token);
+                return Ok("Registration successful. Please check your email to confirm your account.");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
         }
 
         [AllowAnonymous]
@@ -35,12 +49,29 @@ namespace API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var currentUser = await _account.Login(loginDto);
+            try
+            {
+                var token = await _accountRepository.Login(loginDto);
+                return Ok(token);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { Error = ex.Message });
+            }
+        }
 
-            if (currentUser == null)
-                return NotFound();
+        [AllowAnonymous]
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+                return BadRequest("User ID and token are required");
 
-            return Ok(currentUser);
+            var result = await _accountRepository.ConfirmEmailAsync(userId, token);
+            if (result.Succeeded)
+                return Ok("Email confirmed successfully");
+
+            return BadRequest(result.Errors);
         }
     }
 }

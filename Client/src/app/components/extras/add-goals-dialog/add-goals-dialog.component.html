@@ -1,0 +1,39 @@
+
+<mat-dialog-content>
+  <form [formGroup]="financialGoalForm">
+    <mat-form-field>
+      <mat-label>Yearly Profit Goal</mat-label>
+      <input matInput formControlName="yearlyProfitGoal" type="number">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Yearly Gain Goal</mat-label>
+      <input matInput formControlName="yearlyGainGoal" type="number">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Yearly Spent Limit</mat-label>
+      <input matInput formControlName="yearlySpentLimit" type="number">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Monthly Profit Goal</mat-label>
+      <input matInput formControlName="monthlyProfitGoal" type="number">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Monthly Gain Goal</mat-label>
+      <input matInput formControlName="monthlyGainGoal" type="number">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Monthly Spent Limit</mat-label>
+      <input matInput formControlName="monthlySpentLimit" type="number">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!financialGoalForm.valid">Submit</button>
+</mat-dialog-actions>

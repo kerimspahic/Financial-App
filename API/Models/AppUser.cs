@@ -6,6 +6,6 @@ namespace API.Models
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
-        public List<Exchange> Exchanges { get; set; } = new List<Exchange>();
+        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }
