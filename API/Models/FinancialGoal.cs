@@ -4,6 +4,7 @@ namespace API.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
+        public double TotalProfit { get; set; }
         public double YearlyProfitGoal { get; set; }
         public double YearlyGainGoal { get; set; }
         public double YearlySpentLimit { get; set; }

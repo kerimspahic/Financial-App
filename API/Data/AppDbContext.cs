@@ -14,6 +14,7 @@ namespace API.Data
 
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<TransactionDescriptions> TransactionDescriptions { get; set; }
+        public DbSet<AutomaticTransactions> AutomaticTransactions { get; set; }
         public DbSet<FinancialGoal> FinancialGoals { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {

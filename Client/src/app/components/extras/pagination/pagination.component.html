@@ -1,18 +1,17 @@
 <div>
-  <span class="page-counts"
-    >{{ getMin() }} - {{ getMax() }} ({{ count }}) transactions </span
-  >
+  <span class="page-counts">
+    {{ getMin() }} - {{ getMax() }} ({{ count }}) transactions 
+  </span>
   <span class="page-totals">{{ totalPages() }} total pages</span>
   <div class="pagination" *ngIf="count > 0">
-
-    <select onchange="onSelectionChange()">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="20">20</option>
+    <select [(ngModel)]="selectedValue" (change)="onSelectionChange()">
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="20">20</option>
     </select>
-  
+
     <button
-    class="btn btn-small btn-info"
+      class="btn btn-small btn-info"
       (click)="onPrev()"
       [disabled]="page === 1"
       [ngClass]="{ disabled: page === 1}"
@@ -21,7 +20,7 @@
     </button>
 
     <button
-    class="btn btn-small btn-info btn-pageNumber" 
+      class="btn btn-small btn-info btn-pageNumber" 
       *ngFor="let pageNum of getPages()"
       (click)="onPage(pageNum)"
       [ngClass]="{ active: pageNum === page}"
@@ -30,7 +29,7 @@
     </button>
 
     <button
-    class="btn btn-small btn-info" 
+      class="btn btn-small btn-info" 
       (click)="onNext()"
       [disabled]="isLastPage()"
       [ngClass]="{ disabled: isLastPage()}"

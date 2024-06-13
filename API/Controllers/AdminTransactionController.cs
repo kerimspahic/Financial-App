@@ -35,9 +35,9 @@ namespace API.Controllers
 
         [Authorize(Policy = "ElevatedRights")]
         [HttpPut("UpdateTransactionDescription")]
-        public async Task<IActionResult> UpdateTransactionDescription(int id, string descriptionName)
+        public async Task<IActionResult> UpdateTransactionDescription(int id, string descriptionName, bool descriptionType)
         {
-            return Ok(await _adminTransaction.UpdateTransactionDescription(id, descriptionName));
+            return Ok(await _adminTransaction.UpdateTransactionDescription(id, descriptionName,descriptionType));
         }
         
         [Authorize(Policy = "ElevatedRights")]

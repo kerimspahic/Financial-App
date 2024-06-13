@@ -3,8 +3,16 @@
   <mat-form-field>
     <input matInput [(ngModel)]="data.description" placeholder="Enter new description">
   </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Description Type</mat-label>
+    <mat-select [(ngModel)]="data.type" required>
+      <mat-option [value]="true">Deposit</mat-option>
+      <mat-option [value]="false">Withdrawal</mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onCancelClick()">Cancel</button>
-  <button mat-button color="primary" (click)="onSaveClick(data.description)">Save</button>
+  <button mat-button color="primary" (click)="onSaveClick()">Save</button>
 </div>

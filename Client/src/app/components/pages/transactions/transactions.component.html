@@ -10,13 +10,45 @@
 <mat-card class="container mt-4">
   <div class="section-container">
     <h2>Transaction List</h2>
+    <!-- Filter Section -->
+    <div class="filter-section">
+      <mat-form-field>
+        <mat-label>Amount</mat-label>
+        <input matInput [(ngModel)]="filters.transactionAmount" placeholder="Enter amount">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <mat-select [(ngModel)]="filters.transactionType">
+          <mat-option [value]="true">Deposit</mat-option>
+          <mat-option [value]="false">Withdrawal</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <mat-select [(ngModel)]="filters.transactionDescription">
+          <mat-option *ngFor="let description of transactionDescriptionNames" [value]="description.id">
+            {{ description.descriptionName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="applyFilters()">Apply Filters</button>
+    </div>
+
     <table class="table table-dark table-hover">
-      <thead class="thead-dak">
+      <thead class="thead-dark">
         <tr>
-          <th>Amount</th>
-          <th>Type</th>
-          <th>Date</th>
-          <th>Description</th>
+          <th (click)="sortTransactions('transactionAmount')">
+            Amount <span *ngIf="sortBy === 'transactionAmount'">{{ isDescending ? '▼' : '▲' }}</span>
+          </th>
+          <th (click)="sortTransactions('transactionType')">
+            Type <span *ngIf="sortBy === 'transactionType'">{{ isDescending ? '▼' : '▲' }}</span>
+          </th>
+          <th (click)="sortTransactions('transactionDate')">
+            Date <span *ngIf="sortBy === 'transactionDate'">{{ isDescending ? '▼' : '▲' }}</span>
+          </th>
+          <th (click)="sortTransactions('transactionDescription')">
+            Description <span *ngIf="sortBy === 'transactionDescription'">{{ isDescending ? '▼' : '▲' }}</span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -32,10 +64,10 @@
       (goPage)="goToPage($event)"
       (goPrev)="goToPrevious()"
       (goNext)="goToNext()"
+      (pageSizeChanged)="changePageSize($event)"
       [page]="pageNumber"
       [perPage]="pageSize"
       [count]="total">
     </app-pagination>
   </div>
-
 </mat-card>

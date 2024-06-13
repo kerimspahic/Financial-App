@@ -2,6 +2,7 @@ namespace API.DTOs.FinancialGoal
 {
     public class FinancialGoalDto
     {
+        public double TotalProfitGoal { get; set; }
         public double YearlyProfitGoal { get; set; }
         public double YearlyGainGoal { get; set; }
         public double YearlySpentLimit { get; set; }

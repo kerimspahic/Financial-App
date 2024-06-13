@@ -3,7 +3,7 @@ import { Component, Output, Input, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
-  styleUrl: './pagination.component.css',
+  styleUrls: ['./pagination.component.css'],
 })
 export class PaginationComponent {
   @Input() page!: number;
@@ -15,12 +15,11 @@ export class PaginationComponent {
   @Output() goNext = new EventEmitter<boolean>();
   @Output() goPage = new EventEmitter<number>();
   @Output() pageSizeChanged = new EventEmitter<number>();
+
   selectedValue: number = 5;
 
-
   onSelectionChange() {
-    console.log("Selected value:");
-    // Add your logic here
+    this.pageSizeChanged.emit(this.selectedValue);
   }
   
   onPrev(): void {

@@ -2,6 +2,11 @@
 <mat-dialog-content>
   <form [formGroup]="financialGoalForm">
     <mat-form-field>
+      <mat-label>Total Profit Goal</mat-label>
+      <input matInput formControlName="totalProfitGoal" type="number">
+    </mat-form-field>
+
+    <mat-form-field>
       <mat-label>Yearly Profit Goal</mat-label>
       <input matInput formControlName="yearlyProfitGoal" type="number">
     </mat-form-field>

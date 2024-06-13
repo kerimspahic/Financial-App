@@ -9,7 +9,8 @@ namespace API.Mappers
         {
             return new SetDescriptionNameDto
             {
-                DescriptionName = dto.DescriptionName
+                DescriptionName = dto.DescriptionName,
+                DescriptionType = dto.DescriptionType
             };
         }
 
@@ -17,7 +18,8 @@ namespace API.Mappers
         {
             return new TransactionDescriptions
             {
-                DescriptionName = dto.DescriptionName
+                DescriptionName = dto.DescriptionName,
+                DescriptionType = dto.DescriptionType
             };
         }
     }

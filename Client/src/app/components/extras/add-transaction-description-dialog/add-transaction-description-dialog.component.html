@@ -3,6 +3,15 @@
   <mat-form-field class="full-width">
     <input matInput placeholder="Description Name" name="descriptionName" [(ngModel)]="descriptionName" required>
   </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Description Type</mat-label>
+    <mat-select [(ngModel)]="descriptionType" required>
+      <mat-option [value]="true">Deposit</mat-option>
+      <mat-option [value]="false">Withdrawal</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="closeDialog()">Cancel</button>

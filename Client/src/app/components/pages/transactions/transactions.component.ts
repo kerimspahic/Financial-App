@@ -8,20 +8,26 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',
-  styleUrl: './transactions.component.css',
+  styleUrls: ['./transactions.component.css'],
 })
 export class TransactionsComponent implements OnInit {
-  public transactionDescriptiuonNames!: any;
+  public transactionDescriptionNames: TransactionDescriptions[] = [];
+  public transactions: Transaction[] = [];
+  public total = 0;
+  public pageNumber = 1;
+  public pageSize = 5;
+  public sortBy = 'transactionDate'; // Default sort field
+  public isDescending = true; // Default sort order
+  public filters = {
+    transactionAmount: null,
+    transactionType: null,
+    transactionDescription: null,
+  };
 
   constructor(
-    public transactionClient: TransactionClient,
-    public dialog: MatDialog
+    private transactionClient: TransactionClient,
+    private dialog: MatDialog
   ) {}
-
-  transactions!: Transaction[];
-  total = 0;
-  pageNumber = 1;
-  pageSize = 5;
 
   ngOnInit(): void {
     this.loadTransactionDescriptionNames();
@@ -33,53 +39,73 @@ export class TransactionsComponent implements OnInit {
       width: '400px',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
       this.getTransactions();
     });
   }
 
-  loadTransactionDescriptionNames() {
-    this.transactionClient.getTransactionDesciptionNames().subscribe(
-      (descriptions: TransactionDescriptions) => {
-        this.transactionDescriptiuonNames = descriptions;
+  private loadTransactionDescriptionNames(): void {
+    this.transactionClient.getTransactionDescriptionNames().subscribe(
+      (descriptions: TransactionDescriptions[]) => {
+        this.transactionDescriptionNames = descriptions;
       },
       (error) => {
         console.error('Error fetching transaction descriptions:', error);
       }
     );
   }
-  //new ones
 
-  getTransactions(): void {
-    this.transactionClient
-      .getTransactionData(this.pageNumber, this.pageSize)
-      .subscribe((res) => {
-        this.transactions = res['page']['data'];
-        this.total = res['page'].total;
-      });
+  private getTransactions(): void {
+    this.transactionClient.getTransactionData(this.pageNumber, this.pageSize, this.sortBy, this.isDescending, this.filters).subscribe(
+      (res) => {
+        this.transactions = res.page.data;
+        this.total = res.page.total;
+      },
+      (error) => {
+        console.error('Error fetching transactions:', error);
+      }
+    );
   }
 
-  getDescriptionName(id: number): string {
-    const description = this.transactionDescriptiuonNames.find(
-      (x: { id: number }) => x.id === id
-    );
+  public getDescriptionName(id: number): string {
+    const description = this.transactionDescriptionNames.find(desc => desc.id === id);
     return description ? description.descriptionName : 'N/A';
   }
 
-  goToPrevious(): void {
+  public goToPrevious(): void {
     this.pageNumber--;
     this.getTransactions();
   }
 
-  goToNext(): void {
+  public goToNext(): void {
     this.pageNumber++;
     this.getTransactions();
   }
 
-  goToPage(n: number): void {
+  public goToPage(n: number): void {
     this.pageNumber = n;
     this.getTransactions();
   }
-  
+
+  public changePageSize(size: number): void {
+    this.pageSize = size;
+    this.pageNumber = 1; // Reset to first page
+    this.getTransactions();
+  }
+
+  public sortTransactions(field: string): void {
+    if (this.sortBy === field) {
+      this.isDescending = !this.isDescending;
+    } else {
+      this.sortBy = field;
+      this.isDescending = true;
+    }
+    this.getTransactions();
+  }
+
+  public applyFilters(): void {
+    this.pageNumber = 1; // Reset to first page when applying filters
+    this.getTransactions();
+  }
 }
