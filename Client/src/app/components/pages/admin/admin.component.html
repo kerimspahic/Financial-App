@@ -33,13 +33,22 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="descriptionType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          descriptionType
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.descriptionType }}
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
           <button
             mat-icon-button
             class="button"
-            (click)="editDescription(element.id, element.descriptionName)"
+            (click)="editDescription(element.id, element.descriptionName,element.descriptionType)"
           >
             <mat-icon>edit</mat-icon>
           </button>

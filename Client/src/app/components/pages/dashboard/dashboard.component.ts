@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   gain: number = 0;
   spent: number = 0;
 
+  totalProfitGoal: number = 0;
   profitGoal: number = 0;
   gainGoal: number = 0;
   spentLimit: number = 0;
@@ -48,6 +49,7 @@ export class DashboardComponent implements OnInit {
 
   fetchFinancialGoals(mode: string): void {
     this.transactionService.getFinancialGoals(mode).subscribe(data => {
+      this.totalProfitGoal = data.totalProfit;
       this.profitGoal = data.profitGoal;
       this.gainGoal = data.gainGoal;
       this.spentLimit = data.spentLimit;

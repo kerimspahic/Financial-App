@@ -4,22 +4,19 @@ import { TransactionService } from '../../../services/transaction.service';
 import { TransactionDescriptions } from '../../../models/transactionDescriptions';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Transaction } from '../../../models/transaction';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-transaction-dialog',
   templateUrl: './add-transaction-dialog.component.html',
-  styleUrl: './add-transaction-dialog.component.css',
+  styleUrls: ['./add-transaction-dialog.component.css'],
 })
 export class AddTransactionDialogComponent implements OnInit {
   public transactionForm!: FormGroup;
-  public transactionDescriptiuonNames!: any; //fix this
-
-  filterDates = (d: Date | null) => {
-    const today = new Date();
-    if (d == null) return false;
-    return d <= today;
-  };
+  public transactionDescriptionNames: TransactionDescriptions[] = [];
+  public filteredTransactionDescriptions: Observable<TransactionDescriptions[]> = of([]);
 
   constructor(
     public transactionClient: TransactionClient,
@@ -28,17 +25,58 @@ export class AddTransactionDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
+    this.loadTransactionDescriptionNames();
+    this.setupFormValueChanges();
+  }
+
+  private initializeForm(): void {
     this.transactionForm = new FormGroup({
       transactionAmount: new FormControl('', [Validators.required]),
       transactionType: new FormControl('', [Validators.required]),
       transactionDate: new FormControl('', [Validators.required]),
       transactionDescription: new FormControl('', [Validators.required]),
     });
-
-    this.loadTransactionDescriptionNames();
   }
 
-  public onSubmit() {
+  private setupFormValueChanges(): void {
+    this.transactionForm.get('transactionType')?.valueChanges.subscribe(value => {
+      this.filterTransactionDescriptions(value);
+    });
+
+    this.transactionForm.get('transactionDescription')?.valueChanges.subscribe(descriptionId => {
+      const description = this.transactionDescriptionNames.find(desc => desc.id === descriptionId);
+      if (description) {
+        this.transactionForm.get('transactionType')?.setValue(description.descriptionType, { emitEvent: false });
+      }
+    });
+    
+    this.filteredTransactionDescriptions = this.transactionForm.get('transactionType')!.valueChanges.pipe(
+      startWith(null),
+      map(value => this.filterTransactionDescriptions(value))
+    );
+  }
+
+  loadTransactionDescriptionNames() {
+    this.transactionClient.getTransactionDescriptionNames().subscribe(
+      (descriptions: TransactionDescriptions[]) => { 
+        this.transactionDescriptionNames = descriptions;
+      },
+      (error) => {
+        console.error('Error fetching transaction descriptions:', error);
+      }
+    );
+  }
+  
+  private filterTransactionDescriptions(type: boolean | null): TransactionDescriptions[] {
+    return this.transactionDescriptionNames.filter(desc => type === null || desc.descriptionType === type);
+  }
+
+  public onSubmit(): void {
+    if (this.transactionForm.invalid) {
+      return;
+    }
+
     const newUserTransaction: Transaction = {
       transactionAmount: this.transactionForm.get('transactionAmount')!.value,
       transactionType: this.transactionForm.get('transactionType')!.value,
@@ -54,14 +92,10 @@ export class AddTransactionDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  loadTransactionDescriptionNames() {
-    this.transactionClient.getTransactionDesciptionNames().subscribe(
-      (descriptions: TransactionDescriptions) => {
-        this.transactionDescriptiuonNames = descriptions;
-      },
-      (error) => {
-        console.error('Error fetching transaction descriptions:', error);
-      }
-    );
-  }
+  filterDates = (d: Date | null) => {
+    const today = new Date();
+    if (d == null) return false;
+    return d <= today;
+  };
+
 }

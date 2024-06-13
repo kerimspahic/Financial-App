@@ -9,6 +9,7 @@ import { TransactionService } from '../../../services/transaction.service';
 })
 export class AddTransactionDescriptionDialogComponent {
   descriptionName: string = '';
+  descriptionType!: boolean; 
   constructor(private dialogRef: MatDialogRef<AddTransactionDescriptionDialogComponent>, private transactionService: TransactionService) { }
 
   closeDialog() {
@@ -17,7 +18,7 @@ export class AddTransactionDescriptionDialogComponent {
 
   submitTransactionDescription() {
 
-    this.transactionService.sendTransactionDescriptionData(this.descriptionName);
+    this.transactionService.sendTransactionDescriptionData(this.descriptionName,this.descriptionType);
 
     this.dialogRef.close('submitted');
   }

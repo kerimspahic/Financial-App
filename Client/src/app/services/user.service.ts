@@ -20,4 +20,6 @@ export class UserService {
   public editUserEmail(newEmail: string | null){
     this.userClient.updateEmail(newEmail).subscribe();
   }
+
+  
 }

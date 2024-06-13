@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">{{ goal.title }}</h5>
-          <p class="card-text">{{ goal.value }}</p>
+          <p class="card-text">{{ financialGoals[goal.value] }}</p>
           <button *ngIf="editingGoalId !== goal.id" mat-icon-button (click)="startEditing(goal.id)">
             <mat-icon>edit</mat-icon>
           </button>

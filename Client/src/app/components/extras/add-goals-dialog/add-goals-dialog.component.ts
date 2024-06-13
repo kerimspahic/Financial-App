@@ -20,6 +20,7 @@ export class AddGoalsDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.financialGoalForm = new FormGroup({
+      totalProfitGoal: new FormControl('', [Validators.required]),
       yearlyProfitGoal: new FormControl('', [Validators.required]),
       yearlyGainGoal: new FormControl('', [Validators.required]),
       yearlySpentLimit: new FormControl('', [Validators.required]),
@@ -32,6 +33,7 @@ export class AddGoalsDialogComponent implements OnInit {
 
   public onSubmit(){
     const newFinancialGoal: FinancialGoals = {
+      totalProfitGoal: this.financialGoalForm.get('totalProfitGoal')!.value,
       yearlyProfitGoal: this.financialGoalForm.get('yearlyProfitGoal')!.value,
       yearlyGainGoal: this.financialGoalForm.get('yearlyGainGoal')!.value,
       yearlySpentLimit: this.financialGoalForm.get('yearlySpentLimit')!.value,

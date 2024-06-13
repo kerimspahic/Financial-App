@@ -19,6 +19,19 @@ namespace API.Mappers
             };
         }
 
+          public static Transaction ToTransaction(this TransactionDto dto)
+        {
+            return new Transaction
+            {
+                Id = dto.Id,
+                TransactionAmount = dto.TransactionAmount,
+                TransactionType = dto.TransactionType,
+                TransactionDescription = dto.TransactionDescription,
+                TransactionDate = dto.TransactionDate,
+                AppUserId = dto.AppUserId
+            };
+        }      
+
         public static Transaction ToTransactionFromSet (this SetTransactionDto setTransaction, string id)
         {
             return new Transaction

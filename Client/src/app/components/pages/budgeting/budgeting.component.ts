@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BudgetingService } from '../../../services/budgeting.service';
-import { AddTransactionDialogComponent } from '../../extras/add-transaction-dialog/add-transaction-dialog.component';
+import { AddGoalsDialogComponent } from '../../extras/add-goals-dialog/add-goals-dialog.component';
 
 interface Goal {
   id: number;
@@ -15,15 +15,16 @@ interface Goal {
   styleUrl: './budgeting.component.css',
 })
 export class BudgetingComponent implements OnInit {
-  financialGoals: any;
+  financialGoals: any = {};
   newValue!: number;
   goals: Goal[] = [
-    { id: 1, value: 'yearlyProfitGoal', title: 'Yearly Profit Goal' },
-    { id: 2, value: 'yearlyGainGoal', title: 'Yearly Gain Goal' },
-    { id: 3, value: 'yearlySpentLimit', title: 'Yearly Spent Limit' },
-    { id: 4, value: 'monthlyProfitGoal', title: 'Monthly Profit Goal' },
-    { id: 5, value: 'monthlyGainGoal', title: 'Monthly Gain Goal' },
-    { id: 6, value: 'monthlySpentLimit', title: 'Monthly Spent Limit' },
+    { id: 1, value: 'totalProfitGoal', title: 'Total Profit Goal' },
+    { id: 2, value: 'yearlyProfitGoal', title: 'Yearly Profit Goal' },
+    { id: 3, value: 'yearlyGainGoal', title: 'Yearly Gain Goal' },
+    { id: 4, value: 'yearlySpentLimit', title: 'Yearly Spent Limit' },
+    { id: 5, value: 'monthlyProfitGoal', title: 'Monthly Profit Goal' },
+    { id: 6, value: 'monthlyGainGoal', title: 'Monthly Gain Goal' },
+    { id: 7, value: 'monthlySpentLimit', title: 'Monthly Spent Limit' },
   ];
 
   editingGoalId: number | null = null;
@@ -59,7 +60,7 @@ export class BudgetingComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(AddTransactionDialogComponent, {
+    const dialogRef = this.dialog.open(AddGoalsDialogComponent, {
       width: '400px',
     });
 

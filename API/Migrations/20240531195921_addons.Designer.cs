@@ -4,6 +4,7 @@ using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240531195921_addons")]
+    partial class addons
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,43 +94,6 @@ namespace API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("API.Models.AutomaticTransactions", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Frequency")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("InsertedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("NextExecutionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("TransactionAmount")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TransactionDescription")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("TransactionType")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AutomaticTransactions");
                 });
 
             modelBuilder.Entity("API.Models.FinancialGoal", b =>
@@ -254,13 +220,13 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1242dcda-6627-455a-9199-ace9d7f13673",
+                            Id = "5ed3fbda-93ad-4a30-8cd4-bcb787b4bff3",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "02b2e52c-d125-42ad-9815-c1eccc0c1e7a",
+                            Id = "3f99618f-9c53-476f-ab85-7ea8d2f3baaa",
                             Name = "User",
                             NormalizedName = "USER"
                         });

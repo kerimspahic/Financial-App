@@ -1,18 +1,15 @@
 using System.Net;
 using System.Net.Mail;
 using API.Interface;
-using Microsoft.Extensions.Logging;
 
 namespace API.Service
 {
     public class EmailService : IEmailService
     {
-        private readonly IConfiguration _configuration;
         private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
+        public EmailService(ILogger<EmailService> logger)
         {
-            _configuration = configuration;
             _logger = logger;
         }
 

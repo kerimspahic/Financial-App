@@ -9,6 +9,7 @@ namespace API.Mappers
         {
             return new FinancialGoalDto
             {
+                TotalProfitGoal = financialGoal.TotalProfit,
                 YearlyProfitGoal = financialGoal.YearlyProfitGoal,
                 YearlyGainGoal = financialGoal.YearlyGainGoal,
                 YearlySpentLimit = financialGoal.YearlySpentLimit,
@@ -23,6 +24,7 @@ namespace API.Mappers
             return new FinancialGoal
             {
                 UserId = userId,
+                TotalProfit = financialGoalDto.TotalProfitGoal,
                 YearlyProfitGoal = financialGoalDto.YearlyProfitGoal,
                 YearlyGainGoal = financialGoalDto.YearlyGainGoal,
                 YearlySpentLimit = financialGoalDto.YearlySpentLimit,
@@ -34,6 +36,7 @@ namespace API.Mappers
 
         public static void UpdateFinancialGoalFromDto(this FinancialGoal existingGoal, FinancialGoalDto financialGoalDto)
         {
+            existingGoal.TotalProfit = financialGoalDto.TotalProfitGoal;
             existingGoal.YearlyProfitGoal = financialGoalDto.YearlyProfitGoal;
             existingGoal.YearlyGainGoal = financialGoalDto.YearlyGainGoal;
             existingGoal.YearlySpentLimit = financialGoalDto.YearlySpentLimit;
@@ -47,6 +50,7 @@ namespace API.Mappers
         {
             return new GetFinancialGoalsDto
             {
+                TotalProfit = financialGoalsDto.TotalProfitGoal,
                 ProfitGoal = financialGoalsDto.YearlyProfitGoal,
                 GainGoal = financialGoalsDto.YearlyGainGoal,
                 SpentLimit = financialGoalsDto.YearlySpentLimit
@@ -57,6 +61,7 @@ namespace API.Mappers
         {
             return new GetFinancialGoalsDto
             {
+                TotalProfit = financialGoalsDto.TotalProfitGoal,
                 ProfitGoal = financialGoalsDto.MonthlyProfitGoal,
                 GainGoal = financialGoalsDto.MonthlyGainGoal,
                 SpentLimit = financialGoalsDto.MonthlySpentLimit
@@ -68,6 +73,7 @@ namespace API.Mappers
             {
                 Id = financialGoal.Id,
                 UserId = financialGoal.UserId,
+                TotalProfitGoal = financialGoal.TotalProfit,
                 YearlyProfitGoal = financialGoal.YearlyProfitGoal,
                 YearlyGainGoal = financialGoal.YearlyGainGoal,
                 YearlySpentLimit = financialGoal.YearlySpentLimit,

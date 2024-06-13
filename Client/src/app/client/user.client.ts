@@ -37,4 +37,10 @@ export class UserClient {
       })
     );
   }
+
+  getAllUsers(): Observable<Object> {
+    return this.loaderService.wrapHttpRequest(
+      this.http.get(environment.userUrl+'GetAppUsers')
+    );
+  }
 }

@@ -85,6 +85,9 @@ namespace API.Controllers
 
             switch (column.ToLower())
             {
+                case "totalprofitgoal":
+                    return Ok(financialGoals.TotalProfit);
+
                 case "yearlyprofitgoal":
                     return Ok(financialGoals.YearlyProfitGoal);
 
@@ -126,6 +129,11 @@ namespace API.Controllers
 
             switch (column.ToLower())
             {
+                case "totalprofitgoal":
+                    financialGoal.TotalProfit = newValue;
+                    financialGoal.DateEdited = DateTime.Now;
+                    break;
+
                 case "yearlyprofitgoal":
                     financialGoal.YearlyProfitGoal = newValue;
                     financialGoal.DateEdited = DateTime.Now;

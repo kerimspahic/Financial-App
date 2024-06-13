@@ -67,8 +67,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IAdminTransactionRepository, AdminTransactionRepository>();
 builder.Services.AddScoped<IFinancialGoalRepository, FinancialGoalRepository>();
-builder.Services.AddScoped<IEmailService,EmailService>();
-builder.Services.AddScoped<ITransactionCalculationsRepository,TransactionCalculationsRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<AutomaticTransactionService>();
+builder.Services.AddScoped<ITransactionCalculationsRepository, TransactionCalculationsRepository>();
+builder.Services.AddScoped<IAutomaticTransactionRepository, AutomaticTransactionRepository>();
+
 
 builder.Services.AddCors(options =>
 {

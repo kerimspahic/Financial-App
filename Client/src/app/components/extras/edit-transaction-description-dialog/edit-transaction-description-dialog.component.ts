@@ -4,16 +4,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-edit-transaction-description-dialog',
   templateUrl: './edit-transaction-description-dialog.component.html',
-  styleUrl: './edit-transaction-description-dialog.component.css'
+  styleUrl: './edit-transaction-description-dialog.component.css',
 })
 export class EditTransactionDescriptionDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<EditTransactionDescriptionDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { description: string }
+    @Inject(MAT_DIALOG_DATA) public data: { description: string; type: boolean }
   ) {}
 
-  onSaveClick(newDescription: string): void {
-    this.dialogRef.close(newDescription);
+  onSaveClick(): void {
+    this.dialogRef.close({
+      description: this.data.description,
+      type: this.data.type,
+    });
   }
 
   onCancelClick(): void {

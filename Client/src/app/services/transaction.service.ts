@@ -3,7 +3,6 @@ import { TransactionClient } from '../client/transaction.client';
 import { Transaction } from '../models/transaction';
 import { Observable } from 'rxjs';
 import { TransactionDescriptions } from '../models/transactionDescriptions';
-import { DashboardCharts } from '../models/dashboardCharts';
 
 @Injectable({
   providedIn: 'root',
@@ -15,23 +14,23 @@ export class TransactionService {
     this.transactionClient.sendTransactionData(newUserTransaction).subscribe();
   }
 
-  public getTransactionDescriptionData(): Observable<any> {
-    return this.transactionClient.getTransactionDesciptionNames();
+  public getTransactionDescriptionData(): Observable<TransactionDescriptions[]> {
+    return this.transactionClient.getTransactionDescriptionNames();
   }
 
-  public sendTransactionDescriptionData(descriptionName: string): void {
-    this.transactionClient.addTransactionDescription(descriptionName).subscribe();
+  public sendTransactionDescriptionData(descriptionName: string, descriptionType: boolean): void {
+    this.transactionClient.addTransactionDescription(descriptionName, descriptionType).subscribe();
   }
 
-  public deleteTransactionDescriptionData(id : number):void {
+  public deleteTransactionDescriptionData(id: number): void {
     this.transactionClient.deleteTransactionDescription(id).subscribe();
   }
 
-  public editTransactionDescriptionData(newTransactionDescription: TransactionDescriptions){
+  public editTransactionDescriptionData(newTransactionDescription: TransactionDescriptions): void {
     this.transactionClient.updateTransactionDescription(newTransactionDescription).subscribe();
   }
 
-  public getDashboardValues(): Observable<any>{
+  public getDashboardValues(): Observable<any> {
     return this.transactionClient.getDashboardValues();
   }
 

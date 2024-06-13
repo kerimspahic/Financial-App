@@ -6,5 +6,6 @@ namespace API.DTOs.Admin
     {
         [Required]
         public string DescriptionName { get; set; }
+        public bool DescriptionType { get; set; }
     }
 }

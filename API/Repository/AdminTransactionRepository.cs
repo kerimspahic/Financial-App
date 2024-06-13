@@ -39,7 +39,7 @@ namespace API.Repository
             return descriptionName;
         }
 
-        public async Task<TransactionDescriptions> UpdateTransactionDescription(int id, string descriptionName)
+        public async Task<TransactionDescriptions> UpdateTransactionDescription(int id, string descriptionName, bool descriptionType)
         {
             var transactionName = await _context.TransactionDescriptions.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -47,6 +47,7 @@ namespace API.Repository
                 return null;
 
             transactionName.DescriptionName = descriptionName;
+            transactionName.DescriptionType = descriptionType;
             await _context.SaveChangesAsync();
 
             return transactionName;

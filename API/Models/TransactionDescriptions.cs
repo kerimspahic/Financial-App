@@ -4,5 +4,6 @@ namespace API.Models
     {
         public int Id { get; set; }
         public string DescriptionName { get; set; }
+        public bool DescriptionType { get; set; }
     }
 }
