@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BudgetingService } from '../../../services/budgeting.service';
 import { AddGoalsDialogComponent } from '../../extras/add-goals-dialog/add-goals-dialog.component';
+import { AutomaticTransaction } from '../../../models/automaticTransaction';
+import { NewAutomaticTransactionDialogComponent } from '../../extras/new-automatic-transaction-dialog/new-automatic-transaction-dialog.component';
 
 interface Goal {
   id: number;
@@ -12,7 +14,7 @@ interface Goal {
 @Component({
   selector: 'app-budgeting',
   templateUrl: './budgeting.component.html',
-  styleUrl: './budgeting.component.css',
+  styleUrls: ['./budgeting.component.css'],
 })
 export class BudgetingComponent implements OnInit {
   financialGoals: any = {};
@@ -27,6 +29,7 @@ export class BudgetingComponent implements OnInit {
     { id: 7, value: 'monthlySpentLimit', title: 'Monthly Spent Limit' },
   ];
 
+  automaticTransactions: AutomaticTransaction[] = []; // Property to store automatic transactions
   editingGoalId: number | null = null;
 
   constructor(
@@ -36,6 +39,7 @@ export class BudgetingComponent implements OnInit {
 
   ngOnInit() {
     this.loadFinancialGoals();
+    this.loadAutomaticTransactions(); // Load automatic transactions on init
   }
 
   startEditing(goalId: number): void {
@@ -59,17 +63,55 @@ export class BudgetingComponent implements OnInit {
     });
   }
 
+  loadAutomaticTransactions() {
+    this.budgetingService.getAutomaticTransactions().subscribe((transactions) => {
+      this.automaticTransactions = transactions;
+    });
+  }
+
+  getTransactionDescription(descriptionId: number): string {
+    // Implement a method to get transaction description by id if needed
+    return ''; // Placeholder
+  }
+
+  getDaysLeft(nextExecutionDate: Date): number {
+    const today = new Date();
+    const executionDate = new Date(nextExecutionDate);
+    const timeDiff = executionDate.getTime() - today.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return daysDiff;
+  }
+
+  deleteTransaction(transactionId: number): void {
+    this.budgetingService.deleteAutomaticTransaction(transactionId).subscribe(() => {
+      this.loadAutomaticTransactions();
+    });
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(AddGoalsDialogComponent, {
       width: '400px',
     });
 
-    dialogRef.afterClosed().subscribe((result) =>{
-    console.log('The dialog was closed');
-    this.loadFinancialGoals();
-    })
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      this.loadFinancialGoals();
+    });
   }
 
-  confirmDelete(): void {
+  openInsertTransactionDialog(): void {
+    const dialogRef = this.dialog.open(NewAutomaticTransactionDialogComponent, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe((result: AutomaticTransaction) => {
+      if (result) {
+        this.budgetingService.createAutomaticTransaction(result).subscribe(() => {
+          this.loadAutomaticTransactions();
+        });
+      }
+    });
   }
+
+  confirmDelete(): void {}
 }

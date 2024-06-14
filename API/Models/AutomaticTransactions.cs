@@ -3,7 +3,6 @@ namespace API.Models
     public class AutomaticTransactions
     {
         public int Id { get; set; }
-
         public double TransactionAmount { get; set; }
         public bool TransactionType { get; set; }
         public int TransactionDescription { get; set; }

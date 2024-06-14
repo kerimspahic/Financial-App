@@ -7,5 +7,6 @@ export const environment = {
   weatherUrl: 'https://localhost:5001/WeatherForecast/',
   adminTransactionUrl: 'https://localhost:5001/AdminTransaction/',
   financialGoalUrl: 'https://localhost:5001/FinancialGoals/',
-  transactionCalculationsUrl: 'https://localhost:5001/TransactionCalculations/'
+  transactionCalculationsUrl: 'https://localhost:5001/TransactionCalculations/',
+  automaticTransactionUrl: 'https://localhost:5001/AutomaticTransaction/'
 };

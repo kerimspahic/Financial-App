@@ -3,9 +3,9 @@ using API.Interface;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
 using API.Helpers;
-using API.DTOs.Transaction;
 using API.Response;
 using API.DTOs;
+
 namespace API.Repository
 {
     public class TransactionRepository : ITransactionRepository
@@ -33,13 +33,6 @@ namespace API.Repository
 
             return page;
         }
-        /*
-        public async Task<List<Transaction>> GetAllTransactions(QueryObject query)
-        {
-            var transactions = FilterTransactionsByQuery(_context.Transactions.AsQueryable(), query);
-            return await ApplyPagination(transactions, query).ToListAsync();
-        }
-        */
 
         private IQueryable<TransactionDto> FilterTransactionsByQuery(IQueryable<TransactionDto> transactions, QueryObject query)
         {
@@ -86,9 +79,29 @@ namespace API.Repository
             return transactionModel;
         }
 
-        public Task<Transaction> UpdateTransaction(Transaction transactionModel)
+ public async Task<Transaction> UpdateTransaction(UpdateTransactionDto updateTransactionDto, string userId)
         {
-            throw new NotImplementedException();
+            var transaction = await _context.Transactions
+                .FirstOrDefaultAsync(x => x.Id == updateTransactionDto.Id && x.AppUserId == userId);
+
+            if (transaction == null)
+                return null;
+
+            if (updateTransactionDto.TransactionAmount.HasValue)
+                transaction.TransactionAmount = updateTransactionDto.TransactionAmount.Value;
+
+            if (updateTransactionDto.TransactionType.HasValue)
+                transaction.TransactionType = updateTransactionDto.TransactionType.Value;
+
+            if (updateTransactionDto.TransactionDescription.HasValue)
+                transaction.TransactionDescription = updateTransactionDto.TransactionDescription.Value;
+
+            if (updateTransactionDto.TransactionDate.HasValue)
+                transaction.TransactionDate = updateTransactionDto.TransactionDate.Value;
+
+            await _context.SaveChangesAsync();
+
+            return transaction;
         }
         public async Task<Transaction> DeleteTransaction(int id)
         {
@@ -107,37 +120,5 @@ namespace API.Repository
         {
             return await _context.Users.AnyAsync(s => s.Id == id);
         }
-
-
-
-        /*
-public async Task<DashboardChartsDto> GetDashboardChartValues(string id)
-{
-  var transactions = _context.Transactions.Where(e => e.AppUserId == id);
-
-
-  var transactionDeposits = await transactions.Where(e => e.AppUserId == id && e.TransactionType == true)
-      .Select(e => (double)e.TransactionAmount).ToArrayAsync();
-
-  var transactionWithdrawals = await transactions.Where(e => e.AppUserId == id && !e.TransactionType)
-      .Select(e => (double)e.TransactionAmount).ToArrayAsync();
-
-  var allTransactions = await transactions.Where(e => e.AppUserId == id)
-      .Select(e => (double)(e.TransactionType ? e.TransactionAmount : -e.TransactionAmount)).ToArrayAsync();
-
-  /*
-  foreach(var item in transactions.Where(e => e.AppUserId == id))
-  {
-
-  }//ddd
-  var dashboardChartsDto = new DashboardChartsDto
-  {
-      TransactionDeposits = transactionDeposits,
-      TransactionWithdrawals = transactionWithdrawals,
-      AllTransactions = allTransactions
-  };
-
-  return dashboardChartsDto;
-}*/
     }
 }

@@ -16,28 +16,49 @@ namespace API.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<AutomaticTransactionDto>> GetDueScheduledTransactionsAsync()
+        public async Task<AutomaticTransactions> CreateAutomaticTransaction(AutomaticTransactions automaticTransaction)
         {
-            var now = DateTime.UtcNow;
-            var scheduledTransactions = await _context.AutomaticTransactions
-                                                      .Where(st => st.NextExecutionDate <= now)
-                                                      .ToListAsync();
-
-            return scheduledTransactions.Select(st => st.ToScheduledTransactionDto());
-        }
-
-        public async Task SetTransactionAsync(Transaction transaction)
-        {
-            await _context.Transactions.AddAsync(transaction);
+            await _context.AutomaticTransactions.AddAsync(automaticTransaction);
             await _context.SaveChangesAsync();
+            return automaticTransaction;
         }
 
-        public async Task UpdateScheduledTransactionAsync(AutomaticTransactionDto dto)
+        public async Task<List<AutomaticTransactions>> GetAutomaticTransactions()
         {
-            var scheduledTransaction = dto.ToScheduledTransaction();
-            _context.AutomaticTransactions.Update(scheduledTransaction);
-            await _context.SaveChangesAsync();
+            return await _context.AutomaticTransactions.ToListAsync();
         }
 
+        public async Task<AutomaticTransactions> GetAutomaticTransactionById(int id)
+        {
+            return await _context.AutomaticTransactions.FindAsync(id);
+        }
+
+        public async Task<AutomaticTransactions> UpdateAutomaticTransaction(AutomaticTransactions automaticTransaction)
+        {
+            var existingTransaction = await _context.AutomaticTransactions.FindAsync(automaticTransaction.Id);
+            if (existingTransaction == null)
+                return null;
+
+            existingTransaction.TransactionAmount = automaticTransaction.TransactionAmount;
+            existingTransaction.TransactionType = automaticTransaction.TransactionType;
+            existingTransaction.TransactionDescription = automaticTransaction.TransactionDescription;
+            existingTransaction.TransactionDate = automaticTransaction.TransactionDate;
+            existingTransaction.Frequency = automaticTransaction.Frequency;
+            existingTransaction.NextExecutionDate = automaticTransaction.NextExecutionDate;
+
+            await _context.SaveChangesAsync();
+            return existingTransaction;
+        }
+
+        public async Task<AutomaticTransactions> DeleteAutomaticTransaction(int id)
+        {
+            var automaticTransaction = await _context.AutomaticTransactions.FindAsync(id);
+            if (automaticTransaction == null)
+                return null;
+
+            _context.AutomaticTransactions.Remove(automaticTransaction);
+            await _context.SaveChangesAsync();
+            return automaticTransaction;
+        }
     }
 }

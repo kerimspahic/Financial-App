@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API.DTOs.Transaction;
 using API.Models;
 
 namespace API.Interface
 {
     public interface IAutomaticTransactionRepository
     {
-        Task<IEnumerable<AutomaticTransactionDto>> GetDueScheduledTransactionsAsync();
-        Task SetTransactionAsync(Transaction transaction);
-        Task UpdateScheduledTransactionAsync(AutomaticTransactionDto automaticTransactionDto);
+        Task<AutomaticTransactions> CreateAutomaticTransaction(AutomaticTransactions automaticTransaction);
+        Task<List<AutomaticTransactions>> GetAutomaticTransactions();
+        Task<AutomaticTransactions> GetAutomaticTransactionById(int id);
+        Task<AutomaticTransactions> UpdateAutomaticTransaction(AutomaticTransactions automaticTransaction);
+        Task<AutomaticTransactions> DeleteAutomaticTransaction(int id);
     }
 }
