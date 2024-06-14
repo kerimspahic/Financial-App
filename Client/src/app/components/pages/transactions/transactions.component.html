@@ -1,31 +1,22 @@
 <mat-card class="container mt-4">
-  <mat-card-title>New Transaction</mat-card-title>
-  <mat-card-content>
-    <button mat-raised-button color="primary" (click)="openNewTransactionDialog()">
-      Add New Transaction
-    </button>
-  </mat-card-content>
-</mat-card>
-
-<mat-card class="container mt-4">
   <div class="section-container">
     <h2>Transaction List</h2>
     <!-- Filter Section -->
     <div class="filter-section">
       <mat-form-field>
         <mat-label>Amount</mat-label>
-        <input matInput [(ngModel)]="filters.transactionAmount" placeholder="Enter amount">
+        <input matInput [(ngModel)]="filters.amount" placeholder="Enter amount">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Type</mat-label>
-        <mat-select [(ngModel)]="filters.transactionType">
+        <mat-select [(ngModel)]="filters.type">
           <mat-option [value]="true">Deposit</mat-option>
           <mat-option [value]="false">Withdrawal</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Description</mat-label>
-        <mat-select [(ngModel)]="filters.transactionDescription">
+        <mat-select [(ngModel)]="filters.description">
           <mat-option *ngFor="let description of transactionDescriptionNames" [value]="description.id">
             {{ description.descriptionName }}
           </mat-option>
@@ -49,6 +40,7 @@
           <th (click)="sortTransactions('transactionDescription')">
             Description <span *ngIf="sortBy === 'transactionDescription'">{{ isDescending ? '▼' : '▲' }}</span>
           </th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -57,6 +49,14 @@
           <td>{{ transaction.transactionType ? 'Deposit' : 'Withdrawal' }}</td>
           <td>{{ transaction.transactionDate | date: 'mediumDate' }}</td>
           <td>{{ getDescriptionName(transaction.transactionDescription) }}</td>
+          <td>
+            <button mat-icon-button color="primary" (click)="openEditTransactionDialog(transaction)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteTransaction(transaction.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>

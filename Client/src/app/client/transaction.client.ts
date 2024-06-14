@@ -21,14 +21,14 @@ export class TransactionClient {
     filters: any
   ): Observable<any> {
     const params: any = { pageNumber, pageSize, sortBy, isDescending: isDescending.toString() };
-    if (filters.transactionAmount !== null) {
-      params.transactionAmount = filters.transactionAmount;
+    if (filters.amount !== null) {
+      params.amount = filters.amount;
     }
-    if (filters.transactionType !== null) {
-      params.transactionType = filters.transactionType;
+    if (filters.type !== null) {
+      params.type = filters.type;
     }
-    if (filters.transactionDescription !== null) {
-      params.transactionDescription = filters.transactionDescription;
+    if (filters.description !== null) {
+      params.description = filters.description;
     }
     return this.loaderService.wrapHttpRequest(
       this.http.get(environment.transactionUrl + `GetUserTransactions`, { params })
@@ -80,6 +80,18 @@ export class TransactionClient {
         `${environment.adminTransactionUrl}UpdateTransactionDescription?id=${newTransactionDescription.id}&descriptionName=${newTransactionDescription.descriptionName}&descriptionType=${newTransactionDescription.descriptionType}`,
         {}
       )
+    );
+  }
+
+  public removeTransaction(id: number): Observable<any> {
+    return this.loaderService.wrapHttpRequest(
+      this.http.delete(`${environment.transactionUrl}Remove?id=${id}`)
+    );
+  }
+
+  public updateTransaction(transaction: Transaction): Observable<any> {
+    return this.loaderService.wrapHttpRequest(
+      this.http.put(environment.transactionUrl + 'UpdateTransaction', transaction)
     );
   }
 

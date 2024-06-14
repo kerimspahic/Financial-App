@@ -54,6 +54,8 @@ import { PaginationComponent } from './components/extras/pagination/pagination.c
 import { ConfirmEmailComponent } from './components/authentification/confirm-email/confirm-email.component';
 import { RegistrationSuccessComponent } from './components/authentification/registration-success/registration-success.component';
 import { AddGoalsDialogComponent } from './components/extras/add-goals-dialog/add-goals-dialog.component';
+import { EditTransactionDialogComponent } from './components/extras/edit-transaction-dialog/edit-transaction-dialog.component';
+import { NewAutomaticTransactionDialogComponent } from './components/extras/new-automatic-transaction-dialog/new-automatic-transaction-dialog.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +80,8 @@ import { AddGoalsDialogComponent } from './components/extras/add-goals-dialog/ad
     ConfirmEmailComponent,
     RegistrationSuccessComponent,
     AddGoalsDialogComponent,
+    EditTransactionDialogComponent,
+    NewAutomaticTransactionDialogComponent,
   ],
   imports: [
     BrowserModule,

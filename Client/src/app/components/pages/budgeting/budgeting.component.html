@@ -5,23 +5,69 @@
         <div class="card-body">
           <h5 class="card-title">{{ goal.title }}</h5>
           <p class="card-text">{{ financialGoals[goal.value] }}</p>
-          <button *ngIf="editingGoalId !== goal.id" mat-icon-button (click)="startEditing(goal.id)">
+          <button
+            *ngIf="editingGoalId !== goal.id"
+            mat-icon-button
+            (click)="startEditing(goal.id)"
+          >
             <mat-icon>edit</mat-icon>
           </button>
           <div *ngIf="editingGoalId === goal.id">
             <input type="text" [(ngModel)]="newValue" class="form-control" />
-            <button class="btn btn-success" (click)="submitEdit(goal.value)">Submit</button>
-            <button class="btn btn-secondary" (click)="stopEditing()">Cancel</button>
+            <button class="btn btn-success" (click)="submitEdit(goal.value)">
+              Submit
+            </button>
+            <button class="btn btn-secondary" (click)="stopEditing()">
+              Cancel
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="openDialog()">Add Financial Goals</button>
-    <button mat-button color="warn" (click)="confirmDelete()">Delete</button>
-  </mat-card-actions>
+  <div>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="openDialog()">
+        Add Financial Goals
+      </button>
+      <button mat-button color="warn" (click)="confirmDelete()">Delete</button>
+    </mat-card-actions>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Pending Automatic Transactions</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Days Left</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let transaction of automaticTransactions">
+            <td>{{ transaction.transactionAmount }}</td>
+            <td>{{ transaction.transactionType ? 'Deposit' : 'Withdrawl' }}</td>
+            <td>{{ getTransactionDescription(transaction.transactionDescription) }}</td>
+            <td>{{ transaction.transactionDate | date }}</td>
+            <td>{{ getDaysLeft(transaction.nextExecutionDate) }}</td>
+            <td>
+              <button class="btn btn-danger" (click)="deleteTransaction(transaction.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="openInsertTransactionDialog()">Insert Automatic Transaction</button>
+    </mat-card-actions>
+  </div>
 </div>

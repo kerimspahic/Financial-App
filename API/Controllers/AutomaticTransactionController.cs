@@ -1,47 +1,60 @@
+using API.DTOs.Admin;
 using API.DTOs.Transaction;
 using API.Interface;
 using API.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class AutomaticTransactionController: BaseApiController
+    [Authorize]
+    public class AutomaticTransactionController : BaseApiController
     {
-        private readonly IAutomaticTransactionRepository _repository;
+        private readonly IAutomaticTransactionRepository _automaticTransactionRepository;
 
-        public AutomaticTransactionController(IAutomaticTransactionRepository repository)
+        public AutomaticTransactionController(IAutomaticTransactionRepository automaticTransactionRepository)
         {
-            _repository = repository;
-        }
-/*
-        [HttpGet("due")]
-        public async Task<ActionResult<IEnumerable<AutomaticTransactionDto>>> GetDueScheduledTransactions()
-        {
-            var dueTransactions = await _repository.GetDueScheduledTransactionsAsync();
-            return Ok(dueTransactions);
+            _automaticTransactionRepository = automaticTransactionRepository;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<AutomaticTransactionDto>> CreateScheduledTransaction(AutomaticTransactionDto dto)
+        [Authorize(Policy = "ElevatedRights")]
+        [HttpPost("CreateAutomaticTransaction")]
+        public async Task<IActionResult> CreateAutomaticTransaction(CreateAutomaticTransactionDto createDto)
         {
-            var scheduledTransaction = dto.ToScheduledTransaction();
-            _context.AutomaticTransactions.Add(scheduledTransaction);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetDueScheduledTransactions), new { id = dto.Id }, dto);
+            var transaction = createDto.ToAutomaticTransactions();
+            var response = await _automaticTransactionRepository.CreateAutomaticTransaction(transaction);
+            return Ok(response);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateScheduledTransaction(int id, AutomaticTransactionDto dto)
+        [Authorize(Policy = "StandardRights")]
+        [HttpGet("GetAutomaticTransactions")]
+        public async Task<IActionResult> GetAutomaticTransactions()
         {
-            if (id != dto.Id)
-            {
-                return BadRequest();
-            }
+            return Ok(await _automaticTransactionRepository.GetAutomaticTransactions());
+        }
 
-            await _repository.UpdateScheduledTransactionAsync(dto);
+        [Authorize(Policy = "StandardRights")]
+        [HttpGet("GetAutomaticTransactionById")]
+        public async Task<IActionResult> GetAutomaticTransactionById(int id)
+        {
+            return Ok(await _automaticTransactionRepository.GetAutomaticTransactionById(id));
+        }
 
-            return NoContent();
-        }*/
+        [Authorize(Policy = "ElevatedRights")]
+        [HttpPut("UpdateAutomaticTransaction")]
+        public async Task<IActionResult> UpdateAutomaticTransaction(int id, UpdateAutomaticTransactionDto updateDto)
+        {
+            var transaction = updateDto.ToAutomaticTransactions(id);
+            var response = await _automaticTransactionRepository.UpdateAutomaticTransaction(transaction);
+            return Ok(response);
+        }
+
+        [Authorize(Policy = "ElevatedRights")]
+        [HttpDelete("DeleteAutomaticTransaction")]
+        public async Task<IActionResult> DeleteAutomaticTransaction(int id)
+        {
+            var response = await _automaticTransactionRepository.DeleteAutomaticTransaction(id);
+            return Ok(response);
+        }
     }
 }

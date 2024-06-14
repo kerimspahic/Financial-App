@@ -1,0 +1,51 @@
+<h2 mat-dialog-title>Add Automatic Transaction</h2>
+<mat-dialog-content>
+  <form>
+    <mat-form-field>
+      <mat-label>Amount</mat-label>
+      <input
+        matInput
+        [(ngModel)]="transaction.transactionAmount"
+        name="amount"
+        type="number"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <mat-select [(ngModel)]="transaction.transactionType" name="type">
+        <mat-option [value]="true">Deposit</mat-option>
+        <mat-option [value]="false">Withdrawl</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input
+        matInput
+        [(ngModel)]="transaction.transactionDescription"
+        name="description"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Frequency</mat-label>
+      <mat-select [(ngModel)]="transaction.frequency" name="frequency">
+        <mat-option [value]="0">Weekly</mat-option>
+        <mat-option [value]="1">Monthly</mat-option>
+        <mat-option [value]="2">Yearly</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Next Execution Date</mat-label>
+      <input
+        matInput
+        [(ngModel)]="transaction.nextExecutionDate"
+        name="nextExecutionDate"
+        type="date"
+      />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onSubmit()">Submit</button>
+</mat-dialog-actions>

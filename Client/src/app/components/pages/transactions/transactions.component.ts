@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Transaction } from '../../../models/transaction';
 import { TransactionClient } from '../../../client/transaction.client';
 import { TransactionDescriptions } from '../../../models/transactionDescriptions';
 import { AddTransactionDialogComponent } from '../../extras/add-transaction-dialog/add-transaction-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { EditTransactionDialogComponent } from '../../extras/edit-transaction-dialog/edit-transaction-dialog.component';
 
 @Component({
   selector: 'app-transactions',
@@ -12,16 +13,16 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class TransactionsComponent implements OnInit {
   public transactionDescriptionNames: TransactionDescriptions[] = [];
-  public transactions: Transaction[] = [];
+  public transactions: any[] = [];
   public total = 0;
   public pageNumber = 1;
   public pageSize = 5;
   public sortBy = 'transactionDate'; // Default sort field
   public isDescending = true; // Default sort order
   public filters = {
-    transactionAmount: null,
-    transactionType: null,
-    transactionDescription: null,
+    amount: null,
+    type: null,
+    description: null,
   };
 
   constructor(
@@ -42,6 +43,19 @@ export class TransactionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
       this.getTransactions();
+    });
+  }
+
+  openEditTransactionDialog(transaction: Transaction): void {
+    const dialogRef = this.dialog.open(EditTransactionDialogComponent, {
+      width: '400px',
+      data: { transaction, descriptions: this.transactionDescriptionNames }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getTransactions();
+      }
     });
   }
 
@@ -90,7 +104,7 @@ export class TransactionsComponent implements OnInit {
 
   public changePageSize(size: number): void {
     this.pageSize = size;
-    this.pageNumber = 1; // Reset to first page
+    this.pageNumber = 1; 
     this.getTransactions();
   }
 
@@ -105,7 +119,18 @@ export class TransactionsComponent implements OnInit {
   }
 
   public applyFilters(): void {
-    this.pageNumber = 1; // Reset to first page when applying filters
+    this.pageNumber = 1; 
     this.getTransactions();
+  }
+
+  public deleteTransaction(id: number): void {
+    this.transactionClient.removeTransaction(id).subscribe(
+      () => {
+        this.getTransactions();
+      },
+      (error) => {
+        console.error('Error deleting transaction:', error);
+      }
+    );
   }
 }

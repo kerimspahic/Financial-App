@@ -6,6 +6,7 @@ using API.Interface;
 using API.Mappers;
 using API.Models;
 using API.Helpers;
+using API.DTOs;
 
 namespace API.Controllers
 {
@@ -20,17 +21,6 @@ namespace API.Controllers
             _transaction = transaction;
             _userManager = userManager;
         }
-
-        /*
-        [HttpGet("GetAllTransactions")]
-        [Authorize(Policy = "StandardRights")]
-        public async Task<IActionResult> GetAllTransactions([FromQuery] QueryObject query)
-        {
-            var transactions = await _transaction.GetAllTransactions(query);
-            var transactionDto = transactions.Select(s => s.ToTransactionDto());
-            return Ok(transactionDto);
-        }
-        */
 
         [HttpGet("GetUserTransactions")]
         [Authorize(Policy = "StandardRights")]
@@ -96,16 +86,23 @@ namespace API.Controllers
             return Ok(transactionModel);
         }
 
-        [HttpGet("GetDashboardChartValues")]
+                [HttpPut("UpdateTransaction")]
         [Authorize(Policy = "StandardRights")]
-        public async Task<IActionResult> GetDashboardChartValues()
+        public async Task<IActionResult> UpdateTransaction(UpdateTransactionDto updateTransactionDto)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             string userId = user.Id;
 
-            //var transactionModel = await _transaction.GetDashboardChartValues(userId);
+            if (!await _transaction.UserExists(userId))
+                return BadRequest("User does not exist");
 
-            return Ok();
+            var updatedTransaction = await _transaction.UpdateTransaction(updateTransactionDto, userId);
+
+            if (updatedTransaction == null)
+                return NotFound("Transaction not found or you don't have rights to update this transaction");
+
+            return Ok(updatedTransaction.ToTransactionDto());
         }
+
     }
 }
