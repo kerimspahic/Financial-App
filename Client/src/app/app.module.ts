@@ -56,6 +56,7 @@ import { RegistrationSuccessComponent } from './components/authentification/regi
 import { AddGoalsDialogComponent } from './components/extras/add-goals-dialog/add-goals-dialog.component';
 import { EditTransactionDialogComponent } from './components/extras/edit-transaction-dialog/edit-transaction-dialog.component';
 import { NewAutomaticTransactionDialogComponent } from './components/extras/new-automatic-transaction-dialog/new-automatic-transaction-dialog.component';
+import { LoaderService } from './services/loader.service';
 
 @NgModule({
   declarations: [
@@ -121,6 +122,7 @@ import { NewAutomaticTransactionDialogComponent } from './components/extras/new-
     ToastrModule.forRoot(),
   ],
   providers: [
+    LoaderService,
     provideHttpClient(),
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     provideAnimationsAsync(),

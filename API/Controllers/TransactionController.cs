@@ -86,7 +86,7 @@ namespace API.Controllers
             return Ok(transactionModel);
         }
 
-                [HttpPut("UpdateTransaction")]
+        [HttpPut("UpdateTransaction")]
         [Authorize(Policy = "StandardRights")]
         public async Task<IActionResult> UpdateTransaction(UpdateTransactionDto updateTransactionDto)
         {

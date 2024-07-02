@@ -79,7 +79,7 @@ namespace API.Repository
             return transactionModel;
         }
 
- public async Task<Transaction> UpdateTransaction(UpdateTransactionDto updateTransactionDto, string userId)
+        public async Task<Transaction> UpdateTransaction(UpdateTransactionDto updateTransactionDto, string userId)
         {
             var transaction = await _context.Transactions
                 .FirstOrDefaultAsync(x => x.Id == updateTransactionDto.Id && x.AppUserId == userId);
