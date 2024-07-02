@@ -43,4 +43,8 @@ export class RegisterComponent implements OnInit {
       this.registerForm.get('confirmPassword')!.value
     );
   }
+  
+  
+
+
 }

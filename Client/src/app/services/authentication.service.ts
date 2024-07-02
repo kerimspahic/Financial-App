@@ -38,6 +38,8 @@ export class AuthenticationService {
     this.authClient.register(username, email, firstName, lastName, password,confirmPassword).subscribe((x) => {
 
         this.router.navigate(['/registration-success']);
+
+        
       });
   }
 

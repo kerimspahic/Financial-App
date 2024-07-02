@@ -21,14 +21,14 @@ export class TransactionClient {
     filters: any
   ): Observable<any> {
     const params: any = { pageNumber, pageSize, sortBy, isDescending: isDescending.toString() };
-    if (filters.amount !== null) {
-      params.amount = filters.amount;
+    if (filters.transactionAmount !== null) {
+      params.transactionAmount = filters.transactionAmount;
     }
-    if (filters.type !== null) {
-      params.type = filters.type;
+    if (filters.transactionType !== null) {
+      params.transactionType = filters.transactionType;
     }
-    if (filters.description !== null) {
-      params.description = filters.description;
+    if (filters.transactionDescription !== null) {
+      params.transactionDescription = filters.transactionDescription;
     }
     return this.loaderService.wrapHttpRequest(
       this.http.get(environment.transactionUrl + `GetUserTransactions`, { params })

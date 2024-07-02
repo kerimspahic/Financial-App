@@ -20,9 +20,9 @@ export class TransactionsComponent implements OnInit {
   public sortBy = 'transactionDate'; // Default sort field
   public isDescending = true; // Default sort order
   public filters = {
-    amount: null,
-    type: null,
-    description: null,
+    transactionAmount: null,
+    transactionType: null,
+    transactionDescription: null,
   };
 
   constructor(
@@ -121,6 +121,15 @@ export class TransactionsComponent implements OnInit {
   public applyFilters(): void {
     this.pageNumber = 1; 
     this.getTransactions();
+  }
+
+  clearFilters(): void {
+    this.filters = {
+      transactionAmount: null,
+      transactionType: null,
+      transactionDescription: null
+    };
+    this.applyFilters();
   }
 
   public deleteTransaction(id: number): void {
