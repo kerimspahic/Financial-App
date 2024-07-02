@@ -53,7 +53,7 @@
           <tr *ngFor="let transaction of automaticTransactions">
             <td>{{ transaction.transactionAmount }}</td>
             <td>{{ transaction.transactionType ? 'Deposit' : 'Withdrawl' }}</td>
-            <td>{{ getTransactionDescription(transaction.transactionDescription) }}</td>
+            <td>{{ getDescriptionName(transaction.transactionDescription) }}</td>
             <td>{{ transaction.transactionDate | date }}</td>
             <td>{{ getDaysLeft(transaction.nextExecutionDate) }}</td>
             <td>

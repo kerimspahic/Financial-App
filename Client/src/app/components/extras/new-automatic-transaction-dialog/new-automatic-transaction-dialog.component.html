@@ -14,18 +14,17 @@
       <mat-label>Type</mat-label>
       <mat-select [(ngModel)]="transaction.transactionType" name="type">
         <mat-option [value]="true">Deposit</mat-option>
-        <mat-option [value]="false">Withdrawl</mat-option>
+        <mat-option [value]="false">Withdrawal</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Description</mat-label>
-      <input
-        matInput
-        [(ngModel)]="transaction.transactionDescription"
-        name="description"
-      />
+      <mat-select [(ngModel)]="transaction.transactionDescription" name="description">
+        <mat-option *ngFor="let desc of transactionDescriptions" [value]="desc.id">
+          {{ desc.descriptionName }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-
     <mat-form-field>
       <mat-label>Frequency</mat-label>
       <mat-select [(ngModel)]="transaction.frequency" name="frequency">

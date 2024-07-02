@@ -44,7 +44,7 @@ export class BudgetingClient {
 
   public deleteAutomaticTransaction(transactionId: number): Observable<any> {
     return this.loaderService.wrapHttpRequest(
-      this.http.delete(`${environment.automaticTransactionUrl}DeleteAutomaticTransaction/${transactionId}`)
+      this.http.delete(`${environment.automaticTransactionUrl}DeleteAutomaticTransaction?id=${transactionId}`)
     );
   }
 

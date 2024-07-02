@@ -48,7 +48,7 @@ namespace API.Controllers
             return Ok(response);
         }
 
-        [Authorize(Policy = "ElevatedRights")]
+        [Authorize(Policy = "StandardRights")]
         [HttpDelete("DeleteAutomaticTransaction")]
         public async Task<IActionResult> DeleteAutomaticTransaction(int id)
         {
