@@ -4,6 +4,8 @@ import { BudgetingService } from '../../../services/budgeting.service';
 import { AddGoalsDialogComponent } from '../../extras/add-goals-dialog/add-goals-dialog.component';
 import { AutomaticTransaction } from '../../../models/automaticTransaction';
 import { NewAutomaticTransactionDialogComponent } from '../../extras/new-automatic-transaction-dialog/new-automatic-transaction-dialog.component';
+import { TransactionDescriptions } from '../../../models/transactionDescriptions';
+import { TransactionClient } from '../../../client/transaction.client';
 
 interface Goal {
   id: number;
@@ -17,6 +19,7 @@ interface Goal {
   styleUrls: ['./budgeting.component.css'],
 })
 export class BudgetingComponent implements OnInit {
+  public transactionDescriptionNames: TransactionDescriptions[] = [];
   financialGoals: any = {};
   newValue!: number;
   goals: Goal[] = [
@@ -29,17 +32,34 @@ export class BudgetingComponent implements OnInit {
     { id: 7, value: 'monthlySpentLimit', title: 'Monthly Spent Limit' },
   ];
 
-  automaticTransactions: AutomaticTransaction[] = []; // Property to store automatic transactions
+  automaticTransactions: AutomaticTransaction[] = [];
   editingGoalId: number | null = null;
 
   constructor(
+    private transactionClient: TransactionClient,
     private budgetingService: BudgetingService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit() {
+    this.loadTransactionDescriptionNames();
     this.loadFinancialGoals();
-    this.loadAutomaticTransactions(); // Load automatic transactions on init
+    this.loadAutomaticTransactions();
+  }
+  private loadTransactionDescriptionNames(): void {
+    this.transactionClient.getTransactionDescriptionNames().subscribe(
+      (descriptions: TransactionDescriptions[]) => {
+        this.transactionDescriptionNames = descriptions;
+      },
+      (error) => {
+        console.error('Error fetching transaction descriptions:', error);
+      }
+    );
+  }
+
+  public getDescriptionName(id: number): string {
+    const description = this.transactionDescriptionNames.find(desc => desc.id === id);
+    return description ? description.descriptionName : 'N/A';
   }
 
   startEditing(goalId: number): void {
@@ -69,11 +89,6 @@ export class BudgetingComponent implements OnInit {
     });
   }
 
-  getTransactionDescription(descriptionId: number): string {
-    // Implement a method to get transaction description by id if needed
-    return ''; // Placeholder
-  }
-
   getDaysLeft(nextExecutionDate: Date): number {
     const today = new Date();
     const executionDate = new Date(nextExecutionDate);
@@ -93,8 +108,7 @@ export class BudgetingComponent implements OnInit {
       width: '400px',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe(() => {
       this.loadFinancialGoals();
     });
   }
