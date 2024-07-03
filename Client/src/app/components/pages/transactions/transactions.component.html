@@ -1,34 +1,37 @@
-<mat-card class="container mt-4">
+<mat-card class="container mt-4 frosted-glass">
   <div class="section-container">
-    <h2>Transaction List</h2>
 
     <!-- Filter Section -->
-    <div class="filter-section">
-      <mat-form-field>
-        <mat-label>Amount</mat-label>
-        <input matInput [(ngModel)]="filters.transactionAmount" placeholder="Enter amount">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Type</mat-label>
-        <mat-select [(ngModel)]="filters.transactionType">
-          <mat-option [value]="true">Deposit</mat-option>
-          <mat-option [value]="false">Withdrawal</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Description</mat-label>
-        <mat-select [(ngModel)]="filters.transactionDescription">
-          <mat-option *ngFor="let description of transactionDescriptionNames" [value]="description.id">
-            {{ description.descriptionName }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-raised-button color="primary" (click)="applyFilters()">Apply Filters</button>
-      <button mat-raised-button color="warn" (click)="clearFilters()">Clear Filters</button>
+    <div class="filter-section d-flex justify-content-between mb-4">
+      <div class="d-flex">
+        <mat-form-field class="mr-2">
+          <mat-label>Amount</mat-label>
+          <input matInput [(ngModel)]="filters.transactionAmount" placeholder="Enter amount">
+        </mat-form-field>
+        <mat-form-field class="mr-2">
+          <mat-label>Type</mat-label>
+          <mat-select [(ngModel)]="filters.transactionType">
+            <mat-option [value]="true">Deposit</mat-option>
+            <mat-option [value]="false">Withdrawal</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <mat-select [(ngModel)]="filters.transactionDescription">
+            <mat-option *ngFor="let description of transactionDescriptionNames" [value]="description.id">
+              {{ description.descriptionName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" (click)="applyFilters()">Apply Filters</button>
+        <button mat-raised-button color="warn" (click)="clearFilters()">Clear Filters</button>
+      </div>
     </div>
 
     <!-- Table Section -->
-    <table class="table table-dark table-hover">
+    <table class="table table-hover">
       <thead class="thead-dark">
         <tr>
           <th (click)="sortTransactions('transactionAmount')">

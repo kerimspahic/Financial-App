@@ -1,38 +1,40 @@
 <div>
-  <span class="page-counts">
-    {{ getMin() }} - {{ getMax() }} ({{ count }}) transactions 
+  <span class="page-counts color-wite">
+    {{ getMin() }} - {{ getMax() }} ({{ count }}) transactions
   </span>
-  <span class="page-totals">{{ totalPages() }} total pages</span>
+  <span class="page-totals color-wite">{{ totalPages() }} total pages</span>
   <div class="pagination" *ngIf="count > 0">
-    <select [(ngModel)]="selectedValue" (change)="onSelectionChange()">
+    <select
+      class="form-select d-inline-block w-auto"
+      [(ngModel)]="selectedValue"
+      (change)="onSelectionChange()"
+    >
       <option [value]="5">5</option>
       <option [value]="10">10</option>
       <option [value]="20">20</option>
     </select>
 
     <button
-      class="btn btn-small btn-info"
+      class="btn btn-light btn-small"
       (click)="onPrev()"
       [disabled]="page === 1"
-      [ngClass]="{ disabled: page === 1}"
     >
       Previous Page
     </button>
 
     <button
-      class="btn btn-small btn-info btn-pageNumber" 
+      class="btn btn-light btn-small btn-pageNumber"
       *ngFor="let pageNum of getPages()"
       (click)="onPage(pageNum)"
-      [ngClass]="{ active: pageNum === page}"
+      [ngClass]="{ active: pageNum === page }"
     >
       {{ pageNum }}
     </button>
 
     <button
-      class="btn btn-small btn-info" 
+      class="btn btn-light btn-small"
       (click)="onNext()"
       [disabled]="isLastPage()"
-      [ngClass]="{ disabled: isLastPage()}"
     >
       Next Page
     </button>

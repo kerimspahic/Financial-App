@@ -1,13 +1,82 @@
-.pagination {
-    padding: 12px;
+.color-wite {
+    color: white;
 }
 
-.pages {
+  .section-container {
+    margin-top: 20px;
+  }
+
+  .filter-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .table {
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: #fff;
+  }
+
+  .thead-light th {
+    background-color: #f8f9fa;
+    color: #000;
+  }
+
+  mat-card-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .mr-2 {
+    margin-right: 0.5rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 1.5rem;
+  }
+
+  .d-flex {
+    display: flex;
+  }
+
+  .justify-content-between {
+    justify-content: space-between;
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pagination {
+    padding: 12px;
+  }
+
+  .pages {
     padding: 14px;
     display: block;
-}
+  }
 
-.btn-pageNumber {
+  .btn-pageNumber {
     min-width: 54px;
     margin: 2px;
-}
+  }
+
+  .form-select {
+    display: inline-block;
+    width: auto;
+    margin-right: 10px;
+  }
+
+  .btn-light {
+    background-color: #f8f9fa;
+    color: #000;
+    border: 1px solid #ced4da;
+  }
+
+  .btn-light:hover {
+    background-color: #e2e6ea;
+    color: #000000;
+  }
