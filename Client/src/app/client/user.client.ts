@@ -10,37 +10,20 @@ import { UserInfo } from '../models/userInfo';
   providedIn: 'root',
 })
 export class UserClient {
-  constructor(private http: HttpClient, private loaderService: LoaderService) {}
-  
+  constructor(private http: HttpClient) {}
+
   public updatePassword(userPassword: UserPassword): Observable<Object> {
-    this.loaderService.show();
-    return this.http.put(environment.userUrl + 'UpdateUserPassword', userPassword).pipe(
-      finalize(() => {
-        this.loaderService.hide();
-      })
-    );
+    return this.http.put(environment.userUrl + 'UpdateUserPassword', userPassword);
   }
 
   public updateUser(userInfo: UserInfo): Observable<Object> {
-    this.loaderService.show();
-    return this.http.put(environment.userUrl + 'UpdateUserInfo', userInfo).pipe(
-      finalize(() => {
-        this.loaderService.hide();
-      })
-    );
+    return this.http.put(environment.userUrl + 'UpdateUserInfo', userInfo);
   }
   updateEmail(newEmail: string | null): Observable<Object> {
-    this.loaderService.show();
-    return this.http.put(environment.userUrl + 'UpdateUserEmail', newEmail).pipe(
-      finalize(() => {
-        this.loaderService.hide();
-      })
-    );
+    return this.http.put(environment.userUrl + 'UpdateUserEmail', newEmail);
   }
 
   getAllUsers(): Observable<Object> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.get(environment.userUrl+'GetAppUsers')
-    );
+    return this.http.get(environment.userUrl + 'GetAppUsers');
   }
 }

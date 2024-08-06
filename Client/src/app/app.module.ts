@@ -57,6 +57,7 @@ import { AddGoalsDialogComponent } from './components/extras/add-goals-dialog/ad
 import { EditTransactionDialogComponent } from './components/extras/edit-transaction-dialog/edit-transaction-dialog.component';
 import { NewAutomaticTransactionDialogComponent } from './components/extras/new-automatic-transaction-dialog/new-automatic-transaction-dialog.component';
 import { LoaderService } from './services/loader.service';
+import { LoaderInterceptor } from './helpers/loader.interceptor';
 
 @NgModule({
   declarations: [
@@ -119,12 +120,13 @@ import { LoaderService } from './services/loader.service';
     MatTabsModule,
     BaseChartDirective,
     BsDropdownModule.forRoot(),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   providers: [
     LoaderService,
     provideHttpClient(),
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
     provideAnimationsAsync(),
     provideCharts(withDefaultRegisterables()),
   ],
