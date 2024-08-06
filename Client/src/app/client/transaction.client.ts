@@ -11,7 +11,7 @@ import { DashboardValues } from '../models/dashboardValues';
   providedIn: 'root',
 })
 export class TransactionClient {
-  constructor(private http: HttpClient, private loaderService: LoaderService) {}
+  constructor(private http: HttpClient) {}
 
   public getTransactionData(
     pageNumber: number,
@@ -20,7 +20,12 @@ export class TransactionClient {
     isDescending: boolean,
     filters: any
   ): Observable<any> {
-    const params: any = { pageNumber, pageSize, sortBy, isDescending: isDescending.toString() };
+    const params: any = {
+      pageNumber,
+      pageSize,
+      sortBy,
+      isDescending: isDescending.toString(),
+    };
     if (filters.transactionAmount !== null) {
       params.transactionAmount = filters.transactionAmount;
     }
@@ -30,19 +35,17 @@ export class TransactionClient {
     if (filters.transactionDescription !== null) {
       params.transactionDescription = filters.transactionDescription;
     }
-    return this.loaderService.wrapHttpRequest(
-      this.http.get(environment.transactionUrl + `GetUserTransactions`, { params })
-    );
+    return this.http.get(environment.transactionUrl + `GetUserTransactions`, {
+      params,
+    });
   }
 
   public sendTransactionData(
     newUserTransaction: Transaction
   ): Observable<Object> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.post(
-        environment.transactionUrl + 'SetNewTransaction',
-        newUserTransaction
-      )
+    return this.http.post(
+      environment.transactionUrl + 'SetNewTransaction',
+      newUserTransaction
     );
   }
 
@@ -50,82 +53,70 @@ export class TransactionClient {
     descriptionName: string,
     descriptionType: boolean
   ): Observable<any> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.post(
-        environment.adminTransactionUrl + 'SetTransactionDescription',
-        { descriptionName, descriptionType }
-      )
+    return this.http.post(
+      environment.adminTransactionUrl + 'SetTransactionDescription',
+      { descriptionName, descriptionType }
     );
   }
 
   public getTransactionDescriptionNames(): Observable<any> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.get<any>(
-        environment.adminTransactionUrl + 'GetTransactionDescriptions'
-      )
+    return this.http.get<any>(
+      environment.adminTransactionUrl + 'GetTransactionDescriptions'
     );
   }
 
   public deleteTransactionDescription(id: number): Observable<any> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.delete(`${environment.adminTransactionUrl}DeleteTransactionDescription?id=${id}`)
+    return this.http.delete(
+      `${environment.adminTransactionUrl}DeleteTransactionDescription?id=${id}`
     );
   }
 
   public updateTransactionDescription(
     newTransactionDescription: TransactionDescriptions
   ): Observable<any> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.put(
-        `${environment.adminTransactionUrl}UpdateTransactionDescription?id=${newTransactionDescription.id}&descriptionName=${newTransactionDescription.descriptionName}&descriptionType=${newTransactionDescription.descriptionType}`,
-        {}
-      )
+    return this.http.put(
+      `${environment.adminTransactionUrl}UpdateTransactionDescription?id=${newTransactionDescription.id}&descriptionName=${newTransactionDescription.descriptionName}&descriptionType=${newTransactionDescription.descriptionType}`,
+      {}
     );
   }
 
   public removeTransaction(id: number): Observable<any> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.delete(`${environment.transactionUrl}Remove?id=${id}`)
-    );
+    return this.http.delete(`${environment.transactionUrl}Remove?id=${id}`);
   }
 
   public updateTransaction(transaction: Transaction): Observable<any> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.put(environment.transactionUrl + 'UpdateTransaction', transaction)
+    return this.http.put(
+      environment.transactionUrl + 'UpdateTransaction',
+      transaction
     );
   }
 
   public getDashboardValues(): Observable<DashboardValues> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.get<DashboardValues>(
-        environment.transactionUrl + 'GetDashboardValues'
-      )
+    return this.http.get<DashboardValues>(
+      environment.transactionUrl + 'GetDashboardValues'
     );
   }
 
   public getCardValues(mode: string): Observable<any> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.get<any>(
-        `${environment.transactionCalculationsUrl}GetCardValues`,
-        { params: { mode } }
-      )
+    return this.http.get<any>(
+      `${environment.transactionCalculationsUrl}GetCardValues`,
+      { params: { mode } }
     );
   }
 
   public getChartData(type: string): Observable<any> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.get<any>(
-        `${environment.transactionCalculationsUrl}GetChartValues`,
-        { params: { type } }
-      )
+    return this.http.get<any>(
+      `${environment.transactionCalculationsUrl}GetChartValues`,
+      { params: { type } }
     );
   }
 
   public getFinancialGoals(mode: string): Observable<any> {
-    return this.loaderService.wrapHttpRequest(
-      this.http.get<any>(environment.financialGoalUrl + 'GetFinancialGoals', {
+    return this.http.get<any>(
+      environment.financialGoalUrl + 'GetFinancialGoals',
+      {
         params: { mode },
-      })
+      }
     );
   }
 }

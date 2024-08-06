@@ -5,6 +5,7 @@ import { AuthenticationClient } from '../client/authentication.client';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { isPlatformBrowser } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -20,26 +21,52 @@ export class AuthenticationService {
   constructor(
     private authClient: AuthenticationClient,
     private router: Router,
+    private toastr: ToastrService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {}
 
   public login(username: string, password: string) {
-    this.authClient.login(username, password).subscribe((x) => {
-      if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem(this.tokenKey, x);
-        this.decodedToken = jwtDecode(x);
-        this.currentUserSource.next(this.decodedToken);
-      }
-      this.router.navigate(['/dashboard']);
+    this.authClient.login(username, password).subscribe({
+      next: (token) => {
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem(this.tokenKey, token);
+          this.decodedToken = jwtDecode(token);
+          this.currentUserSource.next(this.decodedToken);
+          this.toastr.success('Login successful!', 'Success');
+        }
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error) => {
+        const errorMessage =
+          error.error?.Error || 'Login failed. Please try again.';
+        this.toastr.error(errorMessage, 'Error');
+      },
     });
   }
 
-  public register(username: string, email: string, firstName: string, lastName: string, password: string, confirmPassword: string): void {
-    this.authClient.register(username, email, firstName, lastName, password,confirmPassword).subscribe((x) => {
-
-        this.router.navigate(['/registration-success']);
-
-        
+  public register(
+    username: string,
+    email: string,
+    firstName: string,
+    lastName: string,
+    password: string,
+    confirmPassword: string
+  ): void {
+    this.authClient
+      .register(username, email, firstName, lastName, password, confirmPassword)
+      .subscribe({
+        next: () => {
+          this.toastr.success(
+            'Registration successful! Please check your email to confirm your account.',
+            'Success'
+          );
+          this.router.navigate(['/registration-success']);
+        },
+        error: (error) => {
+          const errorMessage =
+            error.error?.Error || 'Registration failed. Please try again.';
+          this.toastr.error(errorMessage, 'Error');
+        },
       });
   }
 
@@ -47,6 +74,7 @@ export class AuthenticationService {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem(this.tokenKey);
       this.currentUserSource.next(null);
+      this.toastr.info('You have been logged out.', 'Info');
     }
     this.router.navigate(['/login']);
   }
@@ -65,7 +93,7 @@ export class AuthenticationService {
     }
     return null;
   }
-  
+
   public setCurrentUser(user: any) {
     this.currentUserSource.next(user);
   }
