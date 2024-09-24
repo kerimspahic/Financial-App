@@ -119,4 +119,18 @@ export class TransactionClient {
       }
     );
   }
+  public sendWeeklySummary(): Observable<void> {
+    return this.http.post<void>(
+      `${environment.transactionCalculationsUrl}send-weekly-summary`,
+      {}
+    );
+  }
+
+  public deleteUser(userId: string): Observable<void> {
+    return this.http.delete<void>(`https://localhost:5001/User/Delete/${userId}`);
+  }
+
+  public getAppUsers(): Observable<any[]> {
+    return this.http.get<any[]>(`https://localhost:5001/User/GetAppUsers`);
+  }
 }

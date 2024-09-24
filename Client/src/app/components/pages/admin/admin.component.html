@@ -2,19 +2,29 @@
   <mat-card-title class="pb-3">Transactions Descriptions</mat-card-title>
 
   <!-- Button to toggle form display -->
-  <button
-    mat-raised-button
-    color="primary"
-    (click)="openAddTransactionDialog()"
-    class="mb-3"
-  >
-    Add Transaction Description
-  </button>
+  <div class="button-container">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openAddTransactionDialog()"
+      class="mb-3"
+    >
+      Add Transaction Description
+    </button>
+
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="sendWeeklySummary()"
+      class="mb-3"
+    >
+      Send Weekly Summary
+    </button>
+  </div>
 
   <div class="mat-elevation-z8">
     <table
       mat-table
-      class=""
       matSort
       aria-label="Elements"
       [dataSource]="transactionDescriptionDataSource"
@@ -26,35 +36,29 @@
 
       <ng-container matColumnDef="descriptionName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          descriptionName
+          Description Name
         </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.descriptionName }}
-        </td>
+        <td mat-cell *matCellDef="let element">{{ element.descriptionName }}</td>
       </ng-container>
 
       <ng-container matColumnDef="descriptionType">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          descriptionType
+          Description Type
         </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.descriptionType }}
-        </td>
+        <td mat-cell *matCellDef="let element">{{ element.descriptionType }}</td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef></th>
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element">
           <button
             mat-icon-button
-            class="button"
-            (click)="editDescription(element.id, element.descriptionName,element.descriptionType)"
+            (click)="editDescription(element.id, element.descriptionName, element.descriptionType)"
           >
             <mat-icon>edit</mat-icon>
           </button>
           <button
             mat-icon-button
-            class="button"
             (click)="deleteDescription(element.id)"
           >
             <mat-icon>delete</mat-icon>
@@ -66,5 +70,78 @@
       <tr mat-row *matRowDef="let row; columns: transactionDescriptionDisplayedColumns"></tr>
     </table>
   </div>
-</mat-card>
 
+  <div class="container mt-4">
+    <mat-card-title class="pb-3">App Users</mat-card-title>
+
+    <div class="mat-elevation-z8">
+      <table
+        mat-table
+        matSort
+        aria-label="App Users"
+        [dataSource]="appUsersDataSource"
+      >
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+          <td mat-cell *matCellDef="let user">{{ user.firstName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+          <td mat-cell *matCellDef="let user">{{ user.lastName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let user">
+            <button mat-icon-button (click)="toggleTransactions(user.id)">
+              <mat-icon>{{ expandedUser === user.id ? 'expand_less' : 'expand_more' }}</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteUser(user.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="appUsersDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: appUsersDisplayedColumns"></tr>
+      </table>
+    </div>
+
+    <!-- Nested Transaction Table -->
+    <div *ngFor="let user of appUsersDataSource.data">
+      <div *ngIf="expandedUser === user.id" class="mb-4">
+        <mat-card class="container">
+          <mat-card-title>Transactions for {{ user.firstName }} {{ user.lastName }}</mat-card-title>
+
+          <div class="mat-elevation-z8">
+            <table mat-table matSort aria-label="User Transactions" [dataSource]="user.transactions">
+              <ng-container matColumnDef="transactionId">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Transaction ID</th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.id }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="transactionAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.transactionAmount | currency }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="transactionDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.transactionDate | date }}</td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="transactionsDisplayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: transactionsDisplayedColumns"></tr>
+            </table>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</mat-card>

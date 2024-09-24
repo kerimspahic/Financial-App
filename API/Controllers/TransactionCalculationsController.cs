@@ -70,5 +70,15 @@ namespace API.Controllers
                     return BadRequest("Invalid chart type specified.");
             }
         }
+
+        [HttpPost("send-weekly-summary")]
+        [Authorize(Policy = "StandardRights")]
+        public async Task<IActionResult> SendWeeklySummary()
+        {
+            var userId = _userManager.GetUserId(User); // Method to get user ID from the JWT or claims
+            await _transactionCalculations.SendWeeklySummaryEmail(userId);
+
+            return Ok("Weekly summary email sent successfully.");
+        }
     }
 }

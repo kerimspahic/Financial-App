@@ -16,5 +16,6 @@ namespace API.Interface
         Task<IEnumerable<DashboardChartDto>> GetMonthlyGainChartAsync(string userId);
         Task<IEnumerable<DashboardChartDto>> GetMonthlySpentChartAsync(string userId);
         Task<IEnumerable<DashboardChartDto>> GetMonthlyProfitChartAsync(string userId);
+        Task SendWeeklySummaryEmail(string userId);
     }
 }

@@ -12,10 +12,9 @@ import { FinancialGoals } from '../../../models/financialGoals';
 export class AddGoalsDialogComponent implements OnInit {
   public financialGoalForm!: FormGroup;
 
-
   constructor(
     public dialogRef: MatDialogRef<AddGoalsDialogComponent>,
-    public budgetingService: BudgetingService,
+    public budgetingService: BudgetingService
   ) {}
 
   ngOnInit(): void {
@@ -28,10 +27,9 @@ export class AddGoalsDialogComponent implements OnInit {
       monthlyGainGoal: new FormControl('', [Validators.required]),
       monthlySpentLimit: new FormControl('', [Validators.required]),
     });
-
   }
 
-  public onSubmit(){
+  public onSubmit() {
     const newFinancialGoal: FinancialGoals = {
       totalProfitGoal: this.financialGoalForm.get('totalProfitGoal')!.value,
       yearlyProfitGoal: this.financialGoalForm.get('yearlyProfitGoal')!.value,

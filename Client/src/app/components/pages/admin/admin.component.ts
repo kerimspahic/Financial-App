@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddTransactionDescriptionDialogComponent } from '../../extras/add-transaction-description-dialog/add-transaction-description-dialog.component';
 import { TransactionService } from '../../../services/transaction.service';
 import { EditTransactionDescriptionDialogComponent } from '../../extras/edit-transaction-description-dialog/edit-transaction-description-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin',
@@ -22,13 +23,21 @@ export class AdminComponent implements OnInit {
     'actions',
   ];
 
+  appUsersDataSource = new MatTableDataSource<any>();
+  appUsersDisplayedColumns = ['firstName', 'lastName', 'email', 'actions'];
+  transactionsDisplayedColumns = ['transactionId', 'transactionAmount', 'transactionDate'];
+
+  expandedUser: string | null = null;
+
   constructor(
     private dialog: MatDialog,
-    public transactionService: TransactionService
+    public transactionService: TransactionService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.loadTransactionData();
+    this.loadAppUsersData();
   }
 
   loadTransactionData() {
@@ -37,6 +46,16 @@ export class AdminComponent implements OnInit {
       .subscribe((data) => {
         this.transactionDescriptionDataSource.data = data;
       });
+  }
+
+  loadAppUsersData() {
+    this.transactionService.getAppUsersData().subscribe((data) => {
+      this.appUsersDataSource.data = data;
+    });
+  }
+
+  toggleTransactions(userId: string) {
+    this.expandedUser = this.expandedUser === userId ? null : userId;
   }
 
   deleteDescription(id: number) {
@@ -82,5 +101,27 @@ export class AdminComponent implements OnInit {
           this.loadTransactionData();
         }
       });
+  }
+  sendWeeklySummary() {
+    this.transactionService.sendWeeklySummaryEmail().subscribe({
+      next: () => {
+        this.toastr.success('Weekly summary email sent successfully!', 'Success');
+      }
+    });
+  }
+  deleteUser(userId: string) {
+    const confirmDelete = confirm('Are you sure you want to delete this user?');
+    if (confirmDelete) {
+      this.transactionService.deleteAppUser(userId).subscribe({
+        next: () => {
+          this.toastr.success('User deleted successfully!', 'Success');
+          this.loadAppUsersData(); // Reload the data after deletion
+        },
+        error: (error) => {
+          const errorMessage = error.error?.Error || 'Failed to delete the user. Please try again.';
+          this.toastr.error(errorMessage, 'Error');
+        }
+      });
+    }
   }
 }

@@ -32,7 +32,6 @@ namespace API.Controllers
                     return BadRequest(new { Error = "Invalid email format" });
                 }
 
-                // Assume SendConfirmationEmail is a method to send email
                 await _accountRepository.SendConfirmationEmail(registerDto.Email, token);
                 return Ok("Registration successful. Please check your email to confirm your account.");
             }

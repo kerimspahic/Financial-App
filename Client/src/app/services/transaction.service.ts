@@ -26,6 +26,14 @@ export class TransactionService {
     });
   }
 
+  public deleteAppUser(userId: string): Observable<void> {
+    return this.transactionClient.deleteUser(userId);
+  }
+
+  public getAppUsersData(): Observable<any[]> {
+    return this.transactionClient.getAppUsers(); // Assumes this method exists in your client service
+  }
+
   public getTransactionDescriptionData(): Observable<TransactionDescriptions[]> {
     return this.transactionClient.getTransactionDescriptionNames();
   }
@@ -80,5 +88,9 @@ export class TransactionService {
 
   public getFinancialGoals(mode: string): Observable<any> {
     return this.transactionClient.getFinancialGoals(mode);
+  }
+
+  public sendWeeklySummaryEmail(): Observable<void> {
+    return this.transactionClient.sendWeeklySummary();
   }
 }
