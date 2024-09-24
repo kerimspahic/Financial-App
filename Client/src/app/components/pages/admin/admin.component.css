@@ -1,14 +1,17 @@
-.button {
-    color: #007bff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .button:hover {
-    color: #0056b3;
-  }
 
-  .add-button {
-    width: 100; /* Set the width to auto */
-    margin-right: 8px; /* Add some right margin to create space */
-  }
+  .container {
+  margin: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mat-elevation-z8 {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mb-4 {
+  margin-bottom: 16px;
+}

@@ -1,1 +1,46 @@
-<p>summary works!</p>
+<mat-card class="container mt-4 p-4 frosted-glass">
+    <div class="section-container">
+      <!-- Export Button Styled -->
+      <button mat-raised-button color="primary" (click)="exportTableToPDF()" class="mb-3">
+        <mat-icon>download</mat-icon> Export to PDF
+      </button>
+  
+      <!-- Material Table with Bootstrap -->
+      <table mat-table [dataSource]="transactions" class="table table-striped table-hover mat-elevation-z8" id="contentToConvert">
+        <!-- Amount Column -->
+        <ng-container matColumnDef="transactionAmount">
+          <th mat-header-cell *matHeaderCellDef> Amount </th>
+          <td mat-cell *matCellDef="let transaction"> {{ transaction.transactionAmount | currency }} </td>
+        </ng-container>
+  
+        <!-- Type Column -->
+        <ng-container matColumnDef="transactionType">
+          <th mat-header-cell *matHeaderCellDef> Type </th>
+          <td mat-cell *matCellDef="let transaction"> 
+            {{ transaction.transactionType ? 'Deposit' : 'Withdrawal' }}
+          </td>
+        </ng-container>
+  
+        <!-- Date Column -->
+        <ng-container matColumnDef="transactionDate">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let transaction"> 
+            {{ transaction.transactionDate | date: 'mediumDate' }} 
+          </td>
+        </ng-container>
+  
+        <!-- Description Column -->
+        <ng-container matColumnDef="transactionDescription">
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let transaction"> 
+            {{ getDescriptionName(transaction.transactionDescription) }} 
+          </td>
+        </ng-container>
+  
+        <!-- Header and Row Declarations -->
+        <tr mat-header-row *matHeaderRowDef="['transactionAmount', 'transactionType', 'transactionDate', 'transactionDescription']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['transactionAmount', 'transactionType', 'transactionDate', 'transactionDescription'];"></tr>
+      </table>
+    </div>
+  </mat-card>
+  

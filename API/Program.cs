@@ -72,6 +72,8 @@ builder.Services.AddScoped<AutomaticTransactionService>();
 builder.Services.AddScoped<ITransactionCalculationsRepository, TransactionCalculationsRepository>();
 builder.Services.AddScoped<IAutomaticTransactionRepository, AutomaticTransactionRepository>();
 
+builder.Services.AddHostedService<AutomaticTransactionService>();
+builder.Services.AddHostedService<WeeklyEmailService>();
 
 builder.Services.AddCors(options =>
 {

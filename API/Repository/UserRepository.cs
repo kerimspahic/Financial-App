@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using API.Data;
 using API.DTOs.Account;
 using API.Helpers;

@@ -3,19 +3,22 @@
   <mat-divider style="margin-bottom: 120px"></mat-divider>
   <p>NAVIGATION</p>
   <mat-nav-list>
-      <a mat-button class="sidenav-button" routerLink="/dashboard">
-        <mat-icon class="sidenav-icon">home</mat-icon><span>Dashboard</span></a>
-      <a mat-button class="sidenav-button" routerLink="/transactions">
-        <mat-icon class="sidenav-icon">home</mat-icon><span>Transactions</span></a>
-        
-      <a mat-button class="sidenav-button" routerLink="/budgeting">
-        <mat-icon class="sidenav-icon">home</mat-icon><span>Budgeting</span></a>
-      
-      <a mat-button class="sidenav-button" routerLink="/summary">
-        <mat-icon class="sidenav-icon">home</mat-icon><span>Summary</span></a>
-      
-      <a mat-button class="sidenav-button" routerLink="/admin">
-        <mat-icon class="sidenav-icon">home</mat-icon><span>Admin</span></a>
+    <a mat-button class="sidenav-button" routerLink="/dashboard">
+      <mat-icon class="sidenav-icon">dashboard</mat-icon><span>Dashboard</span>
+    </a>
+    <a mat-button class="sidenav-button" routerLink="/transactions">
+      <mat-icon class="sidenav-icon">account_balance_wallet</mat-icon><span>Transactions</span>
+    </a>
+    <a mat-button class="sidenav-button" routerLink="/budgeting">
+      <mat-icon class="sidenav-icon">pie_chart</mat-icon><span>Budgeting</span>
+    </a>
+    <a mat-button class="sidenav-button" routerLink="/summary">
+      <mat-icon class="sidenav-icon">file_download</mat-icon><span>Summary</span>
+    </a>
+    <a mat-button class="sidenav-button" routerLink="/admin" *ngIf="isAdmin">
+      <mat-icon class="sidenav-icon">admin_panel_settings</mat-icon><span>Admin</span>
+    </a>
+
+    
   </mat-nav-list>
-  
 </div>

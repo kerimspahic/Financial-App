@@ -1,11 +1,7 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Data;
 using API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace API
 {
